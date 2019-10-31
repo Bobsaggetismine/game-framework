@@ -1,7 +1,7 @@
 #include <boost/test/auto_unit_test.hpp>
 
 
-#include <bq/util/vec.h>
+#include <bq.h>
 
 BOOST_AUTO_TEST_CASE(v2f_construction) {
 	bq::v2f v2(4.f,2.f);

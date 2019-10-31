@@ -3,8 +3,7 @@
 #include "../States/menu_state.h"
 
 #include "bullet.h"
-
-
+ 
 class player : public bq::entity {
 	bq::animation upAnimation;
 	bq::animation downAnimation;
