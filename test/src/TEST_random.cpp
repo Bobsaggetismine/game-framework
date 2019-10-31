@@ -1,0 +1,19 @@
+#define BOOST_TEST_MODULE TEST_GAMELIB
+
+#include <bq.h>
+#include <boost/test/included/unit_test.hpp>
+
+
+
+BOOST_AUTO_TEST_CASE(getRandom) {
+	bq::random::init();
+	constexpr float MIN_RANDOM = 50.0;
+	constexpr float MAX_RANDOM = 80.0;
+	constexpr unsigned NUM_CYCLES = 20000;
+	for (unsigned i = 0; i < NUM_CYCLES; ++i) {
+		float random = bq::random::getRandom(MIN_RANDOM, MAX_RANDOM);
+		BOOST_CHECK(random >= MIN_RANDOM);
+		BOOST_CHECK(random <= MAX_RANDOM);
+	}
+
+}

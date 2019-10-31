@@ -1,0 +1,155 @@
+workspace "bq_game_lib"
+    architecture "x86"
+    startproject "sandbox"
+
+    configurations
+    {
+        "Debug",
+        "Release"
+    }
+
+outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
+
+IncludeDir = {}
+IncludeDir["SFML"] = "gamelib/deps/SFML/include"
+
+
+project "gamelib"
+	location "gamelib"
+	kind "StaticLib"
+	language "C++"
+	cppdialect "C++17"
+	staticruntime "on"
+
+	targetdir ("bin/" .. outputdir .. "/%{prj.name}")
+	objdir ("obj/" .. outputdir .. "/%{prj.name}")
+
+	files
+	{
+		"%{prj.name}/include/**.h",
+		"%{prj.name}/source/**.cpp",
+    }
+    includedirs
+	{
+        "%{prj.name}/include",
+        "%{IncludeDir.SFML}"
+	}
+
+	filter "system:windows"
+		systemversion "latest"
+		defines{ "PLATFORM_WINDOWS" }
+
+
+	filter "configurations:*"
+		libdirs { "gamelib/deps/SFML/lib" }	
+		
+	filter "configurations:Debug"
+		defines "DEBUG"
+		runtime "Debug"
+		symbols "on"
+		links
+		{	
+			"sfml-graphics-d",
+			"sfml-window-d",
+			"sfml-system-d",
+			"sfml-audio-d",
+			"sfml-network-d"
+		}
+        
+
+	filter "configurations:Release"
+		defines "NDEBUG"
+		runtime "Release"
+		optimize "on"
+		links
+		{	
+			"sfml-graphics",
+			"sfml-window",
+			"sfml-system",
+			"sfml-audio",
+            "sfml-network"
+		}
+        
+
+
+project "sandbox"
+	location "sandbox"
+	kind "ConsoleApp"
+	language "C++"
+	cppdialect "C++17"
+	staticruntime "on"
+
+	targetdir ("bin/" .. outputdir .. "/%{prj.name}")
+	objdir ("obj/" .. outputdir .. "/%{prj.name}")
+
+	files
+	{
+		"%{prj.name}/source/**.h",
+		"%{prj.name}/source/**.cpp"
+	}
+    links
+	{
+        "gamelib"
+	}
+    includedirs
+	{
+        "gamelib/include",
+        "%{IncludeDir.SFML}"
+	}
+
+	filter "system:windows"
+		systemversion "latest"
+		defines{ "PLATFORM_WINDOWS" }
+
+    
+	filter "configurations:Debug"
+		defines "DEBUG"
+		runtime "Debug"
+        symbols "on"
+        
+
+	filter "configurations:Release"
+		defines "NDEBUG"
+		runtime "Release"
+        optimize "on"
+        
+
+project "test"
+	location "test"
+	kind "ConsoleApp"
+	language "C++"
+	cppdialect "C++17"
+	staticruntime "on"
+
+	targetdir ("bin/" .. outputdir .. "/%{prj.name}")
+	objdir ("obj/" .. outputdir .. "/%{prj.name}")
+	filter "system:windows"
+		systemversion "latest"
+		defines{ "PLATFORM_WINDOWS" }
+	filter "configurations:*"
+		libdirs { "test/deps/boost/lib" }	
+	links
+	{
+		"gamelib"
+	}
+	files
+	{
+		"%{prj.name}/src/**.cpp"
+	}
+	includedirs
+	{
+		"gamelib/include",
+		"test/deps/boost/include",
+		"%{IncludeDir.SFML}"
+	}
+
+	filter "configurations:Release"
+		defines "NDEBUG"
+		runtime "Release"
+		optimize "on"
+
+		
+	filter "configurations:Debug"
+		defines "DEBUG"
+		runtime "Debug"
+		symbols "on"
