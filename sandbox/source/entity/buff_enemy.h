@@ -4,30 +4,24 @@
 #include <bq/util/random.h>
 #include <bq/util/vec.h>
 #include <bq/core/handler.h>
-class meele_enemy : public bq::entity
+class buff_enemy : public bq::entity
 {
 	bq::v2f movement = { 0,0 };
 	sf::Sprite m_sprite;
-	float health = 100;
+	float move_speed = 1.6f;
+	float health = 250;
 	const int moves_until_movement_change_C = 60;
-	sf::Sound sound;
+	sf::Sound buff_sound, debuff_sound;
 	sf::Clock clock;
-	float range = 10.f;
 	int moves_made = 0;
-	std::shared_ptr<bq::entity> m_player;
-	bool locked_on = false;
-	bq::buff m_buff;
-	unsigned lockon_multiplier = 10;
-	int m_damage = 5;
 public:
-	float move_speed = 1.0f;
-	meele_enemy(std::shared_ptr<bq::entity>);
+	buff_enemy();
 	void update() override;
+	void buff_team();
+	void debuff_team();
 	void render(sf::RenderWindow& window) override;
 	void handleEvent(sf::Event& evt) override;
 	void damage(float) override;
 	bool shouldCull(sf::View&) override;
-	void buff(bq::buff) override;
-	void unbuff() override;
 };
 

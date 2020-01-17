@@ -54,8 +54,18 @@ void player::input() {
 		movement.x = 1;
 		interactPoint = { pos.x + 5 + size.x + 15, pos.y + 15 + size.y / 2 };
 	}
-
-
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up)){
+		if (!m_inventory.empty()) m_inventory.get_selected()->action(std::make_optional<sf::Keyboard::Key>(sf::Keyboard::Up));
+	}
+	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down)) {
+		if (!m_inventory.empty()) m_inventory.get_selected()->action(std::make_optional<sf::Keyboard::Key>(sf::Keyboard::Down));
+	}
+	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) {
+		if (!m_inventory.empty()) m_inventory.get_selected()->action(std::make_optional<sf::Keyboard::Key>(sf::Keyboard::Left));
+	}
+	else  if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) {
+		if (!m_inventory.empty()) m_inventory.get_selected()->action(std::make_optional<sf::Keyboard::Key>(sf::Keyboard::Right));
+	}
 	sf::FloatRect bounds = { pos.x + 16 + movement.x, pos.y + 15 + movement.y, size.x, size.y };
 	bq::block_collision_effects bce = bq::handler::get().m_world->get_collision_effects(bounds);
 	if (!bce.collides) {
@@ -81,10 +91,7 @@ void player::handleEvent(sf::Event& evt) {
 		if (evt.key.code == sf::Keyboard::Space) {
 			bq::handler::get().m_world->interact(interactPoint.x, interactPoint.y);
 		}
-		if (evt.key.code == sf::Keyboard::Up || evt.key.code == sf::Keyboard::Down || evt.key.code == sf::Keyboard::Left|| evt.key.code == sf::Keyboard::Right) {
-			if(!m_inventory.empty())
-			m_inventory.get_selected()->action(std::make_optional<sf::Event>(evt));
-		}
+		
 		if (evt.key.code == sf::Keyboard::LShift) {
 			m_inventory.cycle_forward();
 		}

@@ -6,7 +6,7 @@
 bullet::bullet(bq::v2f p, bq::v2f vel):sprite(bq::resource_holder::get().textures.get("bullet.png")), speed(vel), sound(bq::resource_holder::get().sounds.get("hitmarker.wav")) {
 	pos = p;
 	size = {3,3};
-	cooldown.restart();
+	id = 3;
 }
 void bullet::handleEvent(sf::Event& evt) {
 
@@ -31,9 +31,8 @@ void bullet::update() {
 	if (enemy_hit) {
 		if (enemy_hit->id != 1) {
 				enemy_hit->damage(m_damage);
-				m_damage--;
 				sound.play();
-				cooldown.restart();
+				m_dead = true;
 			
 		}
 	}

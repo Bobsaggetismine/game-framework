@@ -1,13 +1,12 @@
 #pragma once
 #include <bq.h>
 
-class bullet : public bq::entity, std::enable_shared_from_this<bullet> {
+class bullet : public bq::entity {
 	sf::Sprite sprite;
 	bq::v2f speed;
 	bool m_dead = false;
 	sf::Sound sound;
-	sf::Clock cooldown;
-	float m_damage = 8.f;
+	int m_damage = 20;
 public:
 	void update() override;
 	void render(sf::RenderWindow&)override;

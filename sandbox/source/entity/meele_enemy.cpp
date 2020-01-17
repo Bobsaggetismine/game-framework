@@ -6,6 +6,7 @@ meele_enemy::meele_enemy(std::shared_ptr<bq::entity> player): m_player(player), 
 	pos = {500,500};
 	size = {27,30};
 	clock.restart();
+	id = 2;
 }
 void meele_enemy::damage(float dmg) {
 	health -= dmg;
@@ -47,23 +48,23 @@ void meele_enemy::update() {
 	}
 	
 	//if we're not locked onto the target(player) yet, well randomly move around
-	if (!locked_on)
+	if (!locked_on || clock.getElapsedTime().asSeconds() < 0.8f)
 	{
 		if (moves_made > moves_until_movement_change_C || moves_made == 0) {
 			if (bq::random::getRandom(0.f, 1.f) > 0.5f) {
 				if (bq::random::getRandom(0.f, 1.f) > 0.5f) {
-					movement.x = -move_speed;
+					movement.x = -move_speed*m_buff.speed_multiplier;
 				}
 				else {
-					movement.x = move_speed;
+					movement.x = move_speed * m_buff.speed_multiplier;
 				}
 			}
 			else {
 				if (bq::random::getRandom(0.f, 1.f) > 0.5f) {
-					movement.y = -move_speed;
+					movement.y = -move_speed * m_buff.speed_multiplier;
 				}
 				else {
-					movement.y = move_speed;
+					movement.y = move_speed * m_buff.speed_multiplier;
 				}
 			}
 			moves_made = 0;
@@ -71,28 +72,27 @@ void meele_enemy::update() {
 	}
 	else {
 		if (m_player->pos.x + (m_player->size.x / 2)+16 > pos.x + (size.x/2)+2 ) {
-			movement.x = move_speed;
+			movement.x = move_speed * m_buff.speed_multiplier;
 		}
 		else if(m_player->pos.x + (m_player->size.x / 2)+16 < pos.x + (size.x / 2)+2){
-			movement.x = -move_speed;
+			movement.x = -move_speed * m_buff.speed_multiplier;
 		}
 		if (m_player->pos.y + (m_player->size.y / 2) + 15 > pos.y + (size.y / 2) + 2) {
-			movement.y = move_speed;
+			movement.y = move_speed * m_buff.speed_multiplier;
 		}
 		else if(m_player->pos.y + (m_player->size.y / 2)+15 < pos.y + (size.y / 2)+2){
-			movement.y = -move_speed;
+			movement.y = -move_speed * m_buff.speed_multiplier;
 		}
 		float x_diff = (m_player->pos.x + (m_player->size.x / 2) + 16) - (pos.x + (size.x / 2) + 2);
 		float y_diff = (m_player->pos.y + (m_player->size.y / 2) + 15) - (pos.y + (size.y / 2) + 2);
 
-		if (abs(x_diff) < 2.5f && abs(y_diff) < 2.5f) {
-			bq::logger::info("damaging player");
-			if(clock.getElapsedTime().asSeconds() > 0.5){
-				m_player->damage(5);
+		if (abs(x_diff) <range && abs(y_diff) < range) {
+			bq::logger::debug("damaging player");
+			if(clock.getElapsedTime().asSeconds() > 0.8f){
+				m_player->damage(m_damage*m_buff.damage_multiplier);
 				sound.play();
 				clock.restart();
 			}
-			
 		}
 	}
 	
@@ -114,4 +114,16 @@ void meele_enemy::update() {
 
 void meele_enemy::handleEvent(sf::Event& evt) {
 
+}
+void meele_enemy::buff(bq::buff b) {
+	if (b.damage_multiplier > m_buff.damage_multiplier) {
+		m_buff.damage_multiplier = b.damage_multiplier;
+	}
+	if (b.speed_multiplier > m_buff.speed_multiplier) {
+		m_buff.speed_multiplier = b.speed_multiplier;
+	}
+}
+void meele_enemy::unbuff() {
+	//lazy
+	m_buff = { 1,1 };
 }

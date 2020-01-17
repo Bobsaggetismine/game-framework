@@ -9,7 +9,7 @@ namespace bq {
 		int m_uses = 5;
 	public:
 
-		virtual void action(std::optional<sf::Event>) = 0;
+		virtual void action(std::optional<sf::Keyboard::Key>) = 0;
 		int uses();
 		void add_uses(int toAdd);
 		void remove_uses(int toRemove);
