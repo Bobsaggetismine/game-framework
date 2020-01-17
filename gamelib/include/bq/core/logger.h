@@ -11,8 +11,10 @@ namespace bq {
 	constexpr int WHITE = 7;
 	constexpr int INFO_COLOR = 5;
 	constexpr int WARN_COLOR = 14;
+	constexpr int DEBUG_COLOR = 6;
 	constexpr int CRITICAL_COLOR = 12;
 	enum class log_level {
+		DBG,
 		INFO,
 		WARN,
 		CRITICAL
@@ -27,6 +29,22 @@ namespace bq {
 		static void set_log_level(log_level level) {
 			m_level = level;
 		}
+
+
+		static void debug(std::string message) {
+#ifdef PLATFORM_WINDOWS
+			HANDLE  hConsole;
+			hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
+			SetConsoleTextAttribute(hConsole, DEBUG_COLOR);
+#endif
+			if(m_level == log_level::DBG)
+			std::cout << "DEBUG: " << message << std::endl;
+#ifdef PLATFORM_WINDOWS
+			SetConsoleTextAttribute(hConsole, WHITE);
+#endif
+		}
+
+
 		static void info(std::string message) {
 #ifdef PLATFORM_WINDOWS
 			HANDLE  hConsole;

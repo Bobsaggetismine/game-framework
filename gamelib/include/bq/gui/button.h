@@ -8,7 +8,7 @@ namespace bq {
 		class Button : public bq::gui::widget {
 
 			Rectangle   m_button;
-			sf::Text text;
+			sf::Text m_text;
 			std::function<void(void)> m_function = []() {};
 			
 		public:
@@ -17,6 +17,7 @@ namespace bq {
 
 			void handleEvent(sf::Event& e, sf::RenderWindow& window) override;
 			void render(sf::RenderWindow& renderer) override;
+			void update();
 
 		};
 	}

@@ -13,3 +13,4 @@
 #include <bq/graphics/animation.h>
 
 #include <bq/gui/button.h>
+#include <bq/core/inventory.h>

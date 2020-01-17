@@ -2,7 +2,7 @@
 
 void bq::gui::Button::handleEvent(sf::Event& e, sf::RenderWindow& window) {
 	auto pos = sf::Mouse::getPosition(window);
-
+	
 	switch (e.type) {
 	case sf::Event::MouseButtonPressed:
 		switch (e.mouseButton.button) {
@@ -23,9 +23,23 @@ void bq::gui::Button::handleEvent(sf::Event& e, sf::RenderWindow& window) {
 	}
 }
 
-void bq::gui::Button::render(sf::RenderWindow& window) {
+void bq::gui::Button::render(sf::RenderWindow& window)
+{
+	auto pos = sf::Mouse::getPosition(window);
+	if (m_button.getGlobalBounds().contains((float)pos.x, (float)pos.y)) {
+		m_button.setFillColor(sf::Color::Magenta);
+	}
+	else {
+		m_button.setFillColor(sf::Color::Red);
+	}
+
+
 	window.draw(m_button);
-	window.draw(text);
+	window.draw(m_text);
+}
+
+void bq::gui::Button::update()
+{
 }
 void bq::gui::Button::setFunc(std::function<void(void)>func)
 {
@@ -41,14 +55,14 @@ bq::gui::Button::Button(bq::v2f pos, bq::v2f size,std::string label, sf::Color o
 	m_button.setPosition(pos);
 	
 	
-	text.setCharacterSize(20);
-	text.setOutlineColor(sf::Color::White);
-	text.setFillColor(sf::Color::White);
-	text.setFont(bq::resource_holder::get().fonts.get("arial.ttf"));
+	m_text.setCharacterSize(20);
+	m_text.setOutlineColor(sf::Color::White);
+	m_text.setFillColor(sf::Color::White);
+	m_text.setFont(bq::resource_holder::get().fonts.get("arial.ttf"));
 
-	text.setPosition(pos);
+	m_text.setPosition(pos);
 
 
-	text.move(m_button.getGlobalBounds().width / 4.f,m_button.getGlobalBounds().height / 4.f);
-	text.setString(label);
+	m_text.move(m_button.getGlobalBounds().width / 4.f,m_button.getGlobalBounds().height / 4.f);
+	m_text.setString(label);
 }

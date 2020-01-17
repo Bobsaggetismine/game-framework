@@ -18,6 +18,10 @@ void menu_state::handleEvents(sf::Event& evt, sf::RenderWindow& window) {
 	m_start_game.handleEvent(evt, window);
 }
 void menu_state::render(sf::RenderWindow& window) {
+	sf::View view;
+	view.reset(sf::FloatRect(0, 0, 1920, 1080));
+	window.setView(view);
 	m_start_game.render(window);
 }
-void menu_state::update() {}
+void menu_state::update() {
+}    

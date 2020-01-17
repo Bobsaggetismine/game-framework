@@ -21,6 +21,6 @@ namespace bq {
 		void markAdd(std::shared_ptr<entity>);
 		void remove(std::shared_ptr<entity>);
 		void handleEvent(sf::Event&);
-		
+		std::shared_ptr<bq::entity> intersects(sf::FloatRect&);
 	};
 }

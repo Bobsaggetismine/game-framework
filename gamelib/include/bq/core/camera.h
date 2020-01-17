@@ -13,5 +13,6 @@ namespace bq {
 		camera(std::shared_ptr<bq::entity>);
 		void update();
 		void render(sf::RenderWindow&);
+		void reset();
 	};
 }

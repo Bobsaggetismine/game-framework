@@ -16,28 +16,20 @@ namespace bq {
 		}
 		T& get(std::string location) {
 			if (m_resources.find(("res/" + location))!= m_resources.end()) {
-#ifdef _DEBUG
-				bq::logger::info("resource: " + location + " already loaded, returning loaded resource");
-#endif
+				bq::logger::debug("resource: " + location + " already loaded, returning loaded resource");
 				return *m_resources[("res/" + location)];
 			}
-#ifdef _DEBUG
 			else {
-				bq::logger::info("resource: " + location + " does not already exist, attempting to load...");
+				bq::logger::debug("resource: " + location + " does not already exist, attempting to load...");
 			}
-#endif
 			T* res = DBG_NEW T();
 			if (res->loadFromFile("res/"+location)) {
 				m_resources["res/"+location] = res;
-#ifdef _DEBUG
-				bq::logger::info("resource: " + location + " loaded from file");
-#endif
+				bq::logger::debug("resource: " + location + " loaded from file");
 				return *m_resources["res/" + location];
 			}
 			else {
-#ifdef _DEBUG
-			bq::logger::info("resource: " + location + " does not existing, defaulting to failed res");
-#endif
+				bq::logger::warn("resource: " + location + " does not existing, defaulting to failed res");
 				std::string name = "res/fail." + m_ext;
 				return *m_resources[name];
 			}

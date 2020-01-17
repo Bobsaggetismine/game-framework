@@ -57,3 +57,13 @@ void bq::entity_manager::handleEvent(sf::Event& evt) {
 		e->handleEvent(evt);
 	}
 }
+
+std::shared_ptr<bq::entity> bq::entity_manager::intersects(sf::FloatRect& other)
+{
+	for (auto& e : entities) {
+		if (e->intersects(other)) {
+			return e;
+		}
+	}
+	return nullptr;
+}
