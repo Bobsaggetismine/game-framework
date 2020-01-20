@@ -1,6 +1,7 @@
 #include "game_state.h"
 #include "../entity/meele_enemy.h"
 #include "../entity/buff_enemy.h"
+#include "../entity/george.h"
 void game_state::render(sf::RenderWindow& window) {
 	bq::handler::get().m_world->render(window);
 	bq::handler::get().m_em->render(window);
@@ -11,9 +12,9 @@ game_state::game_state(): _player(std::make_shared<player>())  {
 	bq::handler::get().m_cam = std::make_shared<bq::camera>(_player);
 	bq::handler::get().m_em = std::make_shared<bq::entity_manager>();
 	bq::handler::get().m_em->add(_player);
-	for(unsigned i = 0; i < 150; ++i){ bq::handler::get().m_em->add(std::make_shared<meele_enemy>(_player)); }
-	bq::handler::get().m_em->add(std::make_shared<buff_enemy>());
-
+	//for(unsigned i = 0; i < 100; ++i){ bq::handler::get().m_em->add(std::make_shared<meele_enemy>(_player)); }
+	//bq::handler::get().m_em->add(std::make_shared<buff_enemy>());
+	bq::handler::get().m_em->add(std::make_shared<george>(200,200,_player));
 }
 void game_state::update() {
 	if (!paused) {
@@ -31,5 +32,8 @@ void game_state::handleEvents(sf::Event& evt, sf::RenderWindow& window) {
 		else {
 			bq::handler::get().m_em->handleEvent(evt);
 		}
+	}
+	else {
+		bq::handler::get().m_em->handleEvent(evt);
 	}
 }

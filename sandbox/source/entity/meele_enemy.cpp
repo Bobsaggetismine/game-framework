@@ -127,3 +127,6 @@ void meele_enemy::unbuff() {
 	//lazy
 	m_buff = { 1,1 };
 }
+void meele_enemy::interact() {
+
+}

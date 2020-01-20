@@ -6,8 +6,9 @@ bq::game::game(unsigned w, unsigned h, std::string title, float ticks) : window(
 	ups = sf::seconds(1.f / ticks);
 }
 void bq::game::run() {
-	
+	bq::logger::info("engine starting, running initialization code...");
 	bq::random::init();
+	bq::logger::info("engnie initialized, running game loop");
 	
 	while (window.isOpen()) {
 		sf::Event evt;

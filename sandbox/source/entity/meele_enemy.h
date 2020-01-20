@@ -17,7 +17,7 @@ class meele_enemy : public bq::entity
 	std::shared_ptr<bq::entity> m_player;
 	bool locked_on = false;
 	bq::buff m_buff;
-	unsigned lockon_multiplier = 10;
+	unsigned lockon_multiplier = 25;
 	int m_damage = 5;
 public:
 	float move_speed = 1.0f;
@@ -29,5 +29,6 @@ public:
 	bool shouldCull(sf::View&) override;
 	void buff(bq::buff) override;
 	void unbuff() override;
+	virtual void interact() override;
 };
 

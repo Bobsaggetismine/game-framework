@@ -12,5 +12,5 @@ class gun : public bq::item
 	sf::Clock m_timer;
 public:
 	gun(bq::entity& target);
-	void action(std::optional<sf::Keyboard::Key>) override;
+	void action(std::optional<sf::Keyboard::Key>,std::optional<bq::v2f>) override;
 };

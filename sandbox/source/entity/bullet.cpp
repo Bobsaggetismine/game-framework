@@ -1,12 +1,16 @@
 
 #include "bullet.h"
-
+#include "bq/entity/particle.h"
 
 
 bullet::bullet(bq::v2f p, bq::v2f vel):sprite(bq::resource_holder::get().textures.get("bullet.png")), speed(vel), sound(bq::resource_holder::get().sounds.get("hitmarker.wav")) {
 	pos = p;
 	size = {3,3};
 	id = 3;
+}
+bool bullet::intersects(sf::FloatRect&)
+{
+	return false;
 }
 void bullet::handleEvent(sf::Event& evt) {
 
@@ -25,8 +29,8 @@ void bullet::update() {
 		bq::logger::debug("bullet colides");
 		m_dead = true;
 	}
-
-	std::shared_ptr<bq::entity> enemy_hit = bq::handler::get().m_em->intersects(bound);
+	
+	std::shared_ptr<bq::entity> enemy_hit = bq::handler::get().m_em->intersects(bound,id,false);
 
 	if (enemy_hit) {
 		if (enemy_hit->id != 1) {
@@ -46,6 +50,9 @@ void bullet::render(sf::RenderWindow& window) {
 bool bullet::shouldCull(sf::View& view) {
 	if (m_dead) {
 		bq::logger::debug("bullet is dead");
+		for (unsigned i = 0; i < 12; ++i) {
+			bq::handler::get().m_em->markAdd(std::make_shared<bq::particle>(pos.x, pos.y, 0.5f));
+		}
 		return true;
 	}
 	bq::v2f center = view.getCenter();
@@ -57,3 +64,4 @@ bool bullet::shouldCull(sf::View& view) {
 	return ! viewPort.contains({ pos.x, pos.y });
 
 }
+void bullet::interact() {}

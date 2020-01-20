@@ -1,3 +1,5 @@
+#pragma once
+
 #include <bq.h>
 #include "../world/pongworld.h"
 #include "../States/menu_state.h"
@@ -23,4 +25,5 @@ public:
 	void handleEvent(sf::Event&)   override;
 	void input();
 	void damage(float) override;
+	virtual void interact() override;
 };

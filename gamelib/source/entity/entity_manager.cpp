@@ -58,10 +58,13 @@ void bq::entity_manager::handleEvent(sf::Event& evt) {
 	}
 }
 
-std::shared_ptr<bq::entity> bq::entity_manager::intersects(sf::FloatRect& other)
+std::shared_ptr<bq::entity> bq::entity_manager::intersects(sf::FloatRect& other, int requester_id, bool find_same_type)
 {
 	for (auto& e : entities) {
 		if (e->intersects(other)) {
+			if (requester_id == e->id && !find_same_type) {
+				continue;
+			}
 			return e;
 		}
 	}

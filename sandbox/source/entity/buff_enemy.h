@@ -23,5 +23,6 @@ public:
 	void handleEvent(sf::Event& evt) override;
 	void damage(float) override;
 	bool shouldCull(sf::View&) override;
+	virtual void interact() override;
 };
 

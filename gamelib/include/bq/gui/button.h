@@ -12,12 +12,13 @@ namespace bq {
 			std::function<void(void)> m_function = []() {};
 			
 		public:
-			Button(bq::v2f, bq::v2f,std::string, sf::Color, sf::Color);
+			Button(bq::v2f, bq::v2f,std::string, sf::Color, sf::Color, int);
 			void setFunc(std::function<void(void)>);
 
 			void handleEvent(sf::Event& e, sf::RenderWindow& window) override;
 			void render(sf::RenderWindow& renderer) override;
 			void update();
+			void setPos(bq::v2f);
 
 		};
 	}

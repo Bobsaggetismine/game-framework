@@ -4,14 +4,18 @@
 
 
 bq::block_collision_effects bq::world::get_collision_effects(sf::FloatRect& rect) {
+	bool found_solid = false;
 	bq::block_collision_effects dc;
 	for (auto block : blocks) {
 		if (block->intersects(rect)) {
 			dc.collides = block->isSolid;
 			dc.damage = block->damage;
-			return dc;
+			if (block->isSolid) {
+				return dc;
+			}
 		}
 	}
+	dc.collides = found_solid;
 	return dc;
 }
 void bq::world::render(sf::RenderWindow& window) {

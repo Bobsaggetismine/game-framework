@@ -10,6 +10,6 @@ class machine_gun : public bq::item
 	float m_cooldown = 0.1f;
 public:
 	machine_gun(bq::entity& target);
-	void action(std::optional<sf::Keyboard::Key>) override;
+	void action(std::optional<sf::Keyboard::Key>, std::optional<bq::v2f>) override;
 };
 

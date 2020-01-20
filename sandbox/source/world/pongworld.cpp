@@ -27,9 +27,3 @@ pongworld::pongworld() {
 		}
 	}
 }
-void pongworld::render(sf::RenderWindow& window) {
-	window.draw(background);
-	for (auto block : blocks) {
-		block->render(window);
-	}
-}

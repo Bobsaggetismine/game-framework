@@ -17,5 +17,6 @@ namespace bq {
 		virtual void damage(float) = 0;
 		virtual void buff(bq::buff);
 		virtual void unbuff();
+		virtual void interact() = 0;
 	};
 }

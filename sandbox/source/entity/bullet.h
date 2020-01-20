@@ -14,4 +14,6 @@ public:
 	bool shouldCull(sf::View&);
 	void damage(float) override;
 	bullet(bq::v2f,bq::v2f);
+	bool intersects(sf::FloatRect&) override;
+	virtual void interact() override;
 };

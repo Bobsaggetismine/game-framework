@@ -16,13 +16,13 @@
 		return Application::thisApp_sm->main(argc, argv);
 	}
 	catch (char const * msg) {
-		std::cerr << "exception string: " << msg << std::endl;
+		bq::logger::critical(msg);
 	}
 	catch (std::exception const& e) {
-		std::cerr << "std::exception: " << e.what() << std::endl;
+		bq::logger::critical(e.what());
 	}
 	catch (...) {
-		std::cerr << "Error: an exception has been caught..." << std::endl;
+		bq::logger::critical("unknown error thown!");
 		return EXIT_FAILURE;
 	}
 
@@ -40,7 +40,7 @@
 	{
 		if (thisApp_sm)
 		{
-			std::cout << "Cannot have duplicate game instances!" << std::endl;
+			bq::logger::critical("no duplicate game instances!");
 			std::terminate();
 		}
 		thisApp_sm = this;

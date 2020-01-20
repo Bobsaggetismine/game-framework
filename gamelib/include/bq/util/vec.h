@@ -1,5 +1,6 @@
 #pragma once
 #include <SFML/System/Vector2.hpp>
+#include <math.h>
 namespace bq {
 	struct v2f {
 		v2f(const float _x, const float _y) :x(_x), y(_y) {}
@@ -11,6 +12,13 @@ namespace bq {
 		v2f(const sf::Vector2f& sfv): x(sfv.x), y(sfv.y) {}
 		operator sf::Vector2f () {
 			return sf::Vector2f(x, y);
+		}
+		void normalize() {
+			float mag_x = x * x;
+			float mag_y = y * y;
+			float mag = sqrtf(mag_y + mag_x);
+			x /= mag;
+			y /= mag;
 		}
 	};
 

@@ -27,6 +27,7 @@ public:
 		}
 	}
 	int execute() override {
+		//be careful here, any pre engine initialization code has not run yet, so for example bq::random will not work as expected.
 		run();
 		return EXIT_SUCCESS;
 	}

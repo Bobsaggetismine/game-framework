@@ -2,7 +2,6 @@
 
 
 constexpr int SHEET_SIZE = 64;
-
 player::player() : upAnimation("player.png", 0 * SHEET_SIZE, SHEET_SIZE, 9, 10), downAnimation("player.png", 2 * SHEET_SIZE, SHEET_SIZE, 9, 10), leftAnimation("player.png", 1 * SHEET_SIZE, SHEET_SIZE, 9, 10), rightAnimation("player.png", 3 * SHEET_SIZE, SHEET_SIZE, 9, 10), curSprite(bq::resource_holder::get().textures.get("player.png")),hb(*this) {
 	id = 1;
 	pos.x = 100, pos.y = 100;
@@ -27,45 +26,43 @@ void player::update() {
 
 	input();
 }
+
+
 void player::render(sf::RenderWindow& window) {
 	window.draw(curSprite);
 	m_inventory.render(window);
 	hb.render(window);
 }
 void player::input() {
+
+
+	if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
+		bq::v2f mouse = { float(sf::Mouse::getPosition().x) , float(sf::Mouse::getPosition().y) };
+		if (!m_inventory.empty()) m_inventory.get_selected()->action(std::make_optional<sf::Keyboard::Key>(), std::make_optional<bq::v2f>(pos));
+	}
+
 	bq::v2f movement = { 0, 0 };
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::W)) {
 		curSprite = upAnimation.get();
 		movement.y = -1;
 		interactPoint = { pos.x + 15 + (size.x / 2), pos.y };
 	}
-	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::S)) {
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::S)) {
 		curSprite = downAnimation.get();
 		movement.y = 1;
 		interactPoint = { pos.x + 15 + (size.x / 2), pos.y + 15 + size.y + 10 };
 	}
-	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)) {
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)) {
 		curSprite = leftAnimation.get();
 		movement.x = -1;
 		interactPoint = { pos.x + 5, pos.y + 15 + size.y / 2 };
 	}
-	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) {
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) {
 		curSprite = rightAnimation.get();
 		movement.x = 1;
 		interactPoint = { pos.x + 5 + size.x + 15, pos.y + 15 + size.y / 2 };
 	}
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up)){
-		if (!m_inventory.empty()) m_inventory.get_selected()->action(std::make_optional<sf::Keyboard::Key>(sf::Keyboard::Up));
-	}
-	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down)) {
-		if (!m_inventory.empty()) m_inventory.get_selected()->action(std::make_optional<sf::Keyboard::Key>(sf::Keyboard::Down));
-	}
-	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) {
-		if (!m_inventory.empty()) m_inventory.get_selected()->action(std::make_optional<sf::Keyboard::Key>(sf::Keyboard::Left));
-	}
-	else  if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) {
-		if (!m_inventory.empty()) m_inventory.get_selected()->action(std::make_optional<sf::Keyboard::Key>(sf::Keyboard::Right));
-	}
+	
 	sf::FloatRect bounds = { pos.x + 16 + movement.x, pos.y + 15 + movement.y, size.x, size.y };
 	bq::block_collision_effects bce = bq::handler::get().m_world->get_collision_effects(bounds);
 	if (!bce.collides) {
@@ -90,14 +87,24 @@ void player::handleEvent(sf::Event& evt) {
 	if (evt.type == sf::Event::KeyPressed) {
 		if (evt.key.code == sf::Keyboard::Space) {
 			bq::handler::get().m_world->interact(interactPoint.x, interactPoint.y);
+
+			sf::FloatRect slightly_larger_bounds = { pos.x , pos.y , size.x + 30, size.y + 32 };
+
+			std::shared_ptr<bq::entity> e =  bq::handler::get().m_em->intersects(slightly_larger_bounds, id, false);
+			if (e) e->interact();
+
 		}
 		
 		if (evt.key.code == sf::Keyboard::LShift) {
 			m_inventory.cycle_forward();
 		}
 	}
+	
 }
 void player::damage(float dmg) {
 	hp -= dmg;
 	hb.update(hp);
+}
+void player::interact() {
+
 }

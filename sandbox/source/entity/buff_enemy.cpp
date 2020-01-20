@@ -78,3 +78,5 @@ void buff_enemy::update() {
 }
 
 void buff_enemy::handleEvent(sf::Event& evt) {}
+
+void buff_enemy::interact() {}
