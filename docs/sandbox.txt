@@ -1,0 +1,26 @@
+todo: FIXES: 
+	QUEST:
+		- fix quest accept UI (add accept, decline buttons)
+		- fix text boxes to be smaller and have better alligned text (technically a gui fix related to the quests)
+	MENU: 
+		- add more options
+		- get proper background
+	SETTINGS:
+		- load things in from an ini file instead of hardcoded
+		- fix everything to not depend on a local copy of the window size (put in handler?)
+		
+		
+todo: FEATURES:
+	QUESTS: 
+		- implement base quest class for client to extend
+		- implement global statistics tracker for quests to check against (or think of better way, that doesnt require ghetto)
+		- implement rewards from the quest (gun? item that heals?)
+	SPAWNER:
+		- choose whether im using a block (load in from world.data) or entity (maybe load in entity spawn positions from file?)
+
+todo: POTENTIAL SYSTEMS/FEATURES?:
+
+	ABILITIES:
+	
+	SAVE/LOAD:
+	
