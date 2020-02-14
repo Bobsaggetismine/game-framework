@@ -24,7 +24,7 @@ void buff_enemy::render(sf::RenderWindow& window) {
 void buff_enemy::buff_team() {
 	for (auto& e : bq::handler::get().m_em->entities) {
 		if (e->id != 1) {
-			e->buff({1.3,1});
+			e->buff({1.3f,1});
 		}
 	}
 }

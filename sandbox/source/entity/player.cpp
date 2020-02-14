@@ -68,7 +68,7 @@ void player::input() {
 	if (!bce.collides) {
 		move(movement);
 	}
-	damage(bce.damage);
+	damage((float)bce.damage);
 	m_inventory.update_position(pos.x - 120, pos.y +500);
 	hb.update_pos(pos.x - 50, pos.y - 500);
 	if (hp < 1) {

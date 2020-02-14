@@ -6,7 +6,6 @@
 
 
 BOOST_AUTO_TEST_CASE(getRandom) {
-	bq::random::init();
 	constexpr float MIN_RANDOM = 50.0;
 	constexpr float MAX_RANDOM = 80.0;
 	constexpr unsigned NUM_CYCLES = 20000;
@@ -15,5 +14,4 @@ BOOST_AUTO_TEST_CASE(getRandom) {
 		BOOST_CHECK(random >= MIN_RANDOM);
 		BOOST_CHECK(random <= MAX_RANDOM);
 	}
-
 }

@@ -34,7 +34,7 @@ void bullet::update() {
 
 	if (enemy_hit) {
 		if (enemy_hit->id != 1) {
-				enemy_hit->damage(m_damage);
+				enemy_hit->damage((float)m_damage);
 				sound.play();
 				m_dead = true;
 			

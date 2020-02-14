@@ -6,7 +6,7 @@
 namespace bq {
 	class inventory {
 
-		int index = -1;
+		unsigned index = -1;
 	public:
 		std::vector<std::unique_ptr<bq::item>> m_items;
 		sf::Sprite m_sprite;

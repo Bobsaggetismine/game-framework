@@ -16,7 +16,7 @@ class player : public bq::entity {
 	sf::Sprite curSprite;
 	bq::gui::health_bar hb;
 	bq::inventory m_inventory;
-	int hp = 100;
+	float hp = 100;
 	bq::v2f interactPoint = { -11, -11 };
 public:
 	player();

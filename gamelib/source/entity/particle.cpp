@@ -6,8 +6,8 @@ void bq::particle::update() {
 
 	m_sprite.setPosition(pos);
 
-	movement.x *= 0.894;
-	movement.y *= 0.894;
+	movement.x *= 0.894f;
+	movement.y *= 0.894f;
 }
 
 void bq::particle::handleEvent(sf::Event&)

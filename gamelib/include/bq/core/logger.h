@@ -1,7 +1,7 @@
 #pragma once
 
 #include <iostream>
-
+#include <fstream>
 #ifdef PLATFORM_WINDOWS
 #include <windows.h>
 #endif
@@ -23,14 +23,18 @@ namespace bq {
 		TODO: add support to output colored 
 	*/
 	class logger {
-
+		static std::string m_file;
 		static log_level m_level;
+		static bool m_file_logging;
 	public:
 		static void set_log_level(log_level level) {
 			m_level = level;
 		}
 
-
+		static void log_to_file(const std::string& file) {
+			m_file = file;
+			m_file_logging = true;
+		}
 		static void debug(std::string message) {
 #ifdef PLATFORM_WINDOWS
 			HANDLE  hConsole;
@@ -42,6 +46,12 @@ namespace bq {
 #ifdef PLATFORM_WINDOWS
 			SetConsoleTextAttribute(hConsole, WHITE);
 #endif
+			if (m_file_logging) {
+				std::ofstream ofs;
+				ofs.open(m_file, std::ofstream::out | std::ofstream::app);
+				ofs << "DEBUG: " << message << std::endl;
+				ofs.close();
+			}
 		}
 
 
@@ -55,6 +65,12 @@ namespace bq {
 #ifdef PLATFORM_WINDOWS
 			SetConsoleTextAttribute(hConsole, WHITE);
 #endif
+			if (m_file_logging) {
+				std::ofstream ofs;
+				ofs.open(m_file, std::ofstream::out | std::ofstream::app);
+				ofs << "INFO: " << message << std::endl;
+				ofs.close();
+			}
 		}
 		static void warn(std::string message) {
 #ifdef PLATFORM_WINDOWS
@@ -66,6 +82,12 @@ namespace bq {
 #ifdef PLATFORM_WINDOWS
 			SetConsoleTextAttribute(hConsole, WHITE);
 #endif
+			if (m_file_logging) {
+				std::ofstream ofs;
+				ofs.open(m_file, std::ofstream::out | std::ofstream::app);
+				ofs << "WARN: " << message << std::endl;
+				ofs.close();
+			}
 		}
 		static void critical(std::string message) {
 #ifdef PLATFORM_WINDOWS
@@ -77,7 +99,12 @@ namespace bq {
 #ifdef PLATFORM_WINDOWS
 			SetConsoleTextAttribute(hConsole, WHITE);
 #endif
-
+			if (m_file_logging) {
+				std::ofstream ofs;
+				ofs.open(m_file, std::ofstream::out | std::ofstream::app);
+				ofs << "CRITICAL: "<< message << std::endl;
+				ofs.close();
+			}
 		}
 	};
 }

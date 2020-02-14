@@ -27,8 +27,10 @@ public:
 		}
 	}
 	int execute() override {
-		//be careful here, any pre engine initialization code has not run yet, so for example bq::random will not work as expected.
+		bq::logger::log_to_file("log.txt");
 		run();
+
+		throw this;
 		return EXIT_SUCCESS;
 	}
 } game;

@@ -14,7 +14,7 @@ game_state::game_state(): _player(std::make_shared<player>())  {
 	bq::handler::get().m_em->add(_player);
 	//for(unsigned i = 0; i < 100; ++i){ bq::handler::get().m_em->add(std::make_shared<meele_enemy>(_player)); }
 	//bq::handler::get().m_em->add(std::make_shared<buff_enemy>());
-	bq::handler::get().m_em->add(std::make_shared<george>(200,200,_player));
+	bq::handler::get().m_em->add(std::make_shared<george>(200.f,200.f,_player));
 }
 void game_state::update() {
 	if (!paused) {
@@ -22,7 +22,6 @@ void game_state::update() {
 		bq::handler::get().m_cam->update();
 		bq::handler::get().m_em->update();
 	}
-	
 }
 void game_state::handleEvents(sf::Event& evt, sf::RenderWindow& window) {
 	if (evt.type == sf::Event::KeyPressed) {

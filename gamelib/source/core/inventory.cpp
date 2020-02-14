@@ -47,8 +47,8 @@ void bq::inventory::render(sf::RenderWindow& window) {
 }
 void bq::inventory::update_position(float x, float y) {
 	m_sprite.setPosition(x, y);
-	int x_coord = m_sprite.getPosition().x + 2;
-	int y_coord = m_sprite.getPosition().y + 2;
+	float x_coord = m_sprite.getPosition().x + 2;
+	float y_coord = m_sprite.getPosition().y + 2;
 	for (auto& item : m_items) {
 		item->update_pos(x_coord, y_coord);
 		x_coord += 34;
