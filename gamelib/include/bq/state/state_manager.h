@@ -4,21 +4,19 @@
 #include <bq/exception/illegal_state.h>
 namespace bq {
 
-	using state_t = std::shared_ptr<state>;
-
 	class state_manager {
-		std::stack<state_t> m_states;
+		std::stack<std::unique_ptr<state>> m_states;
 		
 	public:
-		state_manager(state_t);
+		state_manager(std::unique_ptr<state>);
 		state_manager();
-		void push(state_t,bool = true);
+		void push(std::unique_ptr<state>,bool = true);
 		void pop();
 		void update();
 		void render(sf::RenderWindow&);
-		void handleEvents(sf::Event&, sf::RenderWindow&);
+		void handle_events(sf::Event&, sf::RenderWindow&);
 
 		unsigned get_num_states();
-		state_t get_current_state();
+		bq::state* get_current_state();
 	};
 }

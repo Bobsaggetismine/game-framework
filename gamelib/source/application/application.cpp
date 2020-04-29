@@ -2,18 +2,7 @@
 
 	int main(int argc, char* argv[]) try
 	{
-#ifdef PLATFORM_WINDOWS
-		//Windows memory leak detection
-#ifdef _DEBUG
-		int dbgFlags = _CrtSetDbgFlag(_CRTDBG_REPORT_FLAG);
-		dbgFlags |= _CRTDBG_CHECK_ALWAYS_DF;
-		dbgFlags |= _CRTDBG_DELAY_FREE_MEM_DF;
-		dbgFlags |= _CRTDBG_LEAK_CHECK_DF;
-		_CrtSetDbgFlag(dbgFlags);
-#endif
-
-#endif
-		return Application::thisApp_sm->main(argc, argv);
+		return application::m_app->main(argc, argv);
 	}
 	catch (char const * msg) {
 		bq::logger::critical(msg);
@@ -26,23 +15,24 @@
 		return EXIT_FAILURE;
 	}
 
-	Application* Application::thisApp_sm = nullptr;
+	application* application::m_app = nullptr;
 
 
-	int Application::main(int argc, char* argv[])
+	int application::main(int argc, char* argv[])
 	{
-		args_m.assign(argv, argv + argc);
+		m_args.assign(argv, argv + argc);
+		init();
 		return execute();
 	}
 
 
-	Application::Application()
+	application::application()
 	{
-		if (thisApp_sm)
+		if (m_app)
 		{
-			bq::logger::critical("no duplicate game instances!");
+			bq::logger::critical("no duplicate app instances!");
 			std::terminate();
 		}
-		thisApp_sm = this;
+		m_app = this;
 	}
 

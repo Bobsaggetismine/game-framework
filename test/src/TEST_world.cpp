@@ -52,7 +52,7 @@ public:
 class test_world : public bq::world {
 public:
 	test_world() {
-		blocks.push_back(std::make_shared<test_block>(32,32,32,32));
+		m_blocks.push_back(std::make_shared<test_block>(32,32,32,32));
 	}
 };
 BOOST_AUTO_TEST_CASE(test_block_intersects) {
@@ -84,8 +84,8 @@ BOOST_AUTO_TEST_CASE(world_intersects_test) {
 	test_world world;
 	sf::FloatRect fr = {31,31,1,1};
 	bq::block_collision_effects bce = world.get_collision_effects(fr);
-	BOOST_CHECK( !bce.collides );
+	BOOST_CHECK( !bce.m_collision );
 	fr = {32,32,1,1};
 	bce = world.get_collision_effects(fr);
-	BOOST_CHECK(bce.collides);
+	BOOST_CHECK(bce.m_collision);
 }

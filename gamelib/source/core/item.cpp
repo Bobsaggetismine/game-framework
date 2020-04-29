@@ -1,5 +1,6 @@
 #include "bq/core/item.h"
 #include "bq/core/logger.h"
+bq::item::~item(){}
 int bq::item::uses()
 {
 	return this->m_uses;

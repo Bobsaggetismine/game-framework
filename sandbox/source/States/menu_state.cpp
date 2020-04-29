@@ -11,11 +11,11 @@ void menu_state::startGame() {
 		throw std::exception("");
 	}
 #endif
-	bq::handler::get().m_sm->push(std::make_shared<game_state>());
+	bq::handler::get().m_sm->push(std::make_unique<game_state>());
 }
 
 void menu_state::handleEvents(sf::Event& evt, sf::RenderWindow& window) {
-	m_start_game.handleEvent(evt, window);
+	m_start_game.handle_event(evt);
 }
 void menu_state::render(sf::RenderWindow& window) {
 	sf::View view;

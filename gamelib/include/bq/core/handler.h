@@ -8,10 +8,11 @@ namespace bq {
 		handler() {};
 
 	public:
-		std::shared_ptr<bq::world> m_world;
-		std::shared_ptr<bq::entity_manager> m_em;
-		std::shared_ptr<bq::state_manager> m_sm;
-		std::shared_ptr<bq::camera> m_cam;
+		std::unique_ptr<bq::world> m_world;
+		std::unique_ptr<bq::entity_manager> m_em;
+		std::unique_ptr<bq::state_manager> m_sm;
+		std::unique_ptr<bq::camera> m_cam;
+		
 		inline static handler& get() {
 			static handler h;
 			return h;

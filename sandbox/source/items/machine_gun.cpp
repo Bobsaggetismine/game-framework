@@ -11,7 +11,7 @@ void machine_gun::action(std::optional<sf::Keyboard::Key> key, std::optional<bq:
 			movement_vector.x *= 3;
 			movement_vector.y *= 3;
 			bq::v2f r = { pos.value().x + 16, pos.value().y + 16 };
-			bq::handler::get().m_em->markAdd(std::make_shared<bullet>(r, movement_vector));
+			bq::handler::get().m_em->add(std::make_unique<bullet>(r, movement_vector));
 			sound.play();
 			m_timer.restart();
 		}
@@ -22,4 +22,9 @@ machine_gun::machine_gun(bq::entity& target) : m_target(target), sound(bq::resou
 	m_sprite.setTexture(bq::resource_holder::get().textures.get("mg.png"));
 	sound.setVolume(0.5);
 	m_timer.restart();
+}
+
+machine_gun::~machine_gun()
+{
+	sound.resetBuffer();
 }

@@ -7,16 +7,16 @@ namespace bq {
 	class particle : public bq::entity {
 		sf::Clock m_life_timer;
 		sf::Sprite m_sprite;
+		bq::v2f m_movement = { 2,2 };
 		float m_life = 0;
-		bq::v2f movement = {2,2};
 	public:
+		particle(float, float, float);
 		void render(sf::RenderWindow&) override;
 		void update() override;
-		void handleEvent(sf::Event&) override;
-		particle(float x, float y, float life);
+		void handle_event(sf::Event&) override;
 		void damage(float) override;
-		bool shouldCull(sf::View&) override;
+		bool should_cull(const sf::View&) override;
 		bool intersects(sf::FloatRect&) override;
-		virtual void interact();
+		void interact() override;
 	};
 }

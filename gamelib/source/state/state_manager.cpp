@@ -1,20 +1,20 @@
 #include <bq/state/state_manager.h>
 
-bq::state_manager::state_manager(bq::state_t initial) {
-	m_states.push(initial);
+bq::state_manager::state_manager(std::unique_ptr<state> initial) {
+	m_states.push(std::move(initial));
 }
 bq::state_manager::state_manager() {}
 void bq::state_manager::pop() {
 	m_states.pop();
 }
 
-void bq::state_manager::push(bq::state_t state, bool replacing) {
+void bq::state_manager::push(std::unique_ptr<state> state, bool replacing) {
 	if (replacing) {
 		m_states.pop();
-		m_states.push(state);
+		m_states.push(std::move(state));
 	}
 	else {
-		m_states.push(state);
+		m_states.push(std::move(state));
 	}
 }
 
@@ -30,7 +30,7 @@ void bq::state_manager::render(sf::RenderWindow& window) {
 	}
 	m_states.top()->render(window);
 }
-void bq::state_manager::handleEvents(sf::Event& evt, sf::RenderWindow& window) {
+void bq::state_manager::handle_events(sf::Event& evt, sf::RenderWindow& window) {
 	if (m_states.size() == 0) {
 		throw bq::illegal_state("m_states empty on handleEvents");
 	}
@@ -40,6 +40,6 @@ void bq::state_manager::handleEvents(sf::Event& evt, sf::RenderWindow& window) {
 unsigned bq::state_manager::get_num_states() {
 	return m_states.size();
 }
-std::shared_ptr<bq::state> bq::state_manager::get_current_state() {
-	return m_states.top();
+bq::state* bq::state_manager::get_current_state() {
+	return m_states.top().get();
 }

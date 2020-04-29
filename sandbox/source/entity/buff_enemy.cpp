@@ -3,16 +3,17 @@
 
 buff_enemy::buff_enemy() {
 	m_sprite.setTexture(bq::resource_holder::get().textures.get("angel.png"));
-	pos = { 500,500 };
-	size = { 27,30 };
+	m_pos = { 500,500 };
+	m_size = { 27,30 };
 	clock.restart();
-	id = 2;
+	m_id = 2;
+	bq::handler::get().m_em->register_id("BUFF_ENEMY", m_id);
 	buff_team();
 }
 void buff_enemy::damage(float dmg) {
 	health -= dmg;
 }
-bool buff_enemy::shouldCull(sf::View&) {
+bool buff_enemy::should_cull(const sf::View&) {
 	if (health < 0.f) {
 		debuff_team();
 	}
@@ -22,15 +23,15 @@ void buff_enemy::render(sf::RenderWindow& window) {
 	window.draw(m_sprite);
 }
 void buff_enemy::buff_team() {
-	for (auto& e : bq::handler::get().m_em->entities) {
-		if (e->id != 1) {
+	for (auto& e : bq::handler::get().m_em->entities()) {
+		if (e->id() != 1) {
 			e->buff({1.3f,1});
 		}
 	}
 }
 void buff_enemy::debuff_team() {
-	for (auto& e : bq::handler::get().m_em->entities) {
-		if (e->id == 2) {
+	for (auto& e : bq::handler::get().m_em->entities()) {
+		if (e->id() == 2) {
 			e->unbuff();
 		}
 	}
@@ -64,9 +65,9 @@ void buff_enemy::update() {
 
 
 
-	sf::FloatRect bounds = { pos.x + 2 + movement.x, pos.y + 2 + movement.y, size.x, size.y };
+	sf::FloatRect bounds = { m_pos.x + 2 + movement.x, m_pos.y + 2 + movement.y, m_size.x, m_size.y };
 	bq::block_collision_effects bce = bq::handler::get().m_world->get_collision_effects(bounds);
-	if (!bce.collides) {
+	if (!bce.m_collision) {
 		move(movement);
 
 	}
@@ -74,9 +75,9 @@ void buff_enemy::update() {
 		moves_made = -1;
 	}
 	moves_made++;
-	m_sprite.setPosition(pos);
+	m_sprite.setPosition(m_pos);
 }
 
-void buff_enemy::handleEvent(sf::Event& evt) {}
+void buff_enemy::handle_event(sf::Event& evt) {}
 
 void buff_enemy::interact() {}

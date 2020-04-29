@@ -5,12 +5,15 @@
 
 namespace bq {
 	class camera {
-
-		std::shared_ptr<bq::entity> target;
+		bq::entity* m_target;
 		bq::v2f m_size;
+		sf::View m_view;
 	public:
-		sf::View view;
-		camera(std::shared_ptr<bq::entity>);
+		
+		camera(bq::entity*);
+
+		const sf::View& view();
+
 		void update();
 		void render(sf::RenderWindow&);
 		void reset();

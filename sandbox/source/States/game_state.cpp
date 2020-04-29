@@ -7,14 +7,21 @@ void game_state::render(sf::RenderWindow& window) {
 	bq::handler::get().m_em->render(window);
 	bq::handler::get().m_cam->render(window);
 }
-game_state::game_state(): _player(std::make_shared<player>())  {
-	bq::handler::get().m_world = std::make_shared<pongworld>();
-	bq::handler::get().m_cam = std::make_shared<bq::camera>(_player);
-	bq::handler::get().m_em = std::make_shared<bq::entity_manager>();
-	bq::handler::get().m_em->add(_player);
-	//for(unsigned i = 0; i < 100; ++i){ bq::handler::get().m_em->add(std::make_shared<meele_enemy>(_player)); }
-	//bq::handler::get().m_em->add(std::make_shared<buff_enemy>());
-	bq::handler::get().m_em->add(std::make_shared<george>(200.f,200.f,_player));
+game_state::game_state() {
+	
+	bq::handler::get().m_world = std::make_unique<pongworld>();
+	
+	bq::handler::get().m_em = std::make_unique<bq::entity_manager>();
+	std::unique_ptr<player> p = std::make_unique<player>();
+	m_player = p.get();
+	bq::handler::get().m_em->add(std::move(p));
+	m_player->register_id();
+
+	bq::handler::get().m_cam = std::make_unique<bq::camera>(m_player);
+
+	for(unsigned i = 0; i < 1; ++i){ bq::handler::get().m_em->add(std::make_unique<meele_enemy>(m_player)); }
+	bq::handler::get().m_em->add(std::make_unique<buff_enemy>());
+	bq::handler::get().m_em->add(std::make_unique<george>(200.f,200.f,m_player));
 }
 void game_state::update() {
 	if (!paused) {

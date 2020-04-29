@@ -7,43 +7,41 @@ bq::inventory::inventory(){
 }
 
 void bq::inventory::cycle_forward() {
-	index++;
+	m_index++;
 	if (m_items.size() == 0) {
-		index = -1;
+		m_index = -1;
 		return;
 	}
-	if (index >= m_items.size()) {
-		index = 0;
+	if (m_index >= m_items.size()) {
+		m_index = 0;
 		return;
 	}
 }
 void bq::inventory::cycle_backward() {
-	index--;
+	m_index--;
 	if (m_items.size() == 0) {
-		index = -1;
+		m_index = -1;
 		return;
 	}
-	if (index < 0) {
-		index = m_items.size() - 1;
+	if (m_index < 0) {
+		m_index = m_items.size() - 1;
 		return;
 	}
 }
 bq::item* bq::inventory::get_selected() {
-	if (index == -1) {
-		bq::logger::critical("accessing empty inventory, please check if empty first");
+	if (m_index == -1) {
+		bq::logger::warn("accessing empty inventory, please check if empty first");
 		return nullptr;
 	}
 	else {
-		return m_items[index].get();
+		return m_items[m_index].get();
 	}
 }
 void bq::inventory::render(sf::RenderWindow& window) {
 	window.draw(m_sprite);
-	
 	for (auto& item : m_items) {
 		item->render(window);
 	}
-
 }
 void bq::inventory::update_position(float x, float y) {
 	m_sprite.setPosition(x, y);
@@ -53,14 +51,12 @@ void bq::inventory::update_position(float x, float y) {
 		item->update_pos(x_coord, y_coord);
 		x_coord += 34;
 	}
-
-	
 }
 void bq::inventory::add_item(std::unique_ptr<bq::item> item) {
 	m_items.push_back(std::move(item));
 
-	if (index == -1) {
-		index = 0;
+	if (m_index == -1) {
+		m_index = 0;
 	}
 
 }
@@ -68,5 +64,5 @@ bool bq::inventory::empty() {
 	return m_items.size() == 0;
 }
 void bq::inventory::drop_item() {
-	m_items.erase(m_items.begin() + index);
+	m_items.erase(m_items.begin() + m_index);
 }

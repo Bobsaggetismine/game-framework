@@ -12,7 +12,7 @@ outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
 
 IncludeDir = {}
 IncludeDir["SFML"] = "gamelib/deps/SFML/include"
-
+IncludeDir["JSON"] = "gamelib/deps/JSON/"
 
 project "gamelib"
 	location "gamelib"
@@ -32,7 +32,8 @@ project "gamelib"
     includedirs
 	{
         "%{prj.name}/include",
-        "%{IncludeDir.SFML}"
+		"%{IncludeDir.SFML}",
+		"%{IncludeDir.JSON}"
 	}
 
 	filter "system:windows"
@@ -94,7 +95,8 @@ project "sandbox"
     includedirs
 	{
         "gamelib/include",
-        "%{IncludeDir.SFML}"
+		"%{IncludeDir.SFML}",
+		"%{IncludeDir.JSON}"
 	}
 
 	filter "system:windows"

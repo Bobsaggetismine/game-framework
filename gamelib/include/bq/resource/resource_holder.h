@@ -4,10 +4,10 @@
 namespace bq  {
 	class resource_holder : public bq::noncopyable, public bq::nonmoveable {
 		resource_holder();
+		~resource_holder();
 	public:
 		
 		static resource_holder& get();
-		void close();
 		
 		resource_manager<sf::Texture>        textures;
 		resource_manager<sf::Font>			 fonts;

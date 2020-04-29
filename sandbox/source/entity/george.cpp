@@ -2,13 +2,18 @@
 
 constexpr int SHEET_SIZE = 64;
 
-george::george(float x, float y, std::shared_ptr<player> player) : m_player(player), upAnimation("george.png", 0 * SHEET_SIZE, SHEET_SIZE, 9, 10), downAnimation("george.png", 2 * SHEET_SIZE, SHEET_SIZE, 9, 10), leftAnimation("george.png", 1 * SHEET_SIZE, SHEET_SIZE, 9, 10), rightAnimation("george.png", 3 * SHEET_SIZE, SHEET_SIZE, 9, 10), m_sprite(bq::resource_holder::get().textures.get("george.png")), m_dialog({0,0}, {400,50},"Complete this quest for me: kill 30 robots",sf::Color::Cyan, sf::Color::Cyan, 15) {
-	pos.x = x;
-	pos.y = x;
+george::george(float x, float y, player* player) : m_player(player), upAnimation("george.png", 0 * SHEET_SIZE, SHEET_SIZE, 9, 10), downAnimation("george.png", 2 * SHEET_SIZE, SHEET_SIZE, 9, 10), leftAnimation("george.png", 1 * SHEET_SIZE, SHEET_SIZE, 9, 10), rightAnimation("george.png", 3 * SHEET_SIZE, SHEET_SIZE, 9, 10), m_sprite(bq::resource_holder::get().textures.get("george.png")), m_dialog({0,0}, {400,50},"Complete this quest for me: kill 30 robots",sf::Color::Cyan, sf::Color::Cyan, 15) {
+	m_pos.x = x;
+	m_pos.y = x;
 	m_sprite.setTexture(bq::resource_holder::get().textures.get("george.png"));
 	m_sprite.setTextureRect({ 0,128,64,64 });
-	size.x = 32, size.y = 44;
-	id = 9;
+	m_size.x = 32, m_size.y = 44;
+
+	m_id = 10;
+	bq::handler::get().m_em->register_id("GEORGE", m_id);
+	m_dialog.setFunc([this]() -> void { this->give_quest(); });
+
+
 }
 void george::update() {
 
@@ -18,10 +23,10 @@ void george::update() {
 	leftAnimation.update();
 	rightAnimation.update();
 
-	upAnimation.get().setPosition({ pos.x,pos.y });
-	downAnimation.get().setPosition({ pos.x,pos.y });
-	leftAnimation.get().setPosition({ pos.x,pos.y });
-	rightAnimation.get().setPosition({ pos.x,pos.y });
+	upAnimation.get().setPosition({ m_pos.x,m_pos.y });
+	downAnimation.get().setPosition({ m_pos.x,m_pos.y });
+	leftAnimation.get().setPosition({ m_pos.x,m_pos.y });
+	rightAnimation.get().setPosition({ m_pos.x,m_pos.y });
 
 	
 
@@ -63,9 +68,9 @@ void george::update() {
 	}
 
 
-	sf::FloatRect bounds = { pos.x + 16 + movement.x, pos.y + 15 + movement.y, size.x, size.y };
+	sf::FloatRect bounds = { m_pos.x + 16 + movement.x, m_pos.y + 15 + movement.y, m_size.x, m_size.y };
 	bq::block_collision_effects bce = bq::handler::get().m_world->get_collision_effects(bounds);
-	if (!bce.collides) {
+	if (!bce.m_collision) {
 		
 		if (movement.x != 0.f || movement.y != 0.f) {
 			move(movement);
@@ -82,12 +87,13 @@ void george::update() {
 		moves_made = 0;
 		movement = { 0,0 };
 	}
-	m_sprite.setPosition(pos);
+	m_sprite.setPosition(m_pos);
 	if (interacted) {
 		m_dialog.update();
-		m_dialog.setPos(pos);
+		
+		m_dialog.setPos(m_pos);
 	}
-	if (dialog_timer.getElapsedTime().asSeconds() > 10) {
+	if (dialog_timer.getElapsedTime().asSeconds() > 8) {
 		interacted = false;
 	}
 	
@@ -101,10 +107,11 @@ void george::render(sf::RenderWindow& window) {
 	}
 
 }
-void george::handleEvent(sf::Event& evt) {
+void george::handle_event(sf::Event& evt) {
+	m_dialog.handle_event(evt);
 }
 bool george::intersects(sf::FloatRect& other) {
-	sf::FloatRect bounds = { pos.x + 16 + movement.x, pos.y + 15 + movement.y, size.x, size.y };
+	sf::FloatRect bounds = { m_pos.x + 16 + movement.x, m_pos.y + 15 + movement.y, m_size.x, m_size.y };
 	return bounds.intersects(other);
 }
 void george::damage(float) {}
@@ -112,4 +119,12 @@ void george::damage(float) {}
 void george::interact() {
 	dialog_timer.restart();
 	interacted = true;
+}
+void george::give_quest() {
+	if (interacted) {
+		
+		m_player->m_quest = new robot_quest;
+
+		interacted = false;
+	}
 }

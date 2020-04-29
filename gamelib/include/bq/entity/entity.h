@@ -4,19 +4,24 @@
 #include <bq/core/buff.h>
 namespace bq {
 	class entity {
+	protected:
+		int m_id = 0;
+		bq::v2f m_pos;
+		bq::v2f m_size;
 	public:
-		bq::v2f pos;
-		bq::v2f size;
-		int id = 0;
 		virtual void update() = 0;
 		virtual void render(sf::RenderWindow&) = 0;
-		virtual void handleEvent(sf::Event&) = 0;
-		virtual bool shouldCull(sf::View&) { return false; }
-		void move(bq::v2f& other) { pos += other; }
-		virtual bool intersects(sf::FloatRect&) ;
+		virtual void handle_event(sf::Event&) = 0;
 		virtual void damage(float) = 0;
+		virtual void interact() = 0;
 		virtual void buff(bq::buff);
 		virtual void unbuff();
-		virtual void interact() = 0;
+		virtual bool should_cull(const sf::View&);
+		virtual bool intersects(sf::FloatRect&);
+		void move(bq::v2f& other);
+		bq::v2f& pos();
+		bq::v2f& size();
+		const int id();
+		virtual ~entity() = 0;
 	};
 }

@@ -11,10 +11,11 @@ namespace bq {
 	public:
 
 		virtual void action(std::optional<sf::Keyboard::Key>, std::optional<bq::v2f>) = 0;
-		int uses();
+		virtual ~item() = 0;
 		void add_uses(int toAdd);
 		void remove_uses(int toRemove);
 		void render(sf::RenderWindow&);
 		void update_pos(float x , float y);
+		int uses();
 	};
 }

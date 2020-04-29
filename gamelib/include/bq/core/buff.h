@@ -3,7 +3,7 @@
 
 namespace bq {
 	struct buff {
-		float speed_multiplier = 1;
-		float damage_multiplier = 1;
+		float m_speed_multiplier = 1;
+		float m_damage_multiplier = 1;
 	};
 }

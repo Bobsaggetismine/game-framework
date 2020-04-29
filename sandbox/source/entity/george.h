@@ -1,6 +1,7 @@
 #pragma once
 
 #include <bq/entity/entity.h>
+#include "../quests/robot_quest.h"
 #include "player.h"
 #include "bq/gui/button.h"
 class george : public bq::entity
@@ -18,17 +19,19 @@ class george : public bq::entity
 	sf::Clock dialog_timer;
 	bool interacted = false;
 public:
-	std::shared_ptr<player> m_player;
+	player* m_player;
 	sf::Sprite m_sprite;
-	george(float x, float y, std::shared_ptr<player> player);
+	george(float x, float y, player* player);
 	
 
 
 	void render(sf::RenderWindow&) override;
 	void update() override;
-	void handleEvent(sf::Event&) override;
+	void handle_event(sf::Event&) override;
 	void damage(float) override;
 	bool intersects(sf::FloatRect&) override;
 	virtual void interact() override;
+
+	void give_quest();
 };
 

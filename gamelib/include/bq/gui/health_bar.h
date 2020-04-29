@@ -11,13 +11,12 @@ namespace bq {
 
 			Rectangle m_back;
 			Rectangle m_front;
-			bq::entity& target;
 
 		public:
-			health_bar(bq::entity&);
+			health_bar();
 			void render(sf::RenderWindow& renderer) override;
 			void update(float);
-			void handleEvent(sf::Event& e, sf::RenderWindow& window) override;
+			void handle_event(sf::Event& e) override;
 			void update_pos(float, float);
 		};
 	}

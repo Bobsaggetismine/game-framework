@@ -9,6 +9,10 @@ gun::gun(bq::entity& target): m_target(target), sound(bq::resource_holder::get()
 	sound.setVolume(0.5);
 	
 }
+gun::~gun()
+{
+	sound.resetBuffer();
+}
 void gun::action(std::optional<sf::Keyboard::Key> key,std::optional<bq::v2f> pos)
 {
 	if (pos) {
@@ -20,7 +24,7 @@ void gun::action(std::optional<sf::Keyboard::Key> key,std::optional<bq::v2f> pos
 			movement_vector.x *= 3;
 			movement_vector.y *= 3;
 			bq::v2f r = { pos.value().x + 16, pos.value().y + 16 };
-			bq::handler::get().m_em->markAdd(std::make_shared<bullet>(r, movement_vector));
+			bq::handler::get().m_em->add(std::make_unique<bullet>(r, movement_vector));
 			sound.play();
 			m_timer.restart();
 		}

@@ -14,15 +14,16 @@ class buff_enemy : public bq::entity
 	sf::Sound buff_sound, debuff_sound;
 	sf::Clock clock;
 	int moves_made = 0;
+	
 public:
 	buff_enemy();
 	void update() override;
 	void buff_team();
 	void debuff_team();
 	void render(sf::RenderWindow& window) override;
-	void handleEvent(sf::Event& evt) override;
+	void handle_event(sf::Event& evt) override;
 	void damage(float) override;
-	bool shouldCull(sf::View&) override;
+	bool should_cull(const sf::View&) override;
 	virtual void interact() override;
 };
 

@@ -2,8 +2,8 @@
 
 namespace bq {
 	struct block_collision_effects {
-		bool collides = false;
-		int damage = 0;
-		float slow = 0.f;
+		bool m_collision = false;
+		int m_damage = 0;
+		float m_slow = 0.f;
 	};
 }

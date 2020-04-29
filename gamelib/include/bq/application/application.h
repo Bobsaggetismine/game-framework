@@ -8,19 +8,18 @@
 #endif
 
 #include <bq/common.h>
+class application {
 
-class Application {
-	using Args = std::vector<std::string>;
+	static application* m_app;
 
-	static Application* thisApp_sm;
-
-	Args args_m;
+	std::vector<std::string> m_args;
 
 	friend int main(int argc, char* argv[]);
 	int main(int argc, char* argv[]);
 
 protected:
-	Application();
+	application();
 	virtual int execute() = 0;
-	Args const& get_args() const { return args_m; }
+	virtual void init() = 0;
+	const std::vector<std::string>& get_args() const { return m_args; }
 };

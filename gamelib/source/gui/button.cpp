@@ -1,13 +1,17 @@
 #include <bq/gui/button.h>
 
-void bq::gui::Button::handleEvent(sf::Event& e, sf::RenderWindow& window) {
-	auto pos = sf::Mouse::getPosition(window);
-	
+void bq::gui::Button::handle_event(sf::Event& e) {
+	//auto pos = sf::Mouse::getPosition(window);
+	bq::v2f offset = { 0,0 };
+	if (bq::handler::get().m_cam != nullptr) {
+		offset = { bq::handler::get().m_cam->view().getCenter().x - (bq::handler::get().m_cam->view().getSize().x / 2)   , bq::handler::get().m_cam->view().getCenter().y - (bq::handler::get().m_cam->view().getSize().y / 2) };
+	}
 	switch (e.type) {
 	case sf::Event::MouseButtonPressed:
 		switch (e.mouseButton.button) {
 		case sf::Mouse::Left:
-			if (m_button.getGlobalBounds().contains((float)pos.x, (float)pos.y)) {
+			
+			if (m_button.getGlobalBounds().contains((float)e.mouseButton.x + offset.x, (float)e.mouseButton.y + offset.y)) {
 				bq::logger::debug("Button pressed");
 				m_function();
 			}
@@ -23,8 +27,15 @@ void bq::gui::Button::handleEvent(sf::Event& e, sf::RenderWindow& window) {
 
 void bq::gui::Button::render(sf::RenderWindow& window)
 {
+	bq::v2f offset = { 0,0 };
+
+	if (bq::handler::get().m_cam != nullptr) {
+		offset = { bq::handler::get().m_cam->view().getCenter().x - (bq::handler::get().m_cam->view().getSize().x / 2)   , bq::handler::get().m_cam->view().getCenter().y - (bq::handler::get().m_cam->view().getSize().y / 2) };
+	}
+	
+
 	auto pos = sf::Mouse::getPosition(window);
-	if (m_button.getGlobalBounds().contains((float)pos.x, (float)pos.y)) {
+	if (m_button.getGlobalBounds().contains((float)pos.x+offset.x, (float)pos.y + offset.y)) {
 		m_button.setFillColor(sf::Color::Magenta);
 	}
 	else {
@@ -45,7 +56,6 @@ void bq::gui::Button::setFunc(std::function<void(void)>func)
 }
 
 bq::gui::Button::Button(bq::v2f pos, bq::v2f size,std::string label, sf::Color outlineColor, sf::Color fillColor, int textSize) {
-
 	m_button.setOutlineThickness(1);
 	m_button.setOutlineColor(outlineColor);
 	m_button.setFillColor(fillColor);

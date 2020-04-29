@@ -10,10 +10,11 @@ class bullet : public bq::entity {
 public:
 	void update() override;
 	void render(sf::RenderWindow&)override;
-	void handleEvent(sf::Event&) override;
-	bool shouldCull(sf::View&);
+	void handle_event(sf::Event&) override;
+	virtual bool should_cull(const sf::View&) override;
 	void damage(float) override;
 	bullet(bq::v2f,bq::v2f);
+	virtual ~bullet() override;
 	bool intersects(sf::FloatRect&) override;
 	virtual void interact() override;
 };

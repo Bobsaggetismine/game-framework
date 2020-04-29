@@ -4,7 +4,7 @@
 namespace bq {
 	class animation {
 
-		sf::Sprite sprite;
+		sf::Sprite m_sprite;
 		int startingy, spritesize, numsprites;
 		int index = 0;
 		int frames = 0;

@@ -6,29 +6,28 @@
 #include <bq/core/handler.h>
 class meele_enemy : public bq::entity
 {
+	static constexpr int moves_until_movement_change_C = 60;
+
+	float range = 10.f,health = 100.f, move_speed = 1.25f;;
+	bool locked_on = false, blocked = false;
+	unsigned lockon_multiplier = 50;
+	int m_damage = 5, offset = 0, moves_made = 0;
+
+	bq::entity* m_entity;
 	bq::v2f movement = { 0,0 };
 	sf::Sprite m_sprite;
-	float health = 100;
-	const int moves_until_movement_change_C = 60;
 	sf::Sound sound;
 	sf::Clock clock;
-	float range = 10.f;
-	int moves_made = 0;
-	std::shared_ptr<bq::entity> m_player;
-	bool locked_on = false;
 	bq::buff m_buff;
-	unsigned lockon_multiplier = 25;
-	int m_damage = 5;
 public:
-	float move_speed = 1.0f;
-	meele_enemy(std::shared_ptr<bq::entity>);
-	void update() override;
-	void render(sf::RenderWindow& window) override;
-	void handleEvent(sf::Event& evt) override;
-	void damage(float) override;
-	bool shouldCull(sf::View&) override;
-	void buff(bq::buff) override;
-	void unbuff() override;
+	meele_enemy(bq::entity*);
+	virtual void update() override;
+	virtual void render(sf::RenderWindow& window) override;
+	virtual void handle_event(sf::Event& evt) override;
+	virtual void damage(float) override;
+	virtual bool should_cull(const sf::View&) override;
+	virtual void buff(bq::buff) override;
+	virtual void unbuff() override;
 	virtual void interact() override;
 };
 

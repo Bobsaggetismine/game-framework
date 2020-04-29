@@ -2,14 +2,25 @@
 
 
 constexpr int SHEET_SIZE = 64;
-player::player() : upAnimation("player.png", 0 * SHEET_SIZE, SHEET_SIZE, 9, 10), downAnimation("player.png", 2 * SHEET_SIZE, SHEET_SIZE, 9, 10), leftAnimation("player.png", 1 * SHEET_SIZE, SHEET_SIZE, 9, 10), rightAnimation("player.png", 3 * SHEET_SIZE, SHEET_SIZE, 9, 10), curSprite(bq::resource_holder::get().textures.get("player.png")),hb(*this) {
-	id = 1;
-	pos.x = 100, pos.y = 100;
-	size.x = 32, size.y = 44;
+player::player() : upAnimation("player.png", 0 * SHEET_SIZE, SHEET_SIZE, 9, 10), downAnimation("player.png", 2 * SHEET_SIZE, SHEET_SIZE, 9, 10), leftAnimation("player.png", 1 * SHEET_SIZE, SHEET_SIZE, 9, 10), rightAnimation("player.png", 3 * SHEET_SIZE, SHEET_SIZE, 9, 10), curSprite(bq::resource_holder::get().textures.get("player.png")) {
+	m_pos.x = 100, m_pos.y = 100;
+	m_size.x = 32, m_size.y = 44;
 	curSprite.setTextureRect(sf::IntRect(0, 64 * 2, 64, 64));
-	curSprite.setPosition({ pos.x,pos.y });
+	curSprite.setPosition({ m_pos.x,m_pos.y });
 	m_inventory.add_item(std::make_unique<machine_gun>(*this));
 	m_inventory.add_item(std::make_unique<gun>(*this));
+	m_id = 1;
+	bq::handler::get().m_em->register_id("PLAYER", m_id);
+}
+
+player::~player()
+{
+	if (m_quest != nullptr) {
+
+		bq::handler::get().m_em->unhook_quest(m_quest);
+
+		delete m_quest;
+	}
 }
 
 void player::update() {
@@ -19,12 +30,16 @@ void player::update() {
 	leftAnimation.update();
 	rightAnimation.update();
 
-	upAnimation.get().setPosition({ pos.x,pos.y });
-	downAnimation.get().setPosition({ pos.x,pos.y });
-	leftAnimation.get().setPosition({ pos.x,pos.y });
-	rightAnimation.get().setPosition({ pos.x,pos.y });
+	upAnimation.get().setPosition({ m_pos.x,m_pos.y });
+	downAnimation.get().setPosition({ m_pos.x,m_pos.y });
+	leftAnimation.get().setPosition({ m_pos.x,m_pos.y });
+	rightAnimation.get().setPosition({ m_pos.x,m_pos.y });
 
 	input();
+	if (m_quest != nullptr) {
+		m_quest->update();
+		
+	}
 }
 
 
@@ -32,78 +47,81 @@ void player::render(sf::RenderWindow& window) {
 	window.draw(curSprite);
 	m_inventory.render(window);
 	hb.render(window);
+	if (m_quest != nullptr) {
+		m_quest->render(window);
+	}
 }
 void player::input() {
 
 
 	if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
 		bq::v2f mouse = { float(sf::Mouse::getPosition().x) , float(sf::Mouse::getPosition().y) };
-		if (!m_inventory.empty()) m_inventory.get_selected()->action(std::make_optional<sf::Keyboard::Key>(), std::make_optional<bq::v2f>(pos));
+		if (!m_inventory.empty()) m_inventory.get_selected()->action(std::make_optional<sf::Keyboard::Key>(), std::make_optional<bq::v2f>(m_pos));
 	}
 
 	bq::v2f movement = { 0, 0 };
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::W)) {
 		curSprite = upAnimation.get();
 		movement.y = -1;
-		interactPoint = { pos.x + 15 + (size.x / 2), pos.y };
+		interactPoint = { m_pos.x + 15 + (m_size.x / 2), m_pos.y };
 	}
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::S)) {
 		curSprite = downAnimation.get();
 		movement.y = 1;
-		interactPoint = { pos.x + 15 + (size.x / 2), pos.y + 15 + size.y + 10 };
+		interactPoint = { m_pos.x + 15 + (m_size.x / 2), m_pos.y + 15 + m_size.y + 10 };
 	}
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)) {
 		curSprite = leftAnimation.get();
 		movement.x = -1;
-		interactPoint = { pos.x + 5, pos.y + 15 + size.y / 2 };
+		interactPoint = { m_pos.x + 5, m_pos.y + 15 + m_size.y / 2 };
 	}
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) {
 		curSprite = rightAnimation.get();
 		movement.x = 1;
-		interactPoint = { pos.x + 5 + size.x + 15, pos.y + 15 + size.y / 2 };
+		interactPoint = { m_pos.x + 5 + m_size.x + 15, m_pos.y + 15 + m_size.y / 2 };
 	}
 	
-	sf::FloatRect bounds = { pos.x + 16 + movement.x, pos.y + 15 + movement.y, size.x, size.y };
+	sf::FloatRect bounds = { m_pos.x + 16 + movement.x, m_pos.y + 15 + movement.y, m_size.x, m_size.y };
 	bq::block_collision_effects bce = bq::handler::get().m_world->get_collision_effects(bounds);
-	if (!bce.collides) {
+	if (!bce.m_collision) {
 		move(movement);
 	}
-	damage((float)bce.damage);
-	m_inventory.update_position(pos.x - 120, pos.y +500);
-	hb.update_pos(pos.x - 50, pos.y - 500);
+	damage((float)bce.m_damage);
+	m_inventory.update_position(m_pos.x - 120, m_pos.y +500);
+	hb.update_pos(m_pos.x - 50, m_pos.y - 500);
 	if (hp < 1) {
 		bq::v2f pos = { 1920 / 2 - 100 ,1080 / 2 - 50 };
 		bq::v2f rect = { 200,100 };
 
 		bq::handler::get().m_cam->reset();
 
-		bq::handler::get().m_sm->push(std::make_shared<menu_state>(pos, rect), true);
+		bq::handler::get().m_sm->push(std::make_unique<menu_state>(pos, rect), true);
 		return;
 	}
 }
 
 
-void player::handleEvent(sf::Event& evt) {
+void player::handle_event(sf::Event& evt) {
 	if (evt.type == sf::Event::KeyPressed) {
 		if (evt.key.code == sf::Keyboard::Space) {
 			bq::handler::get().m_world->interact(interactPoint.x, interactPoint.y);
 
-			sf::FloatRect slightly_larger_bounds = { pos.x , pos.y , size.x + 30, size.y + 32 };
-
-			std::shared_ptr<bq::entity> e =  bq::handler::get().m_em->intersects(slightly_larger_bounds, id, false);
+			sf::FloatRect slightly_larger_bounds = { m_pos.x , m_pos.y , m_size.x + 30, m_size.y + 32 };
+			bq::entity* e =  bq::handler::get().m_em->intersects(slightly_larger_bounds, m_id, false);
 			if (e) e->interact();
-
 		}
-		
-		if (evt.key.code == sf::Keyboard::LShift) {
+		if (evt.key.code == sf::Keyboard::Tab) {
 			m_inventory.cycle_forward();
 		}
 	}
-	
 }
 void player::damage(float dmg) {
 	hp -= dmg;
 	hb.update(hp);
+}
+void player::register_id()
+{
+	bq::handler::get().m_em->register_id("PLAYER", m_id);
 }
 void player::interact() {
 

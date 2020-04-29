@@ -4,8 +4,7 @@
 #include "../entity/player.h"
 class game_state : public bq::state {
 	bool paused = false;
-	std::shared_ptr<player> _player;
-	std::shared_ptr<bq::entity_manager> m_em;
+	player* m_player;
 public:
 	game_state();
 	void handleEvents (sf::Event&, sf::RenderWindow&) override;

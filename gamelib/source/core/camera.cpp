@@ -1,17 +1,20 @@
 #include <bq/core/camera.h>
 #include <bq/core/handler.h>
 void bq::camera::render(sf::RenderWindow& window) {
-	window.setView(view);
+	window.setView(m_view);
 }
 
 void bq::camera::update() {
-	view.setCenter( target->pos );
+	m_view.setCenter( m_target->pos() );
 }
 
-bq::camera::camera(std::shared_ptr<bq::entity> e):target(e){
-	view.setSize(1920.f, 1080.f);
+bq::camera::camera(bq::entity* e): m_target(e) {
+	m_view.setSize(1920, 1080);
+}
+const sf::View& bq::camera::view()
+{
+	return m_view;
 }
 void bq::camera::reset() {
-	view.setCenter({ 1920 / 2,1080 / 2 });
-	
+	m_view.setCenter({ 1920 / 2,1080 / 2 });
 }

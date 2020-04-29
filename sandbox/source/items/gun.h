@@ -1,6 +1,6 @@
 #pragma once
 #include <bq/core/item.h>
-#include "entity/bullet.h"
+#include "../entity/bullet.h"
 #include <bq/util/vec.h>
 #include <bq/core/handler.h>
 
@@ -12,5 +12,6 @@ class gun : public bq::item
 	sf::Clock m_timer;
 public:
 	gun(bq::entity& target);
+	virtual ~gun() override;
 	void action(std::optional<sf::Keyboard::Key>,std::optional<bq::v2f>) override;
 };
