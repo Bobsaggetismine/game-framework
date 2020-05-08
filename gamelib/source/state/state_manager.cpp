@@ -24,7 +24,7 @@ void bq::state_manager::update() {
 	}
 	m_states.top()->update();
 }
-void bq::state_manager::render(sf::RenderWindow& window) {
+void bq::state_manager::render(sf::RenderWindow& window) const {
 	if (m_states.size() == 0) {
 		throw bq::illegal_state("m_states empty on render");
 	}

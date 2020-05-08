@@ -1,4 +1,0 @@
-as per the licence here are ALL changes made to SFML:
-
-	- Source code unmodified
-	- Example, Doc, and some .lib/.dll files deleted, you can find the original release on the website

@@ -1,6 +1,6 @@
 #include <bq/core/camera.h>
 #include <bq/core/handler.h>
-void bq::camera::render(sf::RenderWindow& window) {
+void bq::camera::render(sf::RenderWindow& window) const {
 	window.setView(m_view);
 }
 
@@ -11,7 +11,7 @@ void bq::camera::update() {
 bq::camera::camera(bq::entity* e): m_target(e) {
 	m_view.setSize(1920, 1080);
 }
-const sf::View& bq::camera::view()
+const sf::View& bq::camera::view() const
 {
 	return m_view;
 }

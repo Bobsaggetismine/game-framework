@@ -8,14 +8,15 @@ namespace bq {
 		sf::Time m_ups;
 	protected:
 		sf::RenderWindow m_window;
+		
 		game(unsigned,unsigned,std::string,float);
+
 	public:
+		
 		void run();
 		virtual void update() = 0;
 		virtual void render() = 0;
 		virtual void handleEvent(sf::Event&) = 0;
-
-		//if you override this, engine initializaion could fail and this could lead to weird behavior.
 		void init() override;
 	};
 }

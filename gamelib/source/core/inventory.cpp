@@ -28,7 +28,7 @@ void bq::inventory::cycle_backward() {
 		return;
 	}
 }
-bq::item* bq::inventory::get_selected() {
+bq::item* bq::inventory::get_selected() const {
 	if (m_index == -1) {
 		bq::logger::warn("accessing empty inventory, please check if empty first");
 		return nullptr;
@@ -37,7 +37,7 @@ bq::item* bq::inventory::get_selected() {
 		return m_items[m_index].get();
 	}
 }
-void bq::inventory::render(sf::RenderWindow& window) {
+void bq::inventory::render(sf::RenderWindow& window) const {
 	window.draw(m_sprite);
 	for (auto& item : m_items) {
 		item->render(window);
@@ -60,7 +60,7 @@ void bq::inventory::add_item(std::unique_ptr<bq::item> item) {
 	}
 
 }
-bool bq::inventory::empty() {
+bool bq::inventory::empty() const {
 	return m_items.size() == 0;
 }
 void bq::inventory::drop_item() {

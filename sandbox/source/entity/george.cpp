@@ -9,11 +9,8 @@ george::george(float x, float y, player* player) : m_player(player), upAnimation
 	m_sprite.setTextureRect({ 0,128,64,64 });
 	m_size.x = 32, m_size.y = 44;
 
-	m_id = 10;
-	bq::handler::get().m_em->register_id("GEORGE", m_id);
+	m_id = bq::handler::get().m_em->register_id("GEORGE");
 	m_dialog.setFunc([this]() -> void { this->give_quest(); });
-
-
 }
 void george::update() {
 

@@ -1,10 +1,14 @@
 #include <bq/application/application.h>
 
-	int main(int argc, char* argv[]) try
-	{
+
+
+
+int main(int argc, char* argv[]) 
+{
+	try {
 		return application::m_app->main(argc, argv);
 	}
-	catch (char const * msg) {
+	catch (const char* msg) {
 		bq::logger::critical(msg);
 	}
 	catch (std::exception const& e) {
@@ -14,25 +18,27 @@
 		bq::logger::critical("unknown error thown!");
 		return EXIT_FAILURE;
 	}
+}
 
-	application* application::m_app = nullptr;
+
+application* application::m_app = nullptr;
 
 
-	int application::main(int argc, char* argv[])
+int application::main(int argc, char* argv[])
+{
+	m_args.assign(argv, argv + argc);
+	init();
+	return execute();
+}
+
+
+application::application()
+{
+	if (m_app)
 	{
-		m_args.assign(argv, argv + argc);
-		init();
-		return execute();
+		bq::logger::critical("no duplicate app instances!");
+		std::terminate();
 	}
-
-
-	application::application()
-	{
-		if (m_app)
-		{
-			bq::logger::critical("no duplicate app instances!");
-			std::terminate();
-		}
-		m_app = this;
-	}
+	m_app = this;
+}
 

@@ -13,6 +13,7 @@ namespace bq {
 		
 		void remove_marked();
 		void add_marked();
+		unsigned m_current_id = 0;
 
 	public:
 		
@@ -22,11 +23,11 @@ namespace bq {
 		void add(std::unique_ptr<entity>);
 		void remove(bq::entity*);
 		void handleEvent(sf::Event&);
-		void register_id(std::string, int);
+		int register_id(const std::string&);
 		void hook_quest(bq::quest*);
 		void unhook_quest(bq::quest*);
-		int  get_id(std::string);
-		const std::vector<std::unique_ptr<entity>>& entities();
+		int get_id(const std::string&);
+		const std::vector<std::unique_ptr<entity>>& entities() const;
 		bq::entity* intersects(sf::FloatRect&, int, bool);
 	};
 }

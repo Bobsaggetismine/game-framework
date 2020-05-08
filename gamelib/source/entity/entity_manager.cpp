@@ -62,22 +62,27 @@ void bq::entity_manager::handleEvent(sf::Event& evt) {
 	}
 }
 
-void bq::entity_manager::register_id(std::string name, int id)
+int bq::entity_manager::register_id(const std::string& name)
 {
-	m_id_map[name] = id;
+	if (m_id_map.find(name) != m_id_map.end()) {
+		return m_id_map[name];
+	}
+	m_id_map[name] = ++m_current_id;
+	return m_current_id;
 }
 
-int bq::entity_manager::get_id(std::string name)
+int bq::entity_manager::get_id(const std::string& name)
 {
 	try {
 		return m_id_map[name];
 	}
 	catch (...) {
+		bq::logger::warn("name is not registered in id system: " + name);
 		return -1;
 	}
 }
 
-const std::vector<std::unique_ptr<bq::entity>>& bq::entity_manager::entities()
+const std::vector<std::unique_ptr<bq::entity>>& bq::entity_manager::entities() const
 {
 	return m_entities;
 }

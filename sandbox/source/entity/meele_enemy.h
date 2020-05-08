@@ -1,9 +1,6 @@
 #pragma once
-#include <bq/entity/entity.h>
-#include <bq/resource/resource_holder.h>
-#include <bq/util/random.h>
-#include <bq/util/vec.h>
-#include <bq/core/handler.h>
+#include <bq.h>
+#include <math.h>
 class meele_enemy : public bq::entity
 {
 	static constexpr int moves_until_movement_change_C = 60;
@@ -25,7 +22,7 @@ public:
 	virtual void render(sf::RenderWindow& window) override;
 	virtual void handle_event(sf::Event& evt) override;
 	virtual void damage(float) override;
-	virtual bool should_cull(const sf::View&) override;
+	virtual bool should_cull(const sf::View&) const override;
 	virtual void buff(bq::buff) override;
 	virtual void unbuff() override;
 	virtual void interact() override;

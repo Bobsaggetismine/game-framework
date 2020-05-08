@@ -12,13 +12,14 @@ namespace bq {
 	public:
 		
 		inventory();
+
 		void cycle_forward();
 		void cycle_backward();
 		void add_item(std::unique_ptr<bq::item>);
 		void drop_item();
-		bool empty();
-		void render(sf::RenderWindow& window);
+		bool empty() const;
+		void render(sf::RenderWindow& window) const;
 		void update_position(float,float);
-		bq::item* get_selected();
+		bq::item* get_selected() const;
 	};
 }

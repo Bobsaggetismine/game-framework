@@ -1,11 +1,5 @@
 #pragma once
-// Setup DBG environment
 
-#ifdef PLATFORM_WINDOWS
-#define _CRTDBG_MAP_ALLOC  
-#include <stdlib.h>  
-#include <crtdbg.h>
-#endif
 
 #include <bq/common.h>
 class application {

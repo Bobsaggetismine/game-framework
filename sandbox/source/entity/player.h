@@ -1,14 +1,12 @@
 #pragma once
 
 #include <bq.h>
-#include <bq/gui/health_bar.h>
-#include <bq/quest/quest.h>
+
 #include "../world/pongworld.h"
 #include "../States/menu_state.h"
-
 #include "bullet.h"
 #include "../items/machine_gun.h"
-
+#include "../items/gun.h"
 class player : public bq::entity {
 	bq::animation upAnimation;
 	bq::animation downAnimation;
@@ -29,6 +27,5 @@ public:
 	void handle_event(sf::Event&)   override;
 	void input();
 	void damage(float) override;
-	void register_id();
 	virtual void interact() override;
 };

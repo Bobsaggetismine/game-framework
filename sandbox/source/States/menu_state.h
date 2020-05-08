@@ -1,5 +1,6 @@
 #pragma once
 #include <bq.h>
+
 class menu_state : public bq::state {
 	bq::gui::Button m_start_game;
 public:

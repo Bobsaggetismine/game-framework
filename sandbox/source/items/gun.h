@@ -1,8 +1,6 @@
 #pragma once
-#include <bq/core/item.h>
+#include <bq.h>
 #include "../entity/bullet.h"
-#include <bq/util/vec.h>
-#include <bq/core/handler.h>
 
 class gun : public bq::item
 {

@@ -8,11 +8,13 @@
 
 
 namespace bq {
+	
 	constexpr int WHITE = 7;
 	constexpr int INFO_COLOR = 5;
 	constexpr int WARN_COLOR = 14;
 	constexpr int DEBUG_COLOR = 6;
 	constexpr int CRITICAL_COLOR = 12;
+
 	class logger {
 		static std::string m_file;
 		static bool m_file_logging;

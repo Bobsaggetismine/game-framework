@@ -1,5 +1,5 @@
 workspace "bq_game_lib"
-    architecture "x86"
+    architecture "x64"
     startproject "sandbox"
 
     configurations

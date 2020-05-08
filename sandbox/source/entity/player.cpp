@@ -9,8 +9,7 @@ player::player() : upAnimation("player.png", 0 * SHEET_SIZE, SHEET_SIZE, 9, 10),
 	curSprite.setPosition({ m_pos.x,m_pos.y });
 	m_inventory.add_item(std::make_unique<machine_gun>(*this));
 	m_inventory.add_item(std::make_unique<gun>(*this));
-	m_id = 1;
-	bq::handler::get().m_em->register_id("PLAYER", m_id);
+	m_id = bq::handler::get().m_em->register_id("PLAYER");
 }
 
 player::~player()
@@ -118,10 +117,6 @@ void player::handle_event(sf::Event& evt) {
 void player::damage(float dmg) {
 	hp -= dmg;
 	hb.update(hp);
-}
-void player::register_id()
-{
-	bq::handler::get().m_em->register_id("PLAYER", m_id);
 }
 void player::interact() {
 

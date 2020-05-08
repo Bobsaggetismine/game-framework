@@ -1,22 +1,22 @@
 #include "buff_enemy.h"
-#include <math.h>
+
 
 buff_enemy::buff_enemy() {
 	m_sprite.setTexture(bq::resource_holder::get().textures.get("angel.png"));
 	m_pos = { 500,500 };
 	m_size = { 27,30 };
 	clock.restart();
-	m_id = 2;
-	bq::handler::get().m_em->register_id("BUFF_ENEMY", m_id);
+	m_id = bq::handler::get().m_em->register_id("BUFF_ENEMY");
 	buff_team();
 }
 void buff_enemy::damage(float dmg) {
 	health -= dmg;
-}
-bool buff_enemy::should_cull(const sf::View&) {
-	if (health < 0.f) {
+	if (health <= 0) {
 		debuff_team();
 	}
+}
+bool buff_enemy::should_cull(const sf::View&) const {
+	
 	return health <= 0.f;
 }
 void buff_enemy::render(sf::RenderWindow& window) {
@@ -24,14 +24,16 @@ void buff_enemy::render(sf::RenderWindow& window) {
 }
 void buff_enemy::buff_team() {
 	for (auto& e : bq::handler::get().m_em->entities()) {
-		if (e->id() != 1) {
+		if (e->id() != bq::handler::get().m_em->get_id("PLAYER") && e->id() != bq::handler::get().m_em->get_id("BUFF_ENEMY")) {
+			bq::logger::warn(std::to_string(e->id()));
 			e->buff({1.3f,1});
 		}
 	}
 }
 void buff_enemy::debuff_team() {
 	for (auto& e : bq::handler::get().m_em->entities()) {
-		if (e->id() == 2) {
+
+		if (e->id() != bq::handler::get().m_em->get_id("PLAYER") && e->id() != bq::handler::get().m_em->get_id("BUFF_ENEMY")) {
 			e->unbuff();
 		}
 	}

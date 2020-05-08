@@ -12,10 +12,9 @@ namespace bq {
 		
 		camera(bq::entity*);
 
-		const sf::View& view();
-
+		void render(sf::RenderWindow&) const;
+		const sf::View& view() const;
 		void update();
-		void render(sf::RenderWindow&);
 		void reset();
 	};
 }

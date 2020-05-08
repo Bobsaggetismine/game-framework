@@ -1,7 +1,5 @@
 #pragma once
-#include <bq/core/handler.h>
-#include <bq/quest/quest.h>
-#include <bq/core/logger.h>
+#include <bq.h>
 
 class robot_quest : public bq::quest {
 

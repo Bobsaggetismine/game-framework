@@ -1,9 +1,11 @@
 #pragma once
 
-#include <bq/entity/entity.h>
-#include "../quests/robot_quest.h"
+#include <bq.h>
+
 #include "player.h"
-#include "bq/gui/button.h"
+#include "../quests/robot_quest.h"
+
+
 class george : public bq::entity
 {
 	

@@ -1,9 +1,6 @@
 #pragma once
-#include <bq/entity/entity.h>
-#include <bq/resource/resource_holder.h>
-#include <bq/util/random.h>
-#include <bq/util/vec.h>
-#include <bq/core/handler.h>
+#include <bq.h>
+#include <math.h>
 class buff_enemy : public bq::entity
 {
 	bq::v2f movement = { 0,0 };
@@ -23,7 +20,8 @@ public:
 	void render(sf::RenderWindow& window) override;
 	void handle_event(sf::Event& evt) override;
 	void damage(float) override;
-	bool should_cull(const sf::View&) override;
+	bool should_cull(const sf::View&) const override;
 	virtual void interact() override;
+	
 };
 

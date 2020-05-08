@@ -1,18 +1,17 @@
 #include "meele_enemy.h"
-#include <math.h>
+
 
 meele_enemy::meele_enemy(bq::entity* player): m_entity(player), sound(bq::resource_holder::get().sounds.get("sword.wav")) {
 	m_sprite.setTexture(bq::resource_holder::get().textures.get("robot.png"));
 	m_pos = {500,500};
 	m_size = {27,30};
 	clock.restart();
-	m_id = 2;
-	bq::handler::get().m_em->register_id("MEELE_ENEMY", m_id);
+	m_id = bq::handler::get().m_em->register_id("MEELE_ENEMY");
 }
 void meele_enemy::damage(float dmg) {
 	health -= dmg;
 }
-bool meele_enemy::should_cull(const sf::View&) {
+bool meele_enemy::should_cull(const sf::View&) const {
 	return health <= 0.f;
 }
 void meele_enemy::render(sf::RenderWindow& window) {
@@ -85,11 +84,11 @@ void meele_enemy::update() {
 				if (!blocked) {
 					if ((*movements)[movements->size() - 2].y > (m_pos.y / 32.f)) {
 						movement.y = move_speed * m_buff.m_speed_multiplier;
-						//offset = 1;
+						offset = 1;
 					}
 					else if ((*movements)[movements->size() - 2].y < (m_pos.y / 32.f)) {
 						movement.y = -move_speed * m_buff.m_speed_multiplier;
-						//offset = 0;
+						offset = 0;
 					}
 					else if ((*movements)[movements->size() - 2].x > (m_pos.x / 32.f)) {
 						movement.x = move_speed * m_buff.m_speed_multiplier;
@@ -112,9 +111,11 @@ void meele_enemy::update() {
 					}
 					else if ((*movements)[movements->size() - 2].y > (m_pos.y / 32.f)) {
 						movement.y = move_speed * m_buff.m_speed_multiplier;
+						offset = 1;
 					}
 					else if ((*movements)[movements->size() - 2].y < (m_pos.y / 32.f)) {
 						movement.y = -move_speed * m_buff.m_speed_multiplier;
+						offset = 0;
 					}
 					blocked = !blocked;
 				}
@@ -136,8 +137,6 @@ void meele_enemy::update() {
 		}
 	}
 
-
-
 	sf::FloatRect bounds = { m_pos.x + 2 + movement.x, m_pos.y + 2 + movement.y, m_size.x, m_size.y };
 	bq::block_collision_effects bce = bq::handler::get().m_world->get_collision_effects(bounds);
 	if (!bce.m_collision) {
@@ -156,6 +155,7 @@ void meele_enemy::handle_event(sf::Event& evt) {
 
 }
 void meele_enemy::buff(bq::buff b) {
+	bq::logger::debug("meele enemy buffed");
 	if (b.m_damage_multiplier > m_buff.m_damage_multiplier) {
 		m_buff.m_damage_multiplier = b.m_damage_multiplier;
 	}
@@ -165,6 +165,7 @@ void meele_enemy::buff(bq::buff b) {
 }
 void meele_enemy::unbuff() {
 	//lazy
+	bq::logger::debug("meele enemy unbuffed");
 	m_buff = { 1,1 };
 }
 void meele_enemy::interact() {

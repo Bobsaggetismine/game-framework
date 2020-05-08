@@ -3,9 +3,9 @@
 lava::lava(float x, float y, float w, float h) : animation("lava.png", 0, 32, 2, 60) {
 	m_pos.x = x;
 	m_pos.y = y;
-	m_damage = 1;
+	m_damage = 0;
 	m_size.x = w;
-	m_solid = false;
+	m_solid = true;
 	m_size.y = h;
 	animation.get().setPosition({ m_pos.x, m_pos.y });
 	animation.update();

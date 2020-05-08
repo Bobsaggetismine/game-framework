@@ -11,21 +11,21 @@ bool bq::entity::intersects(sf::FloatRect& other)
 	return ourbound.intersects(other);
 }
 
-bq::v2f& bq::entity::pos()
+const bq::v2f& bq::entity::pos() const
 {
 	return m_pos;
 }
-bq::v2f& bq::entity::size()
+const bq::v2f& bq::entity::size() const
 {
 	return m_size;
 }
-const int bq::entity::id()
+const int& bq::entity::id() const
 {
 	return m_id;
 }
 void bq::entity::buff(bq::buff){}
 void bq::entity::unbuff(){}
-bool bq::entity::should_cull(const sf::View&)
+bool bq::entity::should_cull(const sf::View&) const
 {
 	return false;
 }

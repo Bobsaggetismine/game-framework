@@ -16,12 +16,12 @@ namespace bq {
 		virtual void interact() = 0;
 		virtual void buff(bq::buff);
 		virtual void unbuff();
-		virtual bool should_cull(const sf::View&);
+		virtual bool should_cull(const sf::View&) const;
 		virtual bool intersects(sf::FloatRect&);
 		void move(bq::v2f& other);
-		bq::v2f& pos();
-		bq::v2f& size();
-		const int id();
+		const bq::v2f& pos() const;
+		const bq::v2f& size()const;
+		const int& id() const;
 		virtual ~entity() = 0;
 	};
 }

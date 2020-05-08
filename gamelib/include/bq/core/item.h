@@ -9,13 +9,13 @@ namespace bq {
 		sf::Sprite m_sprite;
 		int m_uses = 5;
 	public:
+		virtual ~item() = 0;
 
 		virtual void action(std::optional<sf::Keyboard::Key>, std::optional<bq::v2f>) = 0;
-		virtual ~item() = 0;
 		void add_uses(int toAdd);
 		void remove_uses(int toRemove);
 		void render(sf::RenderWindow&);
 		void update_pos(float x , float y);
-		int uses();
+		int uses() const;
 	};
 }

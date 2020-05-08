@@ -15,7 +15,7 @@ namespace bq {
 		void update() override;
 		void handle_event(sf::Event&) override;
 		void damage(float) override;
-		bool should_cull(const sf::View&) override;
+		bool should_cull(const sf::View&) const override;
 		bool intersects(sf::FloatRect&) override;
 		void interact() override;
 	};

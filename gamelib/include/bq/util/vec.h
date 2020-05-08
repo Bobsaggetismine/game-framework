@@ -11,7 +11,7 @@ namespace bq {
 		void operator +=(const v2f& other) { x += other.x; y += other.y; }
 		//seemless operability with sf::Vector
 		v2f(const sf::Vector2f& sfv): x(sfv.x), y(sfv.y) {}
-		operator sf::Vector2f () {
+		operator sf::Vector2f () const {
 			return sf::Vector2f(x, y);
 		}
 		bool operator ==(const v2f& other) { return (x == other.x && y == other.y); }
@@ -34,7 +34,7 @@ namespace bq {
 		
 		//seemless operability with sf::Vector
 		v2i(const sf::Vector2i& sfv):x(sfv.x), y(sfv.y) {}
-		operator sf::Vector2i() {
+		operator sf::Vector2i() const {
 			return sf::Vector2i(x,y);
 		}
 	};

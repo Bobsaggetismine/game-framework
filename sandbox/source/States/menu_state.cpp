@@ -1,5 +1,6 @@
 #include "menu_state.h"
 #include "game_state.h"
+
 menu_state::menu_state(bq::v2f pos,bq::v2f size) :m_start_game(pos,size,"Start Game", sf::Color::Black, sf::Color::Red,20) {
 	std::function<void(void)> changeState = std::bind(&menu_state::startGame,this);
 	m_start_game.setFunc(changeState);

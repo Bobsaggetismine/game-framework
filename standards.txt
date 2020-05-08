@@ -4,3 +4,13 @@ This document does not aim to justify the deisgn decisions made, only list the c
 2: member variables prefixed with m_
 3: lower_case_underscore for naming classes/functions/variables (complying with stl naming conventions)
 4: prefer not annotating types in header files and minimalize in cpp files to keep types more 
+5: function declaration order: 
+				constructors
+				destructors
+				
+				static
+				
+				const, void return
+				const, non-void return
+				non const,  void return
+				non const, non void 

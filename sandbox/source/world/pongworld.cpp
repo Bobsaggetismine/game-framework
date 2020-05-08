@@ -3,6 +3,7 @@
 #include "rock.h"
 #include "door.h"
 #include "lava.h"
+#include "robot_spawner.h"
 pongworld::pongworld() {
 	std::ifstream fstream("res/world.data");
 	background.setTexture(bq::resource_holder::get().textures.get("background.png"));
@@ -13,23 +14,26 @@ pongworld::pongworld() {
 		j = 0;
 		h += 32;
 		for (unsigned y = 0; y < line.size(); ++y) {
-			if(i == 0)
-			w += (32.f);
+			if(i == 0) w += (32.f);
 			if (line[y] == '1') {
-				m_blocks.push_back(std::make_shared<rock>((float)(i*32),(float)(y*32),32.f,32.f));
-				colisions.push_back({ ((float)x) / 32.f, ((float)j) / 32.f });
+				m_blocks.push_back(std::make_shared<rock>((float)(y * 32), (float)(i * 32), 32.f, 32.f));
+				colisions.push_back({ ((float)j) / 32.f, ((float)x) / 32.f });
 			}
 			else if (line[y] == '2') {
-				m_blocks.push_back(std::make_shared<door>("topDoor.png", (float)(i * 32), (float)(y * 32), 32.f, 32.f));
-				colisions.push_back({ ((float)x) / 32.f, ((float)j) / 32.f });
+				m_blocks.push_back(std::make_shared<door>("topDoor.png", (float)(y * 32), (float)(i * 32), 32.f, 32.f));
+				colisions.push_back({ ((float)j) / 32.f, ((float)x) / 32.f });
 			}
 			else if (line[y] == '3') {
-				m_blocks.push_back(std::make_shared<door>("bottomDoor.png", (float)(i * 32), (float)(y * 32), 32.f, 32.f));
-				colisions.push_back({ ((float)x) / 32.f, ((float)j) / 32.f });
+				m_blocks.push_back(std::make_shared<door>("bottomDoor.png", (float)(y * 32), (float)(i * 32), 32.f, 32.f));
+				colisions.push_back({ ((float)j) / 32.f, ((float)x) / 32.f });
 			}
 			else if (line[y] == '4') {
-				m_blocks.push_back(std::make_shared<lava>((float)(i * 32), (float)(y * 32), 32.f, 32.f));
-				colisions.push_back({ ((float)x) / 32.f, ((float)j) / 32.f });
+				m_blocks.push_back(std::make_shared<lava>((float)(y * 32), (float)(i * 32), 32.f, 32.f));
+				colisions.push_back({ ((float)j) / 32.f, ((float)x) / 32.f });
+			}
+			else if (line[y] == '5') {
+				m_blocks.push_back(std::make_shared<robot_spawner>((float)(y * 32), (float)(i * 32), 32.f, 32.f));
+				colisions.push_back({ ((float)j) / 32.f, ((float)x) / 32.f });
 			}
 			j += 32;
 		}

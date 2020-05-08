@@ -1,5 +1,4 @@
 #include "robot_quest.h"
-#include <bq/resource/resource_holder.h>
 
 robot_quest::robot_quest() {
 	m_desc = "Kill 10 robots";
@@ -11,7 +10,7 @@ void robot_quest::update() {
 
 void robot_quest::handleQuestEvent(bq::quest_event& qe)
 {
-	if (qe.m_id == 2) {
+	if (qe.m_id == bq::handler::get().m_em->get_id("MEELE_ENEMY")) {
 		m_remaining--;
 		if (m_remaining == 0) {
 			//quest completed

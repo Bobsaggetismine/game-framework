@@ -30,8 +30,8 @@ public:
 	int execute() override {
 		bq::logger::log_to_file("log.txt",true); 
 
-		std::ifstream ifs{ "settings.json" };
-		nlohmann:: json json_settings = nlohmann::json::parse(ifs);
+		//std::ifstream ifs{ "settings.json" };
+		//nlohmann:: json json_settings = nlohmann::json::parse(ifs);
 		run();	
 
 		return EXIT_SUCCESS;

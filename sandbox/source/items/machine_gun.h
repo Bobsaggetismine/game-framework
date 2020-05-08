@@ -1,6 +1,7 @@
 #pragma once
 
-#include "gun.h"
+#include <bq.h>
+#include "../entity/bullet.h"
 
 class machine_gun : public bq::item
 {

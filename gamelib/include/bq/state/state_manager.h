@@ -13,7 +13,7 @@ namespace bq {
 		void push(std::unique_ptr<state>,bool = true);
 		void pop();
 		void update();
-		void render(sf::RenderWindow&);
+		void render(sf::RenderWindow&) const;
 		void handle_events(sf::Event&, sf::RenderWindow&);
 
 		unsigned get_num_states();
