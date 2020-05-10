@@ -1,6 +1,6 @@
 #pragma once
-#include <bq.h>
-#include <math.h>
+
+
 class buff_enemy : public bq::entity
 {
 	bq::v2f movement = { 0,0 };

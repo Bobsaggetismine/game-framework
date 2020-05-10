@@ -1,5 +1,5 @@
 #pragma once
-#include <bq.h>
+
 
 class robot_quest : public bq::quest {
 

@@ -1,9 +1,9 @@
-#include "pongworld.h"
-#include <bq/resource/resource_manager.h>
+#include <bq.h>
 #include "rock.h"
 #include "door.h"
 #include "lava.h"
 #include "robot_spawner.h"
+#include "pongworld.h"
 pongworld::pongworld() {
 	std::ifstream fstream("res/world.data");
 	background.setTexture(bq::resource_holder::get().textures.get("background.png"));

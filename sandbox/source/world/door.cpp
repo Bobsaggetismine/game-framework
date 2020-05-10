@@ -1,3 +1,4 @@
+#include <bq.h>
 #include "door.h"
 
 door::door(std::string name, float x, float y, float w, float h) : animation(name, 0, 32, 2, 1),sound(bq::resource_holder::get().sounds.get("door_close.wav")) {

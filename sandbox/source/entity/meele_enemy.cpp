@@ -1,5 +1,5 @@
+#include <bq.h>
 #include "meele_enemy.h"
-
 
 meele_enemy::meele_enemy(bq::entity* player): m_entity(player), sound(bq::resource_holder::get().sounds.get("sword.wav")) {
 	m_sprite.setTexture(bq::resource_holder::get().textures.get("robot.png"));

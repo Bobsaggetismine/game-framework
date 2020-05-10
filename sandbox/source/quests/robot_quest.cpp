@@ -1,3 +1,4 @@
+#include <bq.h>
 #include "robot_quest.h"
 
 robot_quest::robot_quest() {

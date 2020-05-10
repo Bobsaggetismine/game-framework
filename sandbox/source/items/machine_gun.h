@@ -1,8 +1,5 @@
 #pragma once
 
-#include <bq.h>
-#include "../entity/bullet.h"
-
 class machine_gun : public bq::item
 {
 	bq::entity& m_target;

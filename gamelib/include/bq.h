@@ -20,6 +20,7 @@
 #include <optional>
 #include <exception>
 
+#include <bq/core/AStar.hpp>
 #include <bq/application/application.h>
 #include <bq/core/game.h>
 #include <bq/util/block_collision_effects.h>

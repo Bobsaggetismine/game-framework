@@ -1,3 +1,4 @@
+#include <bq.h>
 #include "rock.h"
 
 rock::rock(float x, float y, float w, float h) : animation("rock.png", 0,32,2,1) {

@@ -1,5 +1,11 @@
-#include "player.h"
+#include <bq.h>
 
+#include "../world/pongworld.h"
+#include "../States/menu_state.h"
+#include "bullet.h"
+#include "../items/machine_gun.h"
+#include "../items/gun.h"
+#include "player.h"
 
 constexpr size_t SHEET_SIZE = 64;
 player::player() : upAnimation("player.png", 0 * SHEET_SIZE, SHEET_SIZE, 9, 10), downAnimation("player.png", 2 * SHEET_SIZE, SHEET_SIZE, 9, 10), leftAnimation("player.png", 1 * SHEET_SIZE, SHEET_SIZE, 9, 10), rightAnimation("player.png", 3 * SHEET_SIZE, SHEET_SIZE, 9, 10), curSprite(bq::resource_holder::get().textures.get("player.png")) {

@@ -1,3 +1,5 @@
+#include <bq.h>
+#include "../entity/bullet.h"
 #include "machine_gun.h"
 
 

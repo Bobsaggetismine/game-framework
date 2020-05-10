@@ -1,6 +1,6 @@
+#include <bq.h>
+#include "../entity/bullet.h"
 #include "gun.h"
-
-
 
 gun::gun(bq::entity& target): m_target(target), sound(bq::resource_holder::get().sounds.get("gunshot.wav"))
 {

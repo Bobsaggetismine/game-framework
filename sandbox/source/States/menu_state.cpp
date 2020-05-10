@@ -1,3 +1,4 @@
+#include <bq.h>
 #include "menu_state.h"
 #include "game_state.h"
 

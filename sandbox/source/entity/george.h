@@ -1,10 +1,5 @@
 #pragma once
 
-#include <bq.h>
-
-#include "player.h"
-#include "../quests/robot_quest.h"
-
 
 class george : public bq::entity
 {

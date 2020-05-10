@@ -1,10 +1,6 @@
 #pragma once
-#include <bq.h>
 
-#include "../entity/player.h"
-#include "../entity/meele_enemy.h"
-#include "../entity/buff_enemy.h"
-#include "../entity/george.h"
+class player;
 
 class game_state : public bq::state {
 	bool paused = false;

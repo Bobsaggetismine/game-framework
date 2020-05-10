@@ -1,3 +1,4 @@
+#include <bq.h>
 #include "lava.h"
 
 lava::lava(float x, float y, float w, float h) : animation("lava.png", 0, 32, 2, 60) {

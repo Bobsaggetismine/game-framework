@@ -1,5 +1,5 @@
 #pragma once
-#include <bq.h>
+
 
 class meele_enemy : public bq::entity
 {

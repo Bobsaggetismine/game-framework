@@ -1,5 +1,4 @@
 #pragma once
-#include <bq.h>
 
 class bullet : public bq::entity {
 	sf::Sprite sprite;

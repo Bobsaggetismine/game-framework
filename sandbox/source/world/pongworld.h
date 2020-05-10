@@ -1,7 +1,5 @@
 #pragma once
-#include <bq.h>
 
-#include <bq/core/AStar.hpp>
 class pongworld : public bq::world {
 	sf::Sprite background;
 	bq::astar::pathfinder m_generator;

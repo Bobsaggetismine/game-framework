@@ -1,6 +1,5 @@
 #pragma once
-#include <bq.h>
-#include "../entity/bullet.h"
+
 
 class gun : public bq::item
 {

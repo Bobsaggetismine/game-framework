@@ -1,3 +1,6 @@
+
+#include <bq.h>
+#include <math.h>
 #include "buff_enemy.h"
 
 

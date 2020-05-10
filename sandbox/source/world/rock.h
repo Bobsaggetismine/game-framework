@@ -1,5 +1,5 @@
 #pragma once
-#include <bq.h>
+
 class rock : public bq::block {
 	bq::animation animation;
 public:

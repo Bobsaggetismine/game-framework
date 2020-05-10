@@ -1,3 +1,7 @@
+#include <bq.h>
+
+#include "player.h"
+#include "../quests/robot_quest.h"
 #include "george.h"
 
 constexpr size_t SHEET_SIZE = 64;

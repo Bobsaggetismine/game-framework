@@ -1,12 +1,6 @@
 #pragma once
 
-#include <bq.h>
 
-#include "../world/pongworld.h"
-#include "../States/menu_state.h"
-#include "bullet.h"
-#include "../items/machine_gun.h"
-#include "../items/gun.h"
 class player : public bq::entity {
 	bq::animation upAnimation;
 	bq::animation downAnimation;

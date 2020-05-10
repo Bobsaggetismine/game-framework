@@ -1,3 +1,5 @@
+#include <bq.h>
+#include "../entity/meele_enemy.h"
 #include "robot_spawner.h"
 
 robot_spawner::robot_spawner(float x, float y, float w, float h) : animation("lava.png", 0, 32, 2, 60) {

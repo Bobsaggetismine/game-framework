@@ -1,4 +1,11 @@
+#include <bq.h>
+#include "../entity/player.h"
+#include "../entity/meele_enemy.h"
+#include "../entity/buff_enemy.h"
+#include "../entity/george.h"
+#include "../world/pongworld.h"
 #include "game_state.h"
+
 
 void game_state::render(sf::RenderWindow& window) {
 	bq::handler::get().m_world->render(window);

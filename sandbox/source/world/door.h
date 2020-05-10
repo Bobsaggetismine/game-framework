@@ -1,5 +1,5 @@
 #pragma once
-#include <bq.h>
+
 class door : public bq::block {
 	bq::animation animation;
 	bool open = false;

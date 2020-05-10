@@ -1,7 +1,4 @@
 
-#include <bq.h>
-#include "../entity/meele_enemy.h"
-
 class robot_spawner : public bq::block{
 	bq::animation animation;
 	bq::entity* m_player = nullptr;
