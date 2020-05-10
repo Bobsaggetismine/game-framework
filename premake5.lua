@@ -24,6 +24,9 @@ project "gamelib"
 	targetdir ("bin/" .. outputdir .. "/%{prj.name}")
 	objdir ("obj/" .. outputdir .. "/%{prj.name}")
 
+	pchheader "bqpch.h"
+	pchsource "gamelib/source/bqpch.cpp"
+
 	files
 	{
 		"%{prj.name}/include/**.h",
@@ -41,35 +44,19 @@ project "gamelib"
 		defines{ "PLATFORM_WINDOWS" }
 
 
-	filter "configurations:*"
-		libdirs { "gamelib/deps/SFML/lib" }	
+	
 		
 	filter "configurations:Debug"
 		defines "DEBUG"
 		runtime "Debug"
 		symbols "on"
-		links
-		{	
-			"sfml-graphics-d",
-			"sfml-window-d",
-			"sfml-system-d",
-			"sfml-audio-d",
-			"sfml-network-d"
-		}
-        
+
 
 	filter "configurations:Release"
 		defines "NDEBUG"
 		runtime "Release"
 		optimize "on"
-		links
-		{	
-			"sfml-graphics",
-			"sfml-window",
-			"sfml-system",
-			"sfml-audio",
-            "sfml-network"
-		}
+
         
 
 
@@ -103,17 +90,35 @@ project "sandbox"
 		systemversion "latest"
 		defines{ "PLATFORM_WINDOWS" }
 
-    
+	
+	filter "configurations:*"
+		libdirs { "gamelib/deps/SFML/lib" }	
+
 	filter "configurations:Debug"
 		defines "DEBUG"
 		runtime "Debug"
         symbols "on"
-        
+		links
+		{	
+			"sfml-graphics-d",
+			"sfml-window-d",
+			"sfml-system-d",
+			"sfml-audio-d",
+			"sfml-network-d"
+		}
 
 	filter "configurations:Release"
 		defines "NDEBUG"
 		runtime "Release"
-        optimize "on"
+		optimize "on"
+		links
+		{	
+			"sfml-graphics",
+			"sfml-window",
+			"sfml-system",
+			"sfml-audio",
+            "sfml-network"
+		}
         
 
 project "test"
@@ -145,13 +150,33 @@ project "test"
 		"%{IncludeDir.SFML}"
 	}
 
+	
+	filter "configurations:*"
+		libdirs { "gamelib/deps/SFML/lib" }	
+
 	filter "configurations:Release"
 		defines "NDEBUG"
 		runtime "Release"
 		optimize "on"
+		links
+		{	
+			"sfml-graphics",
+			"sfml-window",
+			"sfml-system",
+			"sfml-audio",
+            "sfml-network"
+		}
 
 		
 	filter "configurations:Debug"
 		defines "DEBUG"
 		runtime "Debug"
 		symbols "on"
+		links
+		{	
+			"sfml-graphics-d",
+			"sfml-window-d",
+			"sfml-system-d",
+			"sfml-audio-d",
+			"sfml-network-d"
+		}

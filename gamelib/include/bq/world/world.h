@@ -1,12 +1,12 @@
 #pragma once
-#include <bq/common.h>
-#include <bq/world/block.h>
-#include <bq/util/block_collision_effects.h>
-#include <bq/core/AStar.hpp>
+
+
 namespace bq {
+	struct block_collision_effects;
+	class block;
+
 	class world {
 	protected:
-
 		std::vector<std::shared_ptr<bq::block>> m_blocks;
 	public:
 		float h = 0.f, w = 0.f;

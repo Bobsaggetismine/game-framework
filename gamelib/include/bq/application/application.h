@@ -1,7 +1,4 @@
 #pragma once
-
-
-#include <bq/common.h>
 class application {
 
 	static application* m_app;

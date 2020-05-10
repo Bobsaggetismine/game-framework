@@ -1,17 +1,17 @@
+#include "bqpch.h"
 #include "bq/core/item.h"
-#include "bq/core/logger.h"
 bq::item::~item(){}
-int bq::item::uses() const
+unsigned bq::item::uses() const
 {
 	return this->m_uses;
 }
 
-void bq::item::add_uses(int toAdd)
+void bq::item::add_uses(unsigned toAdd)
 {
 	this->m_uses += toAdd;
 }
 
-void bq::item::remove_uses(int toRemove)
+void bq::item::remove_uses(unsigned toRemove)
 {
 	this->m_uses -= toRemove;
 }

@@ -4,6 +4,9 @@ robot_quest::robot_quest() {
 	m_desc = "Kill 10 robots";
 	bq::handler::get().m_em->hook_quest(this);
 }
+robot_quest::~robot_quest()
+{
+}
 void robot_quest::update() {
 
 }

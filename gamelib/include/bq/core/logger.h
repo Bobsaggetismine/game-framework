@@ -1,7 +1,6 @@
 #pragma once
 
-#include <iostream>
-#include <fstream>
+
 #ifdef PLATFORM_WINDOWS
 #include <windows.h>
 #endif
@@ -9,11 +8,11 @@
 
 namespace bq {
 	
-	constexpr int WHITE = 7;
-	constexpr int INFO_COLOR = 5;
-	constexpr int WARN_COLOR = 14;
-	constexpr int DEBUG_COLOR = 6;
-	constexpr int CRITICAL_COLOR = 12;
+	constexpr size_t WHITE = 7;
+	constexpr size_t INFO_COLOR = 5;
+	constexpr size_t WARN_COLOR = 14;
+	constexpr size_t DEBUG_COLOR = 6;
+	constexpr size_t CRITICAL_COLOR = 12;
 
 	class logger {
 		static std::string m_file;

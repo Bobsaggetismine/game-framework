@@ -1,5 +1,6 @@
+#include "bqpch.h"
+#include "bq/core/item.h"
 #include "bq/core/inventory.h"
-#include "bq/core/logger.h"
 #include "bq/resource/resource_holder.h"
 bq::inventory::inventory(){
 	m_sprite.setTexture(bq::resource_holder::get().textures.get("inventory.png"));

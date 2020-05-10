@@ -1,10 +1,10 @@
 #include "george.h"
 
-constexpr int SHEET_SIZE = 64;
+constexpr size_t SHEET_SIZE = 64;
 
 george::george(float x, float y, player* player) : m_player(player), upAnimation("george.png", 0 * SHEET_SIZE, SHEET_SIZE, 9, 10), downAnimation("george.png", 2 * SHEET_SIZE, SHEET_SIZE, 9, 10), leftAnimation("george.png", 1 * SHEET_SIZE, SHEET_SIZE, 9, 10), rightAnimation("george.png", 3 * SHEET_SIZE, SHEET_SIZE, 9, 10), m_sprite(bq::resource_holder::get().textures.get("george.png")), m_dialog({0,0}, {400,50},"Complete this quest for me: kill 30 robots",sf::Color::Cyan, sf::Color::Cyan, 15) {
 	m_pos.x = x;
-	m_pos.y = x;
+	m_pos.y = y;
 	m_sprite.setTexture(bq::resource_holder::get().textures.get("george.png"));
 	m_sprite.setTextureRect({ 0,128,64,64 });
 	m_size.x = 32, m_size.y = 44;
@@ -69,7 +69,9 @@ void george::update() {
 	bq::block_collision_effects bce = bq::handler::get().m_world->get_collision_effects(bounds);
 	if (!bce.m_collision) {
 		
-		if (movement.x != 0.f || movement.y != 0.f) {
+		float xabs = fabs(0.f - movement.x);
+		float yabs = fabs(0.f - movement.y);
+		if (xabs > 0.01f || yabs > 0.01f) {
 			move(movement);
 			moves_made++;
 		}

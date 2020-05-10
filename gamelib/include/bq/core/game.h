@@ -1,7 +1,10 @@
 #pragma once
-#include <bq/common.h>
-#include <bq/application/application.h>
+
+class application;
+
 namespace bq {
+
+
 	class  game : public application {
 		sf::Clock m_clock;
 		sf::Time m_accumulator = sf::Time::Zero;

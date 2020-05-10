@@ -1,5 +1,6 @@
 #pragma once
-#include <bq/common.h>
+#include "bqpch.h"
+#include <bq/core/logger.h>
 namespace bq {
 
 	template <class T>

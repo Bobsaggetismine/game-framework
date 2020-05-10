@@ -1,5 +1,5 @@
 #pragma once
-#include <bq/Common.h>
+
 
 namespace bq {
 	namespace gui {

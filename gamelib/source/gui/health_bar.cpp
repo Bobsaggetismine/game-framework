@@ -1,4 +1,9 @@
+#include "bqpch.h"
+#include <bq/entity/entity.h>
+#include <bq/gui/Widget.h>
 #include "bq/gui/health_bar.h"
+#include <bq/resource/resource_holder.h>
+
 
 bq::gui::health_bar::health_bar() {
 	m_back.setFillColor(sf::Color::Red);

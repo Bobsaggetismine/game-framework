@@ -1,14 +1,14 @@
 #pragma once
 #include <bq.h>
-#include <math.h>
+
 class meele_enemy : public bq::entity
 {
-	static constexpr int moves_until_movement_change_C = 60;
+	static constexpr size_t moves_until_movement_change_C = 60;
 
 	float range = 10.f,health = 100.f, move_speed = 1.25f;;
 	bool locked_on = false, blocked = false;
 	unsigned lockon_multiplier = 50;
-	int m_damage = 5, offset = 0, moves_made = 0;
+	size_t m_damage = 5, offset = 0, moves_made = 0;
 
 	bq::entity* m_entity;
 	bq::v2f movement = { 0,0 };

@@ -14,7 +14,11 @@ namespace bq {
 		operator sf::Vector2f () const {
 			return sf::Vector2f(x, y);
 		}
-		bool operator ==(const v2f& other) { return (x == other.x && y == other.y); }
+		bool operator==(const v2f& other) {
+			bool xclose = fabs((double)other.x - x) < 0.001f;
+			bool yclose = fabs((double)other.y - y) < 0.001f;
+			return (xclose && yclose); 
+		}
 		void normalize() {
 			float mag_x = x * x;
 			float mag_y = y * y;

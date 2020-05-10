@@ -1,9 +1,11 @@
 #pragma once
 
 
-#include "entity.h"
+
 
 namespace bq {
+	struct v2f;
+	class entity;
 	class particle : public bq::entity {
 		sf::Clock m_life_timer;
 		sf::Sprite m_sprite;

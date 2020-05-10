@@ -1,4 +1,11 @@
+#include "bqpch.h"
+
+
+#include <bq/entity/entity.h>
 #include <bq/gui/button.h>
+#include <bq/core/handler.h>
+#include <bq/resource/resource_holder.h>
+#include <bq/state/state.h>
 
 void bq::gui::Button::handle_event(sf::Event& e) {
 	//auto pos = sf::Mouse::getPosition(window);
@@ -55,7 +62,7 @@ void bq::gui::Button::setFunc(std::function<void(void)>func)
 	m_function = func;
 }
 
-bq::gui::Button::Button(bq::v2f pos, bq::v2f size,std::string label, sf::Color outlineColor, sf::Color fillColor, int textSize) {
+bq::gui::Button::Button(bq::v2f pos, bq::v2f size,std::string label, sf::Color outlineColor, sf::Color fillColor, unsigned textSize) {
 	m_button.setOutlineThickness(1);
 	m_button.setOutlineColor(outlineColor);
 	m_button.setFillColor(fillColor);

@@ -1,8 +1,8 @@
 #pragma once
-#include <bq/common.h>
-#include <bq/state/state.h>
-#include <bq/exception/illegal_state.h>
+
 namespace bq {
+	
+	class state;
 
 	class state_manager {
 		std::stack<std::unique_ptr<state>> m_states;
@@ -16,7 +16,7 @@ namespace bq {
 		void render(sf::RenderWindow&) const;
 		void handle_events(sf::Event&, sf::RenderWindow&);
 
-		unsigned get_num_states();
+		size_t get_num_states();
 		bq::state* get_current_state();
 	};
 }

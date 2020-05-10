@@ -1,7 +1,7 @@
 #include "player.h"
 
 
-constexpr int SHEET_SIZE = 64;
+constexpr size_t SHEET_SIZE = 64;
 player::player() : upAnimation("player.png", 0 * SHEET_SIZE, SHEET_SIZE, 9, 10), downAnimation("player.png", 2 * SHEET_SIZE, SHEET_SIZE, 9, 10), leftAnimation("player.png", 1 * SHEET_SIZE, SHEET_SIZE, 9, 10), rightAnimation("player.png", 3 * SHEET_SIZE, SHEET_SIZE, 9, 10), curSprite(bq::resource_holder::get().textures.get("player.png")) {
 	m_pos.x = 100, m_pos.y = 100;
 	m_size.x = 32, m_size.y = 44;

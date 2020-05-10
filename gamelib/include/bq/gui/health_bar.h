@@ -1,12 +1,11 @@
 #pragma once
 
-#include <bq/common.h>
-#include <bq/gui/Widget.h>
-#include <bq/resource/resource_holder.h>
-#include <bq/util/vec.h>
-#include <bq/entity/entity.h>
 namespace bq {
+	struct v2f;
+	class entity;
 	namespace gui {
+		class widget; 
+		class Rectangle;
 		class health_bar : public bq::gui::widget {
 
 			Rectangle m_back;

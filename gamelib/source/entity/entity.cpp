@@ -1,3 +1,7 @@
+#include "bqpch.h"
+
+
+#include <bq/core/buff.h>
 #include "bq/entity/entity.h"
 
 void bq::entity::move(bq::v2f& other)
@@ -19,7 +23,7 @@ const bq::v2f& bq::entity::size() const
 {
 	return m_size;
 }
-const int& bq::entity::id() const
+const size_t& bq::entity::id() const
 {
 	return m_id;
 }

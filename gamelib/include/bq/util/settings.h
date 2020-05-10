@@ -4,8 +4,8 @@
 
 namespace bq {
 	class settings {
-		unsigned int m_width;
-		unsigned int m_height;
+		unsigned size_t m_width;
+		unsigned size_t m_height;
 		bool m_fullscreen;
 	};
 }

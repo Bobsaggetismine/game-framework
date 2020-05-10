@@ -9,9 +9,9 @@ namespace bq {
 	};
 
 	struct quest_event {
-		int m_count;
-		int m_id;
+		size_t m_count;
+		size_t m_id;
 		quest_tpye m_type;
-		quest_event(const quest_tpye, const float, const int);
+		quest_event(quest_tpye, size_t, size_t);
 	};
 }

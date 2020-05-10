@@ -1,10 +1,12 @@
+#include "bqpch.h"
+
+#include <bq/world/block.h>
+#include <bq/util/block_collision_effects.h>
+#include <bq/core/AStar.hpp>
 #include <bq/world/world.h>
 
 
-
-
 bq::block_collision_effects bq::world::get_collision_effects(sf::FloatRect& rect) {
-	bool found_solid = false;
 	bq::block_collision_effects dc;
 	for (auto block : m_blocks) {
 		if (block->intersects(rect)) {
@@ -15,7 +17,6 @@ bq::block_collision_effects bq::world::get_collision_effects(sf::FloatRect& rect
 			}
 		}
 	}
-	dc.m_collision = found_solid;
 	return dc;
 }
 void bq::world::render(sf::RenderWindow& window) {

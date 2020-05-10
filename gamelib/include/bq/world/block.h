@@ -1,13 +1,12 @@
 #pragma once
-#include <bq/common.h>
-#include <bq/util/vec.h>
+
 namespace bq {
 	class block {
 	protected:
 		bq::v2f m_pos;
 		bq::v2f m_size;
 		bool m_solid = true;
-		int m_damage = 0;
+		size_t m_damage = 0;
 	public:
 		
 		virtual bool intersects(sf::FloatRect& other){  
@@ -21,7 +20,7 @@ namespace bq {
 		virtual void update() = 0;
 		virtual void render(sf::RenderWindow&) = 0;
 		virtual void interact() = 0;
-		int damage() const;
+		size_t damage() const;
 		bool solid() const;
 		bq::v2f pos() const;
 		bq::v2f size() const;

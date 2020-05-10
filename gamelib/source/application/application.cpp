@@ -1,5 +1,7 @@
-#include <bq/application/application.h>
+#include "bqpch.h"
 
+
+#include <bq/application/application.h>
 
 
 
@@ -18,6 +20,7 @@ int main(int argc, char* argv[])
 		bq::logger::critical("unknown error thown!");
 		return EXIT_FAILURE;
 	}
+	return EXIT_SUCCESS;
 }
 
 

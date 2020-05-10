@@ -1,3 +1,6 @@
+#include "bqpch.h"
+
+
 #include "bq/resource/resource_holder.h"
 
 bq::resource_holder& bq::resource_holder::get() {

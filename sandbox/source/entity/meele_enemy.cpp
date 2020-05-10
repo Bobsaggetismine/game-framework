@@ -98,7 +98,7 @@ void meele_enemy::update() {
 						movement.x = -move_speed * m_buff.m_speed_multiplier;
 						offset = 0;
 					}
-					blocked = !blocked;
+					blocked = true;
 				}
 				else {
 					if ((*movements)[movements->size() - 2].x > (m_pos.x / 32.f)) {
@@ -117,7 +117,7 @@ void meele_enemy::update() {
 						movement.y = -move_speed * m_buff.m_speed_multiplier;
 						offset = 0;
 					}
-					blocked = !blocked;
+					blocked = false;
 				}
 			}
 		}

@@ -1,3 +1,6 @@
+#include "bqpch.h"
+#include <bq/state/state.h>
+#include <bq/exception/illegal_state.h>
 #include <bq/state/state_manager.h>
 
 bq::state_manager::state_manager(std::unique_ptr<state> initial) {
@@ -37,7 +40,7 @@ void bq::state_manager::handle_events(sf::Event& evt, sf::RenderWindow& window) 
 	m_states.top()->handleEvents(evt, window);
 }
 
-unsigned bq::state_manager::get_num_states() {
+size_t bq::state_manager::get_num_states() {
 	return m_states.size();
 }
 bq::state* bq::state_manager::get_current_state() {

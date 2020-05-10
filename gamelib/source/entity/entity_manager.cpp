@@ -1,6 +1,12 @@
+#include "bqpch.h"
+
+#include <bq/entity/entity.h>
+#include <bq/core/camera.h>
+#include <bq/quest/quest_event.h>
+#include <bq/quest/quest.h>
 #include <bq/entity/entity_manager.h>
 #include <bq/core/handler.h>
-
+#include <bq/state/state.h>
 bq::entity_manager::entity_manager() {}
 
 void bq::entity_manager::add(std::unique_ptr<bq::entity> e) {
@@ -62,7 +68,7 @@ void bq::entity_manager::handleEvent(sf::Event& evt) {
 	}
 }
 
-int bq::entity_manager::register_id(const std::string& name)
+size_t bq::entity_manager::register_id(const std::string& name)
 {
 	if (m_id_map.find(name) != m_id_map.end()) {
 		return m_id_map[name];
@@ -71,7 +77,7 @@ int bq::entity_manager::register_id(const std::string& name)
 	return m_current_id;
 }
 
-int bq::entity_manager::get_id(const std::string& name)
+size_t bq::entity_manager::get_id(const std::string& name)
 {
 	try {
 		return m_id_map[name];
@@ -100,7 +106,7 @@ void bq::entity_manager::unhook_quest(bq::quest* q)
 	}
 }
 
-bq::entity* bq::entity_manager::intersects(sf::FloatRect& other, int requester_id, bool find_same_type)
+bq::entity* bq::entity_manager::intersects(sf::FloatRect& other, size_t requester_id, bool find_same_type)
 {
 	for (auto& e : m_entities) {
 		if (e->intersects(other)) {

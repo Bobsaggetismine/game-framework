@@ -1,6 +1,5 @@
 #pragma once
 
-#include <bq/common.h>
 
 namespace bq {
 	class state {

@@ -1,5 +1,6 @@
+#include "bqpch.h"
 #include "bq/core/AStar.hpp"
-#include <algorithm>
+
 
 using namespace std::placeholders;
  
@@ -119,7 +120,7 @@ unsigned bq::astar::pathfinder::get_heuristic(bq::v2i source_, bq::v2i target_)
 
 bq::v2i bq::astar::pathfinder::get_delta(bq::v2i source_, bq::v2i target_)
 {
-    return{ abs(source_.x - target_.x),  abs(source_.y - target_.y) };
+    return{ std::abs(static_cast<int>(source_.x) - static_cast<int>(target_.x)),  abs(static_cast<int>(source_.y) - static_cast<int>(target_.y)) };
 }
 
 bool bq::astar::pathfinder::detect_collision(bq::v2i coordinates_)

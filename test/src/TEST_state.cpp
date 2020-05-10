@@ -5,6 +5,7 @@
 #include <bq/state/state.h>
 #include <bq/state/state_manager.h>
 class test_state : public bq::state {
+public:
 	void update() override{
 
 	}
@@ -12,6 +13,9 @@ class test_state : public bq::state {
 
 	}
 	void handleEvents(sf::Event& evt, sf::RenderWindow& window) {
+
+	}
+	virtual ~test_state() {
 
 	}
 };

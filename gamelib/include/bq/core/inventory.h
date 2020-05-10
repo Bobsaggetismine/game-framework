@@ -1,12 +1,14 @@
 #pragma once
-#include "bq/core/item.h"
-#include <vector>
-#include "SFML/Graphics.hpp"
+
+
 
 namespace bq {
+
+	class item;
+
 	class inventory {
 
-		unsigned m_index = -1;
+		size_t m_index = -1;
 		std::vector<std::unique_ptr<bq::item>> m_items;
 		sf::Sprite m_sprite;
 	public:

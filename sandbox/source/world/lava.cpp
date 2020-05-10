@@ -13,7 +13,7 @@ lava::lava(float x, float y, float w, float h) : animation("lava.png", 0, 32, 2,
 		animation.update();
 	}
 }
-void lava::render(sf::RenderWindow& window) {
+void lava::render(sf::RenderWindow &window) {
 	window.draw(animation.get());
 }
 void lava::update() {

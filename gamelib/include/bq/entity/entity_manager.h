@@ -1,9 +1,11 @@
 #pragma once
-#include <bq/common.h>
-#include <bq/entity/entity.h>
-#include <bq/core/camera.h>
-#include <bq/quest/quest.h>
+
+
 namespace bq {
+
+	class entity;
+	class quest;
+	
 	class entity_manager {
 		std::vector<entity*> m_to_remove;
 		std::vector<std::unique_ptr<bq::entity>> m_to_add;
@@ -23,11 +25,11 @@ namespace bq {
 		void add(std::unique_ptr<entity>);
 		void remove(bq::entity*);
 		void handleEvent(sf::Event&);
-		int register_id(const std::string&);
+		size_t register_id(const std::string&);
 		void hook_quest(bq::quest*);
 		void unhook_quest(bq::quest*);
-		int get_id(const std::string&);
+		size_t get_id(const std::string&);
 		const std::vector<std::unique_ptr<entity>>& entities() const;
-		bq::entity* intersects(sf::FloatRect&, int, bool);
+		bq::entity* intersects(sf::FloatRect&, size_t, bool);
 	};
 }

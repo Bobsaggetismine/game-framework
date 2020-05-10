@@ -7,10 +7,10 @@ class buff_enemy : public bq::entity
 	sf::Sprite m_sprite;
 	float move_speed = 1.6f;
 	float health = 250;
-	const int moves_until_movement_change_C = 60;
+	const size_t moves_until_movement_change_C = 60;
 	sf::Sound buff_sound, debuff_sound;
 	sf::Clock clock;
-	int moves_made = 0;
+	size_t moves_made = 0;
 	
 public:
 	buff_enemy();

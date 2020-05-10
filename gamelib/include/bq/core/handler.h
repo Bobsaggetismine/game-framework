@@ -2,6 +2,7 @@
 #include <bq/entity/entity_manager.h>
 #include <bq/state/state_manager.h>
 #include <bq/world/world.h>
+#include <bq/core/camera.h>
 namespace bq {
 	class handler {
 

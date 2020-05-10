@@ -1,10 +1,17 @@
+#include "bqpch.h"
+
+
+#include <bq/entity/entity.h>
+#include <bq/application/application.h>
 #include <bq/core/game.h>
-#include <bq/util/random.h>
 #include <bq/core/handler.h>
-bq::game::game(unsigned w, unsigned h, std::string title, float ticks) : m_window({w,h},title, sf::Style::Fullscreen) {
+#include <bq/state/state.h>
+
+bq::game::game(unsigned w, unsigned h, std::string title, float ticks) : m_window({ w,h }, title, sf::Style::Fullscreen) {
 	bq::handler::get().m_sm = std::make_unique<bq::state_manager>();
 	m_ups = sf::seconds(1.f / ticks);
 }
+
 
 void bq::game::run() {
 	bq::logger::info("running game loop");

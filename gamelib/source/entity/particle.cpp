@@ -1,6 +1,9 @@
+#include "bqpch.h"
+#include <bq/entity/entity.h>
 #include "bq/entity/particle.h"
 #include "bq/resource/resource_holder.h"
 #include <bq/core/handler.h>
+#include <bq/state/state.h>
 void bq::particle::update() {
 	move(m_movement);
 

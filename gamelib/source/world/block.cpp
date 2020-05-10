@@ -1,6 +1,7 @@
+#include "bqpch.h"
 #include "bq/world/block.h"
 
-int bq::block::damage() const
+size_t bq::block::damage() const
 {
 	return m_damage;
 }

@@ -1,11 +1,13 @@
 #pragma once
-#include <bq/common.h>
-#include <bq/util/vec.h>
-#include <bq/core/buff.h>
+
 namespace bq {
+
+	struct buff;
+	struct v2f;
+
 	class entity {
 	protected:
-		int m_id = 0;
+		size_t m_id = 0;
 		bq::v2f m_pos;
 		bq::v2f m_size;
 	public:
@@ -21,7 +23,7 @@ namespace bq {
 		void move(bq::v2f& other);
 		const bq::v2f& pos() const;
 		const bq::v2f& size()const;
-		const int& id() const;
+		const size_t& id() const;
 		virtual ~entity() = 0;
 	};
 }

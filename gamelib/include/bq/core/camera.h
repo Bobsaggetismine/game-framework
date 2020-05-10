@@ -1,9 +1,10 @@
 #pragma once
-#include <bq/common.h>
-#include <bq/entity/entity.h>
-#include <bq/world/world.h>
+
 
 namespace bq {
+	struct v2f;
+	class entity;
+
 	class camera {
 		bq::entity* m_target;
 		bq::v2f m_size;

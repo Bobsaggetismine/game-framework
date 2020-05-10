@@ -1,7 +1,8 @@
 #pragma once
-#include <bq/common.h>
 #include <bq/resource/resource_manager.h>
 namespace bq  {
+
+
 	class resource_holder : public bq::noncopyable, public bq::nonmoveable {
 		resource_holder();
 		~resource_holder();
