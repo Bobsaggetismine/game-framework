@@ -43,3 +43,8 @@
 #include <bq/quest/quest_event.h>
 #include <bq/quest/quest.h>
 #include <bq/entity/particle.h>
+
+
+
+constexpr int GAME_HEIGHT = INTL_HEIGHT;
+constexpr int GAME_WIDTH = INTL_WIDTH;

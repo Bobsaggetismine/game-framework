@@ -13,7 +13,7 @@ george::george(float x, float y, player* player) : m_player(player), upAnimation
 	m_sprite.setTextureRect({ 0,128,64,64 });
 	m_size.x = 32, m_size.y = 44;
 
-	m_id = bq::handler::get().m_em->register_id("GEORGE");
+	m_id = bq::handler::get().em()->register_id("GEORGE");
 	m_dialog.setFunc([this]() -> void { this->give_quest(); });
 }
 void george::update() {
@@ -70,7 +70,7 @@ void george::update() {
 
 
 	sf::FloatRect bounds = { m_pos.x + 16 + movement.x, m_pos.y + 15 + movement.y, m_size.x, m_size.y };
-	bq::block_collision_effects bce = bq::handler::get().m_world->get_collision_effects(bounds);
+	bq::block_collision_effects bce = bq::handler::get().world()->get_collision_effects(bounds);
 	if (!bce.m_collision) {
 		
 		float xabs = fabs(0.f - movement.x);
@@ -126,7 +126,7 @@ void george::interact() {
 void george::give_quest() {
 	if (interacted) {
 		
-		m_player->m_quest = new robot_quest;
+		m_player->m_quest = new robot_quest(m_player);
 
 		interacted = false;
 	}

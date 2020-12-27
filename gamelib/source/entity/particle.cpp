@@ -29,7 +29,7 @@ bq::particle::particle(float x, float y, float life) {
 	m_life_timer.restart();
 	m_movement = {bq::random::getRandom(-5.f,5.f),bq::random::getRandom(-5.f, 5.f) };
 
-	m_id = bq::handler::get().m_em->register_id("BASE_PARTICLE");
+	m_id = bq::handler::get().em()->register_id("BASE_PARTICLE");
 }
 void bq::particle::damage(float f) {
 	//particles dont need to worry about damage

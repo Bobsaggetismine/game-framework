@@ -39,7 +39,8 @@ pongworld::pongworld() {
 		}
 		x += 32;
 	}
-	m_generator.set_size({ x / 32 , j / 32 });
+	bq::logger::info(std::to_string(x) + " ," + std::to_string(j));
+	m_generator.set_size({ j / 32, x / 32 });
 	m_generator.set_diagonal(true);
 	for (auto& col : colisions) {
 		m_generator.add_collision({ (int)col.x, (int)col.y} );

@@ -7,13 +7,13 @@ void machine_gun::action(std::optional<sf::Keyboard::Key> key, std::optional<bq:
 	if (pos) {
 		if (m_timer.getElapsedTime().asSeconds() > m_cooldown) {
 			bq::v2f mouse = { float(sf::Mouse::getPosition().x) , float(sf::Mouse::getPosition().y) };
-			bq::v2f origin = { float(1920.f / 2.f) + 32.f, float(1080.f / 2.f) + 32.f };
+			bq::v2f origin = { float(GAME_WIDTH / 2.f) + 32.f, float(GAME_HEIGHT/ 2.f) + 32.f };
 			bq::v2f movement_vector = { mouse.x - origin.x , mouse.y - origin.y };
 			movement_vector.normalize();
 			movement_vector.x *= 3;
 			movement_vector.y *= 3;
 			bq::v2f r = { pos.value().x + 16, pos.value().y + 16 };
-			bq::handler::get().m_em->add(std::make_unique<bullet>(r, movement_vector));
+			bq::handler::get().em()->add(std::make_unique<bullet>(r, movement_vector));
 			sound.play();
 			m_timer.restart();
 		}

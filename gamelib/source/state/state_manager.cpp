@@ -8,6 +8,11 @@ bq::state_manager::state_manager(std::unique_ptr<state> initial) {
 }
 bq::state_manager::state_manager() {}
 void bq::state_manager::pop() {
+#ifdef DEBUG
+	if (m_states.size() == 0) {
+		bq::logger::critical("popping empty state manager");
+	}
+#endif
 	m_states.pop();
 }
 

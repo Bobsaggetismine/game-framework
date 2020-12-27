@@ -17,7 +17,7 @@ int main(int argc, char* argv[])
 		bq::logger::critical(e.what());
 	}
 	catch (...) {
-		bq::logger::critical("unknown error thown!");
+		bq::logger::critical("unknown error thown");
 		return EXIT_FAILURE;
 	}
 	return EXIT_SUCCESS;

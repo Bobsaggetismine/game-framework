@@ -15,14 +15,14 @@ player::player() : upAnimation("player.png", 0 * SHEET_SIZE, SHEET_SIZE, 9, 10),
 	curSprite.setPosition({ m_pos.x,m_pos.y });
 	m_inventory.add_item(std::make_unique<machine_gun>(*this));
 	m_inventory.add_item(std::make_unique<gun>(*this));
-	m_id = bq::handler::get().m_em->register_id("PLAYER");
+	m_id = bq::handler::get().em()->register_id("PLAYER");
 }
 
 player::~player()
 {
 	if (m_quest != nullptr) {
 
-		bq::handler::get().m_em->unhook_quest(m_quest);
+		bq::handler::get().em()->unhook_quest(m_quest);
 
 		delete m_quest;
 	}
@@ -87,7 +87,7 @@ void player::input() {
 	}
 	
 	sf::FloatRect bounds = { m_pos.x + 16 + movement.x, m_pos.y + 15 + movement.y, m_size.x, m_size.y };
-	bq::block_collision_effects bce = bq::handler::get().m_world->get_collision_effects(bounds);
+	bq::block_collision_effects bce = bq::handler::get().world()->get_collision_effects(bounds);
 	if (!bce.m_collision) {
 		move(movement);
 	}
@@ -95,12 +95,12 @@ void player::input() {
 	m_inventory.update_position(m_pos.x - 120, m_pos.y +500);
 	hb.update_pos(m_pos.x - 50, m_pos.y - 500);
 	if (hp < 1) {
-		bq::v2f pos = { 1920 / 2 - 100 ,1080 / 2 - 50 };
+		bq::v2f pos = { GAME_WIDTH / 2 - 100 ,GAME_HEIGHT / 2 - 50 };
 		bq::v2f rect = { 200,100 };
 
-		bq::handler::get().m_cam->reset();
+		bq::handler::get().cam()->reset();
 
-		bq::handler::get().m_sm->push(std::make_unique<menu_state>(pos, rect), true);
+		bq::handler::get().sm()->push(std::make_unique<menu_state>(pos, rect), true);
 		return;
 	}
 }
@@ -109,10 +109,10 @@ void player::input() {
 void player::handle_event(sf::Event& evt) {
 	if (evt.type == sf::Event::KeyPressed) {
 		if (evt.key.code == sf::Keyboard::Space) {
-			bq::handler::get().m_world->interact(interactPoint.x, interactPoint.y);
+			bq::handler::get().world()->interact(interactPoint.x, interactPoint.y);
 
 			sf::FloatRect slightly_larger_bounds = { m_pos.x , m_pos.y , m_size.x + 30, m_size.y + 32 };
-			bq::entity* e =  bq::handler::get().m_em->intersects(slightly_larger_bounds, m_id, false);
+			bq::entity* e =  bq::handler::get().em()->intersects(slightly_larger_bounds, m_id, false);
 			if (e) e->interact();
 		}
 		if (evt.key.code == sf::Keyboard::Tab) {

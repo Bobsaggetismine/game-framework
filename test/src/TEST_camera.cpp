@@ -24,7 +24,7 @@ BOOST_AUTO_TEST_CASE(test_camera_construction) {
 
 	bq::entity* e = new test_entity();
 	bq::camera cam(e);
-	bq::v2f pos(1920, 1080);
+	bq::v2f pos(GAME_WIDTH, GAME_HEIGHT);
 	BOOST_CHECK(cam.view().getSize().x == pos.x);
 	BOOST_CHECK(cam.view().getSize().y == pos.y);
 	delete e;

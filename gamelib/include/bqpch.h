@@ -26,3 +26,6 @@
 #include <bq/util/random.h>
 #include <bq/util/nonmoveable.h>
 #include <bq/util/noncopyable.h>
+
+#define INTL_HEIGHT 1080
+#define INTL_WIDTH 1920

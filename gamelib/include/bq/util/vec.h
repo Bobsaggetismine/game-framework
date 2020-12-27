@@ -19,6 +19,12 @@ namespace bq {
 			bool yclose = fabs((double)other.y - y) < 0.001f;
 			return (xclose && yclose); 
 		}
+		bq::v2f operator+(const v2f& other) {
+			bq::v2f newVec = { 0,0 };
+			newVec += other;
+			newVec += *this;
+			return newVec;
+		}
 		void normalize() {
 			float mag_x = x * x;
 			float mag_y = y * y;

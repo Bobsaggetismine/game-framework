@@ -9,7 +9,7 @@ buff_enemy::buff_enemy() {
 	m_pos = { 500,500 };
 	m_size = { 27,30 };
 	clock.restart();
-	m_id = bq::handler::get().m_em->register_id("BUFF_ENEMY");
+	m_id = bq::handler::get().em()->register_id("BUFF_ENEMY");
 	buff_team();
 }
 void buff_enemy::damage(float dmg) {
@@ -26,17 +26,17 @@ void buff_enemy::render(sf::RenderWindow& window) {
 	window.draw(m_sprite);
 }
 void buff_enemy::buff_team() {
-	for (auto& e : bq::handler::get().m_em->entities()) {
-		if (e->id() != bq::handler::get().m_em->get_id("PLAYER") && e->id() != bq::handler::get().m_em->get_id("BUFF_ENEMY")) {
+	for (auto& e : bq::handler::get().em()->entities()) {
+		if (e->id() != bq::handler::get().em()->get_id("PLAYER") && e->id() != bq::handler::get().em()->get_id("BUFF_ENEMY")) {
 			bq::logger::warn(std::to_string(e->id()));
 			e->buff({1.3f,1});
 		}
 	}
 }
 void buff_enemy::debuff_team() {
-	for (auto& e : bq::handler::get().m_em->entities()) {
+	for (auto& e : bq::handler::get().em()->entities()) {
 
-		if (e->id() != bq::handler::get().m_em->get_id("PLAYER") && e->id() != bq::handler::get().m_em->get_id("BUFF_ENEMY")) {
+		if (e->id() != bq::handler::get().em()->get_id("PLAYER") && e->id() != bq::handler::get().em()->get_id("BUFF_ENEMY")) {
 			e->unbuff();
 		}
 	}
@@ -71,7 +71,7 @@ void buff_enemy::update() {
 
 
 	sf::FloatRect bounds = { m_pos.x + 2 + movement.x, m_pos.y + 2 + movement.y, m_size.x, m_size.y };
-	bq::block_collision_effects bce = bq::handler::get().m_world->get_collision_effects(bounds);
+	bq::block_collision_effects bce = bq::handler::get().world()->get_collision_effects(bounds);
 	if (!bce.m_collision) {
 		move(movement);
 

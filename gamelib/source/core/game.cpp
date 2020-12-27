@@ -8,7 +8,7 @@
 #include <bq/state/state.h>
 
 bq::game::game(unsigned w, unsigned h, std::string title, float ticks) : m_window({ w,h }, title, sf::Style::Fullscreen) {
-	bq::handler::get().m_sm = std::make_unique<bq::state_manager>();
+	bq::handler::get().set_sm(std::move(std::make_unique<bq::state_manager>()));
 	m_ups = sf::seconds(1.f / ticks);
 }
 

@@ -10,8 +10,8 @@
 void bq::gui::Button::handle_event(sf::Event& e) {
 	//auto pos = sf::Mouse::getPosition(window);
 	bq::v2f offset = { 0,0 };
-	if (bq::handler::get().m_cam != nullptr) {
-		offset = { bq::handler::get().m_cam->view().getCenter().x - (bq::handler::get().m_cam->view().getSize().x / 2)   , bq::handler::get().m_cam->view().getCenter().y - (bq::handler::get().m_cam->view().getSize().y / 2) };
+	if (bq::handler::get().cam() != nullptr) {
+		offset = { bq::handler::get().cam()->view().getCenter().x - (bq::handler::get().cam()->view().getSize().x / 2)   , bq::handler::get().cam()->view().getCenter().y - (bq::handler::get().cam()->view().getSize().y / 2) };
 	}
 	switch (e.type) {
 	case sf::Event::MouseButtonPressed:
@@ -36,8 +36,8 @@ void bq::gui::Button::render(sf::RenderWindow& window)
 {
 	bq::v2f offset = { 0,0 };
 
-	if (bq::handler::get().m_cam != nullptr) {
-		offset = { bq::handler::get().m_cam->view().getCenter().x - (bq::handler::get().m_cam->view().getSize().x / 2)   , bq::handler::get().m_cam->view().getCenter().y - (bq::handler::get().m_cam->view().getSize().y / 2) };
+	if (bq::handler::get().cam() != nullptr) {
+		offset = { bq::handler::get().cam()->view().getCenter().x - (bq::handler::get().cam()->view().getSize().x / 2)   , bq::handler::get().cam()->view().getCenter().y - (bq::handler::get().cam()->view().getSize().y / 2) };
 	}
 	
 

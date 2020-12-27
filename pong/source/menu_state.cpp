@@ -26,4 +26,5 @@ void menu_state::render(sf::RenderWindow& window) {
 	m_start_game.render(window);
 }
 void menu_state::update() {
+
 }    

@@ -8,7 +8,8 @@ class meele_enemy : public bq::entity
 	float range = 10.f,health = 100.f, move_speed = 1.25f;;
 	bool locked_on = false, blocked = false;
 	unsigned lockon_multiplier = 50;
-	size_t m_damage = 5, offset = 0, moves_made = 0;
+	std::unique_ptr<std::vector<bq::v2i>> m_movements;
+	size_t m_damage = 5, offset = 0, moves_made = 0, m_cached_runs;
 
 	bq::entity* m_entity;
 	bq::v2f movement = { 0,0 };

@@ -24,8 +24,8 @@ void robot_spawner::update() {
 
 	if (!m_fetched) fetch_player();
 
-	if(m_fetched)
-	bq::handler::get().m_em->add(std::make_unique<meele_enemy>(m_player));
+	if(m_fetched && bq::random::get().getRandom(0.f, 1.f) > 0.999f)
+	bq::handler::get().em()->add(std::make_unique<meele_enemy>(m_player));
 
 
 	animation.update();
@@ -35,8 +35,8 @@ void robot_spawner::interact() {}
 
 void robot_spawner::fetch_player()
 {
-	for (auto& entity : bq::handler::get().m_em->entities()) {
-		if (entity->id() == bq::handler::get().m_em->get_id("PLAYER")) {
+	for (auto& entity : bq::handler::get().em()->entities()) {
+		if (entity->id() == bq::handler::get().em()->get_id("PLAYER")) {
 			m_player = entity.get();
 			m_fetched = true;
 		}

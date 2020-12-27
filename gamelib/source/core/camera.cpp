@@ -13,12 +13,12 @@ void bq::camera::update() {
 }
 
 bq::camera::camera(bq::entity* e): m_target(e) {
-	m_view.setSize(1920, 1080);
+	m_view.setSize(INTL_WIDTH, INTL_HEIGHT);
 }
 const sf::View& bq::camera::view() const
 {
 	return m_view;
 }
 void bq::camera::reset() {
-	m_view.setCenter({ 1920 / 2,1080 / 2 });
+	m_view.setCenter({ INTL_WIDTH / 2,INTL_HEIGHT / 2 });
 }

@@ -1,12 +1,12 @@
 #include <bq.h>
 #include "meele_enemy.h"
 
-meele_enemy::meele_enemy(bq::entity* player): m_entity(player), sound(bq::resource_holder::get().sounds.get("sword.wav")) {
+meele_enemy::meele_enemy(bq::entity* player) : m_entity(player), sound(bq::resource_holder::get().sounds.get("sword.wav")) {
 	m_sprite.setTexture(bq::resource_holder::get().textures.get("robot.png"));
-	m_pos = {500,500};
-	m_size = {27,30};
+	m_pos = { 500,500 };
+	m_size = { 27,30 };
 	clock.restart();
-	m_id = bq::handler::get().m_em->register_id("MEELE_ENEMY");
+	m_id = bq::handler::get().em()->register_id("MEELE_ENEMY");
 }
 void meele_enemy::damage(float dmg) {
 	health -= dmg;
@@ -16,7 +16,7 @@ bool meele_enemy::should_cull(const sf::View&) const {
 }
 void meele_enemy::render(sf::RenderWindow& window) {
 #ifdef DEBUG
-	bq::v2f new_pos = { m_pos.x - (m_size.x * lockon_multiplier / 2) + (m_size.x/2), m_pos.y - (m_size.y * lockon_multiplier / 2) + (m_size.y / 2) };
+	bq::v2f new_pos = { m_pos.x - (m_size.x * lockon_multiplier / 2) + (m_size.x / 2), m_pos.y - (m_size.y * lockon_multiplier / 2) + (m_size.y / 2) };
 	bq::v2f new_size = { m_size.x * lockon_multiplier, m_size.y * lockon_multiplier };
 	sf::FloatRect this_square(new_pos, new_size);
 	sf::RectangleShape bounds_test;
@@ -32,7 +32,7 @@ void meele_enemy::render(sf::RenderWindow& window) {
 
 //this is some f tier AI for the enemy, which should get slightly improved over time if i learn how to make game ai better.
 void meele_enemy::update() {
-	
+
 	sf::FloatRect player_square(m_entity->pos(), m_entity->size());
 
 	if (!locked_on) {
@@ -71,49 +71,59 @@ void meele_enemy::update() {
 		}
 	}
 	else {
+
 		
-		std::unique_ptr<std::vector<bq::v2i>> movements;
-		if (offset == 0) {
-			movements = bq::handler::get().m_world->get_path({ (int)(std::ceil(m_pos.x / 32.f)) , (int)(std::ceil(m_pos.y / 32.f)) }, { (int)(std::ceil(m_entity->pos().x / 32.f)), (int)(std::ceil(m_entity->pos().y / 32.f)) });
+		if (m_cached_runs >= 10) {
+			m_movements.release();
+			m_movements = nullptr;
+			if (offset == 0) {
+				m_movements = bq::handler::get().world()->get_path({ (int)(std::ceil(m_pos.x / 32.f)) , (int)(std::ceil(m_pos.y / 32.f)) }, { (int)(std::ceil(m_entity->pos().x / 32.f)), (int)(std::ceil(m_entity->pos().y / 32.f)) });
+			}
+			else {
+				m_movements = bq::handler::get().world()->get_path({ (int)(std::ceil(m_pos.x / 32.f)) , (int)(std::ceil(m_pos.y / 32.f)) }, { (int)(std::ceil(m_entity->pos().x / 32.f)), (int)(std::ceil(m_entity->pos().y / 32.f)) });
+			}
+			m_cached_runs = 0;
 		}
 		else {
-			movements = bq::handler::get().m_world->get_path({ (int)((m_pos.x / 32.f)) , (int)((m_pos.y / 32.f)) }, { (int)(std::ceil(m_entity->pos().x / 32.f)), (int)(std::ceil(m_entity->pos().y / 32.f)) });
+			m_cached_runs++;
 		}
-		if (movements) {
-			if (movements->size() > 1) {
+		
+
+		if (m_movements) {
+			if (m_movements->size() > 1) {
 				if (!blocked) {
-					if ((*movements)[movements->size() - 2].y > (m_pos.y / 32.f)) {
+					if ((*m_movements)[m_movements->size() - 2].y > (m_pos.y / 32.f)) {
 						movement.y = move_speed * m_buff.m_speed_multiplier;
 						offset = 1;
 					}
-					else if ((*movements)[movements->size() - 2].y < (m_pos.y / 32.f)) {
+					else if ((*m_movements)[m_movements->size() - 2].y < (m_pos.y / 32.f)) {
 						movement.y = -move_speed * m_buff.m_speed_multiplier;
 						offset = 0;
 					}
-					else if ((*movements)[movements->size() - 2].x > (m_pos.x / 32.f)) {
+					else if ((*m_movements)[m_movements->size() - 2].x > (m_pos.x / 32.f)) {
 						movement.x = move_speed * m_buff.m_speed_multiplier;
 						offset = -1;
 					}
-					else if ((*movements)[movements->size() - 2].x < (m_pos.x / 32.f)) {
+					else if ((*m_movements)[m_movements->size() - 2].x < (m_pos.x / 32.f)) {
 						movement.x = -move_speed * m_buff.m_speed_multiplier;
 						offset = 0;
 					}
 					blocked = true;
 				}
 				else {
-					if ((*movements)[movements->size() - 2].x > (m_pos.x / 32.f)) {
+					if ((*m_movements)[m_movements->size() - 2].x > (m_pos.x / 32.f)) {
 						movement.x = move_speed * m_buff.m_speed_multiplier;
 						offset = -1;
 					}
-					else if ((*movements)[movements->size() - 2].x < (m_pos.x / 32.f)) {
+					else if ((*m_movements)[m_movements->size() - 2].x < (m_pos.x / 32.f)) {
 						movement.x = -move_speed * m_buff.m_speed_multiplier;
 						offset = 0;
 					}
-					else if ((*movements)[movements->size() - 2].y > (m_pos.y / 32.f)) {
+					else if ((*m_movements)[m_movements->size() - 2].y > (m_pos.y / 32.f)) {
 						movement.y = move_speed * m_buff.m_speed_multiplier;
 						offset = 1;
 					}
-					else if ((*movements)[movements->size() - 2].y < (m_pos.y / 32.f)) {
+					else if ((*m_movements)[m_movements->size() - 2].y < (m_pos.y / 32.f)) {
 						movement.y = -move_speed * m_buff.m_speed_multiplier;
 						offset = 0;
 					}
@@ -138,7 +148,7 @@ void meele_enemy::update() {
 	}
 
 	sf::FloatRect bounds = { m_pos.x + 2 + movement.x, m_pos.y + 2 + movement.y, m_size.x, m_size.y };
-	bq::block_collision_effects bce = bq::handler::get().m_world->get_collision_effects(bounds);
+	bq::block_collision_effects bce = bq::handler::get().world()->get_collision_effects(bounds);
 	if (!bce.m_collision) {
 		move(movement);
 	}
@@ -148,7 +158,7 @@ void meele_enemy::update() {
 	}
 	moves_made++;
 	m_sprite.setPosition(m_pos);
-	
+
 }
 
 void meele_enemy::handle_event(sf::Event& evt) {
