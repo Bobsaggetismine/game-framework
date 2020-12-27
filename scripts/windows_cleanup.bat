@@ -34,4 +34,9 @@ if exist "gamelib\gamelib.vcxproj.user" del "gamelib\gamelib.vcxproj.user"
 if exist "test\test.vcxproj" del "test\test.vcxproj"
 if exist "test\test.vcxproj.filters" del "test\test.vcxproj.filters"
 if exist "test\test.vcxproj.user" del "test\test.vcxproj.user"
+
+if exist "pong\pong.vcxproj" del "pong\pong.vcxproj"
+if exist "pong\pong.vcxproj.filters" del "pong\pong.vcxproj.filters"
+if exist "pong\pong.vcxproj.user" del "pong\pong.vcxproj.user"
+
 popd
