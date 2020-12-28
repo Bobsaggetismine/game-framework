@@ -1,4 +1,5 @@
 #include "bqpch.h"
+#include <bq/graphics/window.h>
 #include "bq/core/item.h"
 bq::item::~item(){}
 unsigned bq::item::uses() const
@@ -16,7 +17,7 @@ void bq::item::remove_uses(unsigned toRemove)
 	this->m_uses -= toRemove;
 }
 
-void bq::item::render(sf::RenderWindow& window) {
+void bq::item::render(bq::window& window) {
 	window.draw(m_sprite);
 }
 

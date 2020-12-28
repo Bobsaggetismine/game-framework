@@ -1,5 +1,5 @@
 #include "bqpch.h"
-
+#include <bq/graphics/window.h>
 #include <bq/world/block.h>
 #include <bq/util/block_collision_effects.h>
 #include <bq/core/AStar.hpp>
@@ -19,7 +19,7 @@ bq::block_collision_effects bq::world::get_collision_effects(sf::FloatRect& rect
 	}
 	return dc;
 }
-void bq::world::render(sf::RenderWindow& window) {
+void bq::world::render(bq::window& window) {
 	for (auto block : m_blocks) {
 		block->render(window);
 	}

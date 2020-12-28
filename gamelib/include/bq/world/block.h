@@ -1,6 +1,7 @@
 #pragma once
 
 namespace bq {
+	class window;
 	class block {
 	protected:
 		bq::v2f m_pos;
@@ -18,7 +19,7 @@ namespace bq {
 			return rect.contains({ x,y });
 		}
 		virtual void update() = 0;
-		virtual void render(sf::RenderWindow&) = 0;
+		virtual void render(bq::window&) = 0;
 		virtual void interact() = 0;
 		size_t damage() const;
 		bool solid() const;

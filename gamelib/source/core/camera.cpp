@@ -1,11 +1,12 @@
 #include "bqpch.h"
 #include <bq/entity/entity.h>
+#include <bq/graphics/window.h>
 #include <bq/core/camera.h>
 #include <bq/core/handler.h>
 #include <bq/world/world.h>
 #include <bq/state/state.h>
-void bq::camera::render(sf::RenderWindow& window) const {
-	window.setView(m_view);
+void bq::camera::render(bq::window& window) const {
+	window.set_view(m_view);
 }
 
 void bq::camera::update() {

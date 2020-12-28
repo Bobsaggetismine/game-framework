@@ -102,7 +102,7 @@ void george::update() {
 	
 
 }
-void george::render(sf::RenderWindow& window) {
+void george::render(bq::window& window) {
 	window.draw(m_sprite);
 
 	if (interacted) {

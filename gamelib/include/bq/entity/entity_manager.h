@@ -3,6 +3,7 @@
 
 namespace bq {
 
+	class window;
 	class entity;
 	class quest;
 	
@@ -21,7 +22,7 @@ namespace bq {
 		
 		entity_manager();
 		void update();
-		void render(sf::RenderWindow&);
+		void render(bq::window&);
 		void add(std::unique_ptr<entity>);
 		void remove(bq::entity*);
 		void handleEvent(bq::event&);

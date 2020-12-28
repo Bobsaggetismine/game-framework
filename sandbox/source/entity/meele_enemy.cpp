@@ -14,7 +14,7 @@ void meele_enemy::damage(float dmg) {
 bool meele_enemy::should_cull(const sf::View&) const {
 	return health <= 0.f;
 }
-void meele_enemy::render(sf::RenderWindow& window) {
+void meele_enemy::render(bq::window& window) {
 #ifdef DEBUG
 	bq::v2f new_pos = { m_pos.x - (m_size.x * lockon_multiplier / 2) + (m_size.x / 2), m_pos.y - (m_size.y * lockon_multiplier / 2) + (m_size.y / 2) };
 	bq::v2f new_size = { m_size.x * lockon_multiplier, m_size.y * lockon_multiplier };

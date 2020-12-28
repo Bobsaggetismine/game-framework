@@ -6,7 +6,7 @@
 #include <bq/core/handler.h>
 #include <bq/resource/resource_holder.h>
 #include <bq/state/state.h>
-
+#include <bq/graphics/window.h>
 void bq::gui::Button::handle_event(bq::event& e) {
 	if (e.type == bq::event_type::MOUSE) {
 		if (m_button.getGlobalBounds().contains(e.mouse_clicked_pos)) {
@@ -16,7 +16,7 @@ void bq::gui::Button::handle_event(bq::event& e) {
 	}
 }
 
-void bq::gui::Button::render(sf::RenderWindow& window)
+void bq::gui::Button::render(bq::window& window)
 {
 	bq::v2f offset = { 0,0 };
 
@@ -25,7 +25,7 @@ void bq::gui::Button::render(sf::RenderWindow& window)
 	}
 	
 
-	auto pos = sf::Mouse::getPosition(window);
+	auto pos = window.get_mouse_pos();
 	if (m_button.getGlobalBounds().contains((float)pos.x+offset.x, (float)pos.y + offset.y)) {
 		m_button.setFillColor(sf::Color::Magenta);
 	}

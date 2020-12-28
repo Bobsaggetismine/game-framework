@@ -5,6 +5,6 @@ class lava : public bq::block {
 public:
 	lava(float x, float y, float w, float h);
 	void update() override;
-	void render(sf::RenderWindow&) override;
+	void render(bq::window&) override;
 	void interact() override;
 };

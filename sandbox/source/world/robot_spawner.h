@@ -6,7 +6,7 @@ class robot_spawner : public bq::block{
 public:
 	robot_spawner(float x, float y, float w, float h);
 	void update() override;
-	void render(sf::RenderWindow&) override;
+	void render(bq::window&) override;
 	void interact() override;
 	void fetch_player();
 };

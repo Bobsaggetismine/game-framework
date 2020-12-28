@@ -23,30 +23,39 @@ DEBUG: resource: robot.png does not already exist, attempting to load...
 DEBUG: resource: robot.png loaded from file
 DEBUG: resource: george.png does not already exist, attempting to load...
 DEBUG: resource: george.png loaded from file
-DEBUG: Entities: 3
-DEBUG: Entities: 3
-DEBUG: Entities: 3
-DEBUG: Entities: 3
-DEBUG: Entities: 3
+DEBUG: Entities: 4
 DEBUG: resource: bullet.png does not already exist, attempting to load...
 DEBUG: resource: bullet.png loaded from file
 DEBUG: resource: hitmarker.wav does not already exist, attempting to load...
 DEBUG: resource: hitmarker.wav loaded from file
 DEBUG: resource: base_particle.png does not already exist, attempting to load...
 DEBUG: resource: base_particle.png loaded from file
-DEBUG: Entities: 39
-DEBUG: Entities: 41
-DEBUG: Entities: 41
-DEBUG: Entities: 10
-DEBUG: Entities: 10
-DEBUG: Entities: 65
-DEBUG: Entities: 53
-DEBUG: Entities: 40
-DEBUG: Entities: 51
-DEBUG: Entities: 51
-DEBUG: Entities: 3
-DEBUG: Entities: 87
+DEBUG: Entities: 32
+DEBUG: Entities: 17
+DEBUG: Entities: 5
+DEBUG: Entities: 5
+DEBUG: Entities: 5
+DEBUG: Button pressed
+DEBUG: Entities: 16
+DEBUG: Entities: 5
+DEBUG: Entities: 5
+DEBUG: Entities: 6
+DEBUG: Entities: 6
 DEBUG: Entities: 23
-DEBUG: Entities: 92
-DEBUG: Entities: 103
-DEBUG: Entities: 7
+DEBUG: Entities: 69
+DEBUG: Entities: 22
+DEBUG: Entities: 3
+DEBUG: Entities: 52
+DEBUG: Entities: 29
+DEBUG: Entities: 27
+DEBUG: Entities: 27
+DEBUG: Entities: 2
+DEBUG: Entities: 2
+DEBUG: Entities: 2
+DEBUG: Entities: 2
+DEBUG: Entities: 2
+DEBUG: Entities: 2
+DEBUG: Entities: 2
+DEBUG: Entities: 70
+DEBUG: Entities: 25
+DEBUG: Entities: 41

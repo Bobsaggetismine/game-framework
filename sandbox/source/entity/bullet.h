@@ -8,7 +8,7 @@ class bullet : public bq::entity {
 	int m_damage = 20;
 public:
 	void update() override;
-	void render(sf::RenderWindow&)override;
+	void render(bq::window&)override;
 	void handle_event(bq::event&) override;
 	virtual bool should_cull(const sf::View&) const override;
 	void damage(float) override;

@@ -8,7 +8,7 @@ class ball : public bq::entity {
 public:
 	ball();
 	void update() override;
-	void render(sf::RenderWindow&) override;
+	void render(bq::window&) override;
 	void handle_event(bq::event&) override;
 	void damage(float) override;
 	void interact() override;

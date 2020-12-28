@@ -17,7 +17,7 @@ robot_spawner::robot_spawner(float x, float y, float w, float h) : animation("la
 
 	
 }
-void robot_spawner::render(sf::RenderWindow& window) {
+void robot_spawner::render(bq::window& window) {
 	window.draw(animation.get());
 }
 void robot_spawner::update() {

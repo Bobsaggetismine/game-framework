@@ -34,7 +34,7 @@ void paddle::update()
 	m_shape.setSize(m_size);
 }
 
-void paddle::render(sf::RenderWindow& window)
+void paddle::render(bq::window& window)
 {
 	window.draw(m_shape);
 }

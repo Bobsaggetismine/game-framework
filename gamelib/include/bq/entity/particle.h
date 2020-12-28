@@ -13,7 +13,7 @@ namespace bq {
 		float m_life = 0;
 	public:
 		particle(float, float, float);
-		void render(sf::RenderWindow&) override;
+		void render(bq::window&) override;
 		void update() override;
 		void handle_event(bq::event&) override;
 		void damage(float) override;

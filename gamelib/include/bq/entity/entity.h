@@ -5,6 +5,7 @@ namespace bq {
 	class event;
 	struct buff;
 	struct v2f;
+	class window;
 
 	class entity {
 	protected:
@@ -13,7 +14,7 @@ namespace bq {
 		bq::v2f m_size;
 	public:
 		virtual void update() = 0;
-		virtual void render(sf::RenderWindow&) = 0;
+		virtual void render(bq::window&) = 0;
 		virtual void handle_event(bq::event&) = 0;
 		virtual void damage(float) = 0;
 		virtual void interact() = 0;

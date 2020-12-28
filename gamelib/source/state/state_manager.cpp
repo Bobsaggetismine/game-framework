@@ -33,13 +33,13 @@ void bq::state_manager::update() {
 	}
 	m_states.top()->update();
 }
-void bq::state_manager::render(sf::RenderWindow& window) const {
+void bq::state_manager::render(bq::window& window) const {
 	if (m_states.size() == 0) {
 		throw bq::illegal_state("m_states empty on render");
 	}
 	m_states.top()->render(window);
 }
-void bq::state_manager::handle_events(bq::event& evt, sf::RenderWindow& window) {
+void bq::state_manager::handle_events(bq::event& evt, bq::window& window) {
 	if (m_states.size() == 0) {
 		throw bq::illegal_state("m_states empty on handleEvents");
 	}

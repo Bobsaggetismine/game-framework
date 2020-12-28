@@ -3,9 +3,6 @@
 
 class pong : public bq::game {
 
-
-	
-
 public:
 	pong() : bq::game(GAME_WIDTH, GAME_HEIGHT, "Pong", 500.f) {
 

@@ -4,7 +4,7 @@
 #include "bq/gui/health_bar.h"
 #include <bq/event/event.h>
 #include <bq/resource/resource_holder.h>
-
+#include <bq/graphics/window.h>
 
 bq::gui::health_bar::health_bar() {
 	m_back.setFillColor(sf::Color::Red);
@@ -15,7 +15,7 @@ bq::gui::health_bar::health_bar() {
 	m_front.setSize({100,10});
 }
 
-void bq::gui::health_bar::render(sf::RenderWindow& window) {
+void bq::gui::health_bar::render(bq::window& window) {
 	window.draw(m_back);
 	window.draw(m_front);
 }

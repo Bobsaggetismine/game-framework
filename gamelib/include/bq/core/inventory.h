@@ -3,7 +3,7 @@
 
 
 namespace bq {
-
+	class window;
 	class item;
 
 	class inventory {
@@ -20,7 +20,7 @@ namespace bq {
 		void add_item(std::unique_ptr<bq::item>);
 		void drop_item();
 		bool empty() const;
-		void render(sf::RenderWindow& window) const;
+		void render(bq::window& window) const;
 		void update_position(float,float);
 		bq::item* get_selected() const;
 	};

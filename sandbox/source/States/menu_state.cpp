@@ -16,13 +16,13 @@ void menu_state::startGame() {
 	bq::handler::get().sm()->push(std::make_unique<game_state>());
 }
 
-void menu_state::handleEvents(bq::event& evt, sf::RenderWindow& window) {
+void menu_state::handleEvents(bq::event& evt, bq::window& window) {
 	m_start_game.handle_event(evt);
 }
-void menu_state::render(sf::RenderWindow& window) {
+void menu_state::render(bq::window& window) {
 	sf::View view;
 	view.reset(sf::FloatRect(0, 0, GAME_WIDTH, GAME_HEIGHT));
-	window.setView(view);
+	window.set_view(view);
 	m_start_game.render(window);
 }
 void menu_state::update() {

@@ -1,5 +1,6 @@
 #include "bqpch.h"
 #include <bq/entity/entity.h>
+#include <bq/graphics/window.h>
 #include "bq/entity/particle.h"
 #include "bq/resource/resource_holder.h"
 #include <bq/core/handler.h>
@@ -15,7 +16,7 @@ void bq::particle::handle_event(bq::event&)
 {
 }
 
-void bq::particle::render(sf::RenderWindow& window) {
+void bq::particle::render(bq::window& window) {
 	window.draw(m_sprite);
 }
 

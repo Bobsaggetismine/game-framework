@@ -2,6 +2,7 @@
 
 
 #include <bq/core/buff.h>
+#include <bq/graphics/window.h>
 #include "bq/entity/entity.h"
 
 void bq::entity::move(bq::v2f& other)

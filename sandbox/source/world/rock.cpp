@@ -9,7 +9,7 @@ rock::rock(float x, float y, float w, float h) : animation("rock.png", 0,32,2,1)
 	animation.get().setPosition({ m_pos.x, m_pos.y});
 	animation.update();
 }
-void rock::render(sf::RenderWindow& window) {
+void rock::render(bq::window& window) {
 	window.draw(animation.get());
 }
 void rock::update() {}

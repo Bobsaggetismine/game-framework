@@ -4,6 +4,7 @@
 
 namespace bq {
 	struct v2f;
+	class window;
 	namespace gui {
 		class Button : public bq::gui::widget {
 
@@ -15,7 +16,7 @@ namespace bq {
 			void setFunc(std::function<void(void)>);
 
 			void handle_event(bq::event& e) override;
-			void render(sf::RenderWindow& renderer) override;
+			void render(bq::window& renderer) override;
 			void update();
 			void setPos(bq::v2f);
 

@@ -31,7 +31,7 @@ void ball::update()
 	m_shape.setSize(m_size);
 }
 
-void ball::render(sf::RenderWindow& window)
+void ball::render(bq::window& window)
 {
 	window.draw(m_shape);
 }

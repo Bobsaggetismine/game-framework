@@ -9,7 +9,7 @@ door::door(std::string name, float x, float y, float w, float h) : animation(nam
 	animation.get().setPosition({ m_pos.x, m_pos.y });
 	animation.update();
 }
-void door::render(sf::RenderWindow& window) {
+void door::render(bq::window& window) {
 	window.draw(animation.get());
 }
 void door::update() {}

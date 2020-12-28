@@ -4,6 +4,7 @@
 namespace bq {
 	struct v2f;
 	class entity;
+	class window;
 
 	class camera {
 		bq::entity* m_target;
@@ -13,7 +14,7 @@ namespace bq {
 		
 		camera(bq::entity*);
 
-		void render(sf::RenderWindow&) const;
+		void render(bq::window&) const;
 		const sf::View& view() const;
 		void update();
 		void reset();

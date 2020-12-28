@@ -17,7 +17,7 @@ public:
 	void update() override;
 	void buff_team();
 	void debuff_team();
-	void render(sf::RenderWindow& window) override;
+	void render(bq::window& window) override;
 	void handle_event(bq::event& evt) override;
 	void damage(float) override;
 	bool should_cull(const sf::View&) const override;

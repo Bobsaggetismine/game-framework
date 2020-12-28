@@ -26,7 +26,7 @@ void robot_quest::handleQuestEvent(bq::quest_event& qe)
 	}
 }
 
-void robot_quest::render(sf::RenderWindow& window)
+void robot_quest::render(bq::window& window)
 {
 	sf::RectangleShape outline;
 	outline.setPosition({ m_entity->pos().x - (GAME_WIDTH/2)+1, m_entity->pos().y - (GAME_HEIGHT/2)+1 });

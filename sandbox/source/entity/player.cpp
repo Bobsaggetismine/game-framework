@@ -48,7 +48,7 @@ void player::update() {
 }
 
 
-void player::render(sf::RenderWindow& window) {
+void player::render(bq::window& window) {
 	window.draw(curSprite);
 	m_inventory.render(window);
 	hb.render(window);

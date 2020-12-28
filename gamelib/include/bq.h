@@ -43,7 +43,7 @@
 #include <bq/quest/quest.h>
 #include <bq/entity/particle.h>
 #include <bq/event/event.h>
-
+#include <bq/graphics/window.h>
 
 constexpr int GAME_HEIGHT = INTL_HEIGHT;
 constexpr int GAME_WIDTH = INTL_WIDTH;

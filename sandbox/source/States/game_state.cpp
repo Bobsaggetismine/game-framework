@@ -7,7 +7,7 @@
 #include "game_state.h"
 
 
-void game_state::render(sf::RenderWindow& window) {
+void game_state::render(bq::window& window) {
 	bq::handler::get().world()->render(window);
 	bq::handler::get().em()->render(window);
 	bq::handler::get().cam()->render(window);
@@ -32,7 +32,7 @@ void game_state::update() {
 		bq::handler::get().cam()->update();
 	}
 }
-void game_state::handleEvents(bq::event& evt, sf::RenderWindow& window) {
+void game_state::handleEvents(bq::event& evt, bq::window& window) {
 	if (evt.type == bq::event_type::KEYPRESSED) {
 		if (evt.keycode == bq::keyboard::keycode::P) {
 			paused = !paused;

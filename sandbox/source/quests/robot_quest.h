@@ -12,5 +12,5 @@ public:
 
 	void update() override;
 	void handleQuestEvent(bq::quest_event&) override;
-	void render(sf::RenderWindow&) override;
+	void render(bq::window&) override;
 };

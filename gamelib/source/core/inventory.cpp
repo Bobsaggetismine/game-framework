@@ -1,5 +1,6 @@
 #include "bqpch.h"
 #include "bq/core/item.h"
+#include <bq/graphics/window.h>
 #include "bq/core/inventory.h"
 #include "bq/resource/resource_holder.h"
 bq::inventory::inventory(){
@@ -38,7 +39,7 @@ bq::item* bq::inventory::get_selected() const {
 		return m_items[m_index].get();
 	}
 }
-void bq::inventory::render(sf::RenderWindow& window) const {
+void bq::inventory::render(bq::window& window) const {
 	window.draw(m_sprite);
 	for (auto& item : m_items) {
 		item->render(window);

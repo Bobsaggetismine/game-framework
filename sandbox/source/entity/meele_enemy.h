@@ -20,7 +20,7 @@ class meele_enemy : public bq::entity
 public:
 	meele_enemy(bq::entity*);
 	virtual void update() override;
-	virtual void render(sf::RenderWindow& window) override;
+	virtual void render(bq::window& window) override;
 	virtual void handle_event(bq::event& evt) override;
 	virtual void damage(float) override;
 	virtual bool should_cull(const sf::View&) const override;

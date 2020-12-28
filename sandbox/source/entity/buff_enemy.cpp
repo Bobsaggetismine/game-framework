@@ -22,7 +22,7 @@ bool buff_enemy::should_cull(const sf::View&) const {
 	
 	return health <= 0.f;
 }
-void buff_enemy::render(sf::RenderWindow& window) {
+void buff_enemy::render(bq::window& window) {
 	window.draw(m_sprite);
 }
 void buff_enemy::buff_team() {

@@ -13,7 +13,7 @@ namespace bq {
 
 		public:
 			health_bar();
-			void render(sf::RenderWindow& renderer) override;
+			void render(bq::window& renderer) override;
 			void update(float);
 			void handle_event(bq::event& e) override;
 			void update_pos(float, float);

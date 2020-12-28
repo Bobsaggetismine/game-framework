@@ -47,7 +47,7 @@ void bullet::update() {
 
 }
 
-void bullet::render(sf::RenderWindow& window) {
+void bullet::render(bq::window& window) {
 	window.draw(sprite);
 }
 bool bullet::should_cull(const sf::View& view) const {
