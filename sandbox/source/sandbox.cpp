@@ -1,5 +1,5 @@
 #include <bq.h>
-#include "States/menu_state.h"
+#include "state/menu_state.h"
 
 //testing out this json lib to see if i want a wrapper for my game engine. 
 class Pong : public bq::game {
@@ -27,8 +27,7 @@ public:
 	}
 	int execute() override {
 		bq::logger::log_to_file("log.txt",true); 
-		run();	
-
+		run();
 		return EXIT_SUCCESS;
 	}
 } game;

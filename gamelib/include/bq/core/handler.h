@@ -1,6 +1,7 @@
 #pragma once
 #include <bq/entity/entity_manager.h>
 #include <bq/state/state_manager.h>
+#include <bq/exception/illegal_state.h>
 #include <bq/world/world.h>
 #include <bq/core/camera.h>
 namespace bq {
@@ -29,6 +30,7 @@ namespace bq {
 #ifdef DEBUG
 			if (!m_world) {
 				bq::logger::warn("m_world is null on access");
+				throw bq::illegal_state("world null on access");
 			}
 #endif
 			return m_world.get();
@@ -37,7 +39,9 @@ namespace bq {
 #ifdef DEBUG
 			if (!m_em) {
 				bq::logger::warn("m_em is null on access");
+				throw bq::illegal_state("entity_manager null on access");
 			}
+			
 #endif
 			return m_em.get();
 		}
@@ -45,6 +49,7 @@ namespace bq {
 #ifdef DEBUG
 			if (!m_sm) {
 				bq::logger::warn("m_sm is null on access");
+				throw bq::illegal_state("state_manager null on access");
 			}
 #endif
 			return m_sm.get();

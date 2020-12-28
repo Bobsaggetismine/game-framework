@@ -3,63 +3,9 @@
 #include <bq.h>
 #include <bq/world/world.h>
 #include <bq/world/block.h>
-class test_block : public bq::block {
-public:
-	test_block(float x, float y, float l, float w){
-		m_pos = { x,y };
-		m_size = { l,w };
-	}
 
-	bool intersects(sf::FloatRect& other) override{
-		sf::FloatRect rect = { m_pos.x, m_pos.y, m_size.x, m_size.y };
-		return rect.intersects(other);
-	}
-	bool contains(float x, float y) override {
-		sf::FloatRect rect = { m_pos.x, m_pos.y, m_size.x, m_size.y };
-		return rect.contains({ x,y });
-	}
-	void update() override{
+#include "world.h"
 
-	}
-	void render(sf::RenderWindow& window) override{
-
-	}
-	void interact() override {
-
-	}
-	
-};
-class test_block2 : public bq::block {
-public:
-	test_block2(float x, float y, float l, float w) {
-		m_pos = { x,y };
-		m_size = { l,w };
-	}
-	bool contains(float x, float y) override {
-		sf::FloatRect rect = { m_pos.x, m_pos.y, m_size.x, m_size.y };
-		return rect.contains({ x,y });
-	}
-	void update() override {
-
-	}
-	void render(sf::RenderWindow& window) override {
-
-	}
-	void interact() override {
-
-	}
-};
-//we're not going to test anything about blocks, as the onus to load the block vector from file is on the gamedev
-class test_world : public bq::world {
-public:
-	test_world() {
-		m_blocks.push_back(std::make_shared<test_block>(32,32,32,32));
-	}
-	virtual std::unique_ptr<std::vector<bq::v2i>> get_path(bq::v2i, bq::v2i) override {
-		return std::make_unique<std::vector<bq::v2i>>();
-	
-	}
-};
 BOOST_AUTO_TEST_CASE(test_block_intersects) {
 	test_block2 block1(32.f,32.f,32.f,32.f);
 	//should intersect

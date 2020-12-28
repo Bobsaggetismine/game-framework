@@ -1,7 +1,7 @@
 #include <bq.h>
 
 #include "../world/pongworld.h"
-#include "../States/menu_state.h"
+#include "../state/menu_state.h"
 #include "bullet.h"
 #include "../items/machine_gun.h"
 #include "../items/gun.h"

@@ -17,10 +17,10 @@ void bq::game::run() {
 	bq::logger::info("running game loop");
 	
 	while (m_window.open()) {
-		bq::event* evt = m_window.poll_event();
-		while (evt != nullptr) {
-				handleEvent(*evt);
-				delete evt;
+		
+		auto evt = m_window.poll_event();
+		while (evt.type != bq::event_type::NONE) {
+				handleEvent(evt);
 				evt = m_window.poll_event();
 		}
 		if (m_accumulator > m_ups) {

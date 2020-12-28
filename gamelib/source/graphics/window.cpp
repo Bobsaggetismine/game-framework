@@ -82,6 +82,7 @@ void bq::window::draw(const sf::Text& t)
 	m_window.draw(t);
 }
 
+
 bq::v2i bq::window::get_mouse_pos()
 {
 	return { sf::Mouse::getPosition(m_window).x, sf::Mouse::getPosition(m_window).y };
@@ -93,28 +94,28 @@ void bq::window::draw(const sf::Sprite& sprite) {
 bool bq::window::open() {
 	return m_window.isOpen();
 }
-bq::event* bq::window::poll_event() {
+bq::event bq::window::poll_event() {
 	sf::Event sf_event;
 	if (m_window.pollEvent(sf_event)) {
 		switch (sf_event.type) {
 		case sf::Event::Closed:
-			return new bq::event(bq::event_type::CLOSE);
+			return bq::event(bq::event_type::CLOSE);
 			break;
 		case sf::Event::KeyPressed:
-			return new bq::event(bq::event_type::KEYPRESSED, intl_convert_keycode(sf_event.key.code));
+			return bq::event(bq::event_type::KEYPRESSED, intl_convert_keycode(sf_event.key.code));
 			break;
 		case sf::Event::KeyReleased:
-			return new bq::event(bq::event_type::KEYRELEASED, intl_convert_keycode(sf_event.key.code));
+			return bq::event(bq::event_type::KEYRELEASED, intl_convert_keycode(sf_event.key.code));
 			break;
 		case sf::Event::MouseButtonPressed:
-			return new bq::event(bq::event_type::MOUSE, intl_get_mouse_pos(sf_event));
+			return bq::event(bq::event_type::MOUSE, intl_get_mouse_pos(sf_event));
 			break;
 		default:
-			return new bq::event(bq::event_type::NONE);
+			return bq::event(bq::event_type::NONE);
 			break;
 		}
 	}
-	return nullptr;
+	return bq::event(bq::event_type::NONE);
 }
 
 void bq::window::clear(colour c)

@@ -56,15 +56,16 @@ void bq::inventory::update_position(float x, float y) {
 }
 void bq::inventory::add_item(std::unique_ptr<bq::item> item) {
 	m_items.push_back(std::move(item));
-
 	if (m_index == -1) {
 		m_index = 0;
 	}
-
 }
 bool bq::inventory::empty() const {
 	return m_items.size() == 0;
 }
 void bq::inventory::drop_item() {
 	m_items.erase(m_items.begin() + m_index);
+	if (empty()) {
+		m_index = -1;
+	}
 }

@@ -9,14 +9,16 @@ public:
 	void update() override{
 
 	}
-	void render(sf::RenderWindow& window) {
-
-	}
-	void handleEvents(sf::Event& evt, sf::RenderWindow& window) {
-
-	}
 	virtual ~test_state() {
 
+	}
+
+	// Inherited via state
+	virtual void render(bq::window& window) override
+	{
+	}
+	virtual void handleEvents(bq::event& evt, bq::window& window) override
+	{
 	}
 };
 
@@ -31,41 +33,39 @@ BOOST_AUTO_TEST_CASE(test_state_manager_pop) {
 }
 BOOST_AUTO_TEST_CASE(test_state_manager_replace_true) {
 
-	bq::state* ts = new test_state();
-	bq::state* ts1 = new test_state();
+	auto ts = std::make_unique<test_state>();
+	auto ts1 = std::make_unique<test_state>();
 
-	/*
+	test_state* ts_ptr = ts.get();
+	test_state* ts1_ptr = ts1.get();
 
-	bq::state_manager sm(std::make_unique<test_state>(ts));
-	sm.push(std::make_unique<test_state>(ts1));
+	bq::state_manager sm(std::move(ts));
+	sm.push(std::move(ts1),true);
 	BOOST_CHECK(sm.get_num_states() == 1);
 
-	BOOST_CHECK(sm.get_current_state() == ts1);
-	BOOST_CHECK(sm.get_current_state() != ts);
-	*/
-	delete ts;
-	delete ts1;
+	BOOST_CHECK(sm.get_current_state() == ts1_ptr);
+	BOOST_CHECK(sm.get_current_state() != ts_ptr);
 }
 BOOST_AUTO_TEST_CASE(test_state_manager_replace_false) {
-	/*
-	bq::state* ts = new test_state();
-	bq::state* ts1 = new test_state();
+	auto ts = std::make_unique<test_state>();
+	auto ts1 = std::make_unique<test_state>();
 
-
-	bq::state_manager sm(std::make_unique<test_state>(ts));
-	sm.push(std::make_unique<test_state>(ts1), false);
+	test_state* ts_ptr = ts.get();
+	test_state* ts1_ptr = ts1.get();
+	
+	bq::state_manager sm(std::move(ts));
+	sm.push(std::move(ts1), false);
 	BOOST_CHECK(sm.get_num_states() == 2);
 
-	BOOST_CHECK(sm.get_current_state() == ts1);
+	BOOST_CHECK(sm.get_current_state() == ts1_ptr);
 	sm.pop();
-	BOOST_CHECK(sm.get_current_state() == ts);
-	*/
+	BOOST_CHECK(sm.get_current_state() == ts_ptr);
 }
 BOOST_AUTO_TEST_CASE(test_state_manager_empty) {
 
 	bq::state_manager sm(std::make_unique<test_state>());
 	sm.pop();
 	BOOST_REQUIRE_THROW(sm.update(), bq::illegal_state);
-	sf::RenderWindow window;
+	bq::window window(4,4,"title");
 	BOOST_REQUIRE_THROW(sm.render(window), bq::illegal_state);
 }

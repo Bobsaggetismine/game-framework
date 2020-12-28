@@ -12,8 +12,8 @@ public:
 	void update() override {
 		m_pos += bq::v2f(1,1);
 	}
-	void render(sf::RenderWindow&) override {}
-	void handle_event(sf::Event&)   override {}
+	void render(bq::window&) override {}
+	void handle_event(bq::event&)   override {}
 	void damage(float) override {}
 	void interact() override {}
 	bool should_cull(const sf::View&) const override {return false;}
