@@ -4,6 +4,7 @@ class application;
 
 namespace bq {
 
+	class event;
 
 	class  game : public application {
 		sf::Clock m_clock;
@@ -19,7 +20,7 @@ namespace bq {
 		void run();
 		virtual void update() = 0;
 		virtual void render() = 0;
-		virtual void handleEvent(sf::Event&) = 0;
+		virtual void handleEvent(bq::event&) = 0;
 		void init() override;
 	};
 }

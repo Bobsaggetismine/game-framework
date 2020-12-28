@@ -1,34 +1,18 @@
 #include "bqpch.h"
 
-
+#include <bq/event/event.h>
 #include <bq/entity/entity.h>
 #include <bq/gui/button.h>
 #include <bq/core/handler.h>
 #include <bq/resource/resource_holder.h>
 #include <bq/state/state.h>
 
-void bq::gui::Button::handle_event(sf::Event& e) {
-	//auto pos = sf::Mouse::getPosition(window);
-	bq::v2f offset = { 0,0 };
-	if (bq::handler::get().cam() != nullptr) {
-		offset = { bq::handler::get().cam()->view().getCenter().x - (bq::handler::get().cam()->view().getSize().x / 2)   , bq::handler::get().cam()->view().getCenter().y - (bq::handler::get().cam()->view().getSize().y / 2) };
-	}
-	switch (e.type) {
-	case sf::Event::MouseButtonPressed:
-		switch (e.mouseButton.button) {
-		case sf::Mouse::Left:
-			
-			if (m_button.getGlobalBounds().contains((float)e.mouseButton.x + offset.x, (float)e.mouseButton.y + offset.y)) {
-				bq::logger::debug("Button pressed");
-				m_function();
-			}
-
-		default:
-			break;
+void bq::gui::Button::handle_event(bq::event& e) {
+	if (e.type == bq::event_type::MOUSE) {
+		if (m_button.getGlobalBounds().contains(e.mouse_clicked_pos)) {
+			bq::logger::debug("Button pressed");
+			m_function();
 		}
-
-	default:
-		break;
 	}
 }
 
@@ -48,7 +32,6 @@ void bq::gui::Button::render(sf::RenderWindow& window)
 	else {
 		m_button.setFillColor(sf::Color::Red);
 	}
-
 
 	window.draw(m_button);
 	window.draw(m_text);

@@ -21,7 +21,7 @@ public:
 	meele_enemy(bq::entity*);
 	virtual void update() override;
 	virtual void render(sf::RenderWindow& window) override;
-	virtual void handle_event(sf::Event& evt) override;
+	virtual void handle_event(bq::event& evt) override;
 	virtual void damage(float) override;
 	virtual bool should_cull(const sf::View&) const override;
 	virtual void buff(bq::buff) override;

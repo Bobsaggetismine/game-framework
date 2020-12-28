@@ -2,6 +2,7 @@
 #include <bq/entity/entity.h>
 #include <bq/gui/Widget.h>
 #include "bq/gui/health_bar.h"
+#include <bq/event/event.h>
 #include <bq/resource/resource_holder.h>
 
 
@@ -21,7 +22,7 @@ void bq::gui::health_bar::render(sf::RenderWindow& window) {
 void bq::gui::health_bar::update(float f) {
 	m_front.setSize({f,10});
 }
-void bq::gui::health_bar::handle_event(sf::Event& e) {
+void bq::gui::health_bar::handle_event(bq::event& e) {
 
 }
 void bq::gui::health_bar::update_pos(float x, float y) {

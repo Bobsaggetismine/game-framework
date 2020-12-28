@@ -83,6 +83,6 @@ void buff_enemy::update() {
 	m_sprite.setPosition(m_pos);
 }
 
-void buff_enemy::handle_event(sf::Event& evt) {}
+void buff_enemy::handle_event(bq::event& evt) {}
 
 void buff_enemy::interact() {}

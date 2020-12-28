@@ -110,7 +110,7 @@ void george::render(sf::RenderWindow& window) {
 	}
 
 }
-void george::handle_event(sf::Event& evt) {
+void george::handle_event(bq::event& evt) {
 	m_dialog.handle_event(evt);
 }
 bool george::intersects(sf::FloatRect& other) {

@@ -36,7 +36,7 @@ void ball::render(sf::RenderWindow& window)
 	window.draw(m_shape);
 }
 
-void ball::handle_event(sf::Event&)
+void ball::handle_event(bq::event&)
 {
 }
 

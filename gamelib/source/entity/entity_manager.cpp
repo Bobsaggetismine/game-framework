@@ -7,6 +7,7 @@
 #include <bq/entity/entity_manager.h>
 #include <bq/core/handler.h>
 #include <bq/state/state.h>
+#include <bq/event/event.h>
 bq::entity_manager::entity_manager() {}
 
 void bq::entity_manager::add(std::unique_ptr<bq::entity> e) {
@@ -62,7 +63,7 @@ void bq::entity_manager::render(sf::RenderWindow& window) {
 		e->render(window);
 	}
 }
-void bq::entity_manager::handleEvent(sf::Event& evt) {
+void bq::entity_manager::handleEvent(bq::event& evt) {
 	for (auto& e : m_entities) {
 		e->handle_event(evt);
 	}

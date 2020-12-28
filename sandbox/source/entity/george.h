@@ -24,7 +24,7 @@ public:
 
 	void render(sf::RenderWindow&) override;
 	void update() override;
-	void handle_event(sf::Event&) override;
+	void handle_event(bq::event&) override;
 	void damage(float) override;
 	bool intersects(sf::FloatRect&) override;
 	virtual void interact() override;

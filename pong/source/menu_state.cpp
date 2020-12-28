@@ -16,7 +16,7 @@ void menu_state::startGame() {
 	bq::handler::get().sm()->push(std::make_unique<game_state>());
 }
 
-void menu_state::handleEvents(sf::Event& evt, sf::RenderWindow& window) {
+void menu_state::handleEvents(bq::event& evt, sf::RenderWindow& window) {
 	m_start_game.handle_event(evt);
 }
 void menu_state::render(sf::RenderWindow& window) {

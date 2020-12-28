@@ -15,7 +15,7 @@ namespace bq {
 		particle(float, float, float);
 		void render(sf::RenderWindow&) override;
 		void update() override;
-		void handle_event(sf::Event&) override;
+		void handle_event(bq::event&) override;
 		void damage(float) override;
 		bool should_cull(const sf::View&) const override;
 		bool intersects(sf::FloatRect&) override;

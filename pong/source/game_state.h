@@ -7,6 +7,6 @@ public:
 	game_state();
 	void render(sf::RenderWindow&) override;
 	void update() override;
-	void handleEvents(sf::Event&, sf::RenderWindow&) override;
+	void handleEvents(bq::event&, sf::RenderWindow&) override;
 
 };

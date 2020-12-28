@@ -1,7 +1,7 @@
 #include "paddle.h"
 
 
-paddle::paddle(bq::v2f initial_position, sf::Keyboard::Key upBind, sf::Keyboard::Key downBind) {
+paddle::paddle(bq::v2f initial_position, bq::keyboard::keycode upBind, bq::keyboard::keycode downBind) {
 	upKeybind = upBind;
 	downKeybind = downBind;
 	m_pos = initial_position;
@@ -39,22 +39,23 @@ void paddle::render(sf::RenderWindow& window)
 	window.draw(m_shape);
 }
 
-void paddle::handle_event(sf::Event& evt)
+void paddle::handle_event(bq::event& evt)
 {
-	if (evt.type == sf::Event::KeyPressed) {
-		if (evt.key.code == upKeybind) {
+
+	if (evt.type == bq::event_type::KEYPRESSED) {
+		if (evt.keycode == upKeybind) {
 			m_vel.y = -1;
 		}
-		if (evt.key.code == downKeybind) {
+		if (evt.keycode == downKeybind) {
 			m_vel.y = 1;
 		}
 	}
-	else if (evt.type == sf::Event::KeyReleased) {
-		if (evt.key.code == upKeybind) {
+	else if (evt.type == bq::event_type::KEYRELEASED) {
+		if (evt.keycode == upKeybind) {
 			if(m_vel.y == -1.f)
 			m_vel.y = 0;
 		}
-		if (evt.key.code == downKeybind) {
+		if (evt.keycode == downKeybind) {
 			if (m_vel.y == 1.f)
 			m_vel.y = 0;
 		}

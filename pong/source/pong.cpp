@@ -22,8 +22,8 @@ public:
 		bq::handler::get().sm()->render(m_window);
 	}
 	
-	void handleEvent(sf::Event& evt) override {
-		if (evt.type == sf::Event::Closed) {
+	void handleEvent(bq::event& evt) override {
+		if (evt.type == bq::event_type::CLOSE) {
 			m_window.close();
 			exit(0);
 		}

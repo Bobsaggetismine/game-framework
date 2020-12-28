@@ -19,7 +19,6 @@
 #include <sstream>
 #include <optional>
 #include <exception>
-
 #include <bq/core/AStar.hpp>
 #include <bq/application/application.h>
 #include <bq/core/game.h>
@@ -43,7 +42,7 @@
 #include <bq/quest/quest_event.h>
 #include <bq/quest/quest.h>
 #include <bq/entity/particle.h>
-
+#include <bq/event/event.h>
 
 
 constexpr int GAME_HEIGHT = INTL_HEIGHT;

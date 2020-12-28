@@ -161,7 +161,7 @@ void meele_enemy::update() {
 
 }
 
-void meele_enemy::handle_event(sf::Event& evt) {
+void meele_enemy::handle_event(bq::event& evt) {
 
 }
 void meele_enemy::buff(bq::buff b) {

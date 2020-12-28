@@ -17,7 +17,7 @@ bool bullet::intersects(sf::FloatRect&)
 {
 	return false;
 }
-void bullet::handle_event(sf::Event& evt) {
+void bullet::handle_event(bq::event& evt) {
 
 }
 

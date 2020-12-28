@@ -24,7 +24,7 @@ namespace bq {
 		void render(sf::RenderWindow&);
 		void add(std::unique_ptr<entity>);
 		void remove(bq::entity*);
-		void handleEvent(sf::Event&);
+		void handleEvent(bq::event&);
 		size_t register_id(const std::string&);
 		void hook_quest(bq::quest*);
 		void unhook_quest(bq::quest*);

@@ -7,7 +7,7 @@ class game_state : public bq::state {
 	player* m_player;
 public:
 	game_state();
-	void handleEvents (sf::Event&, sf::RenderWindow&) override;
+	void handleEvents (bq::event&, sf::RenderWindow&) override;
 	void update() override;
 	void render(sf::RenderWindow&) override;
 };

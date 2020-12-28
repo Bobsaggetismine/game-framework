@@ -32,9 +32,9 @@ void game_state::update() {
 		bq::handler::get().cam()->update();
 	}
 }
-void game_state::handleEvents(sf::Event& evt, sf::RenderWindow& window) {
-	if (evt.type == sf::Event::KeyPressed) {
-		if (evt.key.code == sf::Keyboard::P) {
+void game_state::handleEvents(bq::event& evt, sf::RenderWindow& window) {
+	if (evt.type == bq::event_type::KEYPRESSED) {
+		if (evt.keycode == bq::keyboard::keycode::P) {
 			paused = !paused;
 		}
 		else {

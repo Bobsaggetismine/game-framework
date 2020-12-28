@@ -18,7 +18,7 @@ public:
 	virtual ~player();
 	void update() override;
 	void render(sf::RenderWindow&) override;
-	void handle_event(sf::Event&)   override;
+	void handle_event(bq::event&)   override;
 	void input();
 	void damage(float) override;
 	virtual void interact() override;

@@ -9,7 +9,7 @@ public:
 	ball();
 	void update() override;
 	void render(sf::RenderWindow&) override;
-	void handle_event(sf::Event&) override;
+	void handle_event(bq::event&) override;
 	void damage(float) override;
 	void interact() override;
 };

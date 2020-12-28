@@ -3,6 +3,7 @@
 namespace bq {
 	
 	class state;
+	class event;
 
 	class state_manager {
 		std::stack<std::unique_ptr<state>> m_states;
@@ -14,8 +15,7 @@ namespace bq {
 		void pop();
 		void update();
 		void render(sf::RenderWindow&) const;
-		void handle_events(sf::Event&, sf::RenderWindow&);
-
+		void handle_events(bq::event&, sf::RenderWindow&);
 		size_t get_num_states();
 		bq::state* get_current_state();
 	};

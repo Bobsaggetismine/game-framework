@@ -2,7 +2,6 @@
 #include <bq/gui/Widget.h>
 
 
-
 namespace bq {
 	struct v2f;
 	namespace gui {
@@ -15,7 +14,7 @@ namespace bq {
 			Button(bq::v2f, bq::v2f,std::string, sf::Color, sf::Color, unsigned size_t);
 			void setFunc(std::function<void(void)>);
 
-			void handle_event(sf::Event& e) override;
+			void handle_event(bq::event& e) override;
 			void render(sf::RenderWindow& renderer) override;
 			void update();
 			void setPos(bq::v2f);

@@ -8,5 +8,5 @@ public:
 	menu_state(bq::v2f, bq::v2f);
 	void render(sf::RenderWindow&) override;
 	void update() override;
-	void handleEvents(sf::Event&, sf::RenderWindow&) override;
+	void handleEvents(bq::event&, sf::RenderWindow&) override;
 };

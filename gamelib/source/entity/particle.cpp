@@ -6,14 +6,12 @@
 #include <bq/state/state.h>
 void bq::particle::update() {
 	move(m_movement);
-
 	m_sprite.setPosition(m_pos);
-
 	m_movement.x *= 0.894f;
 	m_movement.y *= 0.894f;
 }
 
-void bq::particle::handle_event(sf::Event&)
+void bq::particle::handle_event(bq::event&)
 {
 }
 

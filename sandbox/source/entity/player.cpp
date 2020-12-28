@@ -106,16 +106,16 @@ void player::input() {
 }
 
 
-void player::handle_event(sf::Event& evt) {
-	if (evt.type == sf::Event::KeyPressed) {
-		if (evt.key.code == sf::Keyboard::Space) {
+void player::handle_event(bq::event& evt) {
+	if (evt.type == bq::event_type::KEYPRESSED) {
+		if (evt.keycode == bq::keyboard::keycode::SPACE) {
 			bq::handler::get().world()->interact(interactPoint.x, interactPoint.y);
 
 			sf::FloatRect slightly_larger_bounds = { m_pos.x , m_pos.y , m_size.x + 30, m_size.y + 32 };
 			bq::entity* e =  bq::handler::get().em()->intersects(slightly_larger_bounds, m_id, false);
 			if (e) e->interact();
 		}
-		if (evt.key.code == sf::Keyboard::Tab) {
+		if (evt.keycode == bq::keyboard::keycode::TAB) {
 			m_inventory.cycle_forward();
 		}
 	}

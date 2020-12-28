@@ -15,7 +15,7 @@ namespace bq {
 			health_bar();
 			void render(sf::RenderWindow& renderer) override;
 			void update(float);
-			void handle_event(sf::Event& e) override;
+			void handle_event(bq::event& e) override;
 			void update_pos(float, float);
 		};
 	}

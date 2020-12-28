@@ -1,4 +1,5 @@
 #include "bqpch.h"
+#include <bq/event/event.h>
 #include <bq/state/state.h>
 #include <bq/exception/illegal_state.h>
 #include <bq/state/state_manager.h>
@@ -38,7 +39,7 @@ void bq::state_manager::render(sf::RenderWindow& window) const {
 	}
 	m_states.top()->render(window);
 }
-void bq::state_manager::handle_events(sf::Event& evt, sf::RenderWindow& window) {
+void bq::state_manager::handle_events(bq::event& evt, sf::RenderWindow& window) {
 	if (m_states.size() == 0) {
 		throw bq::illegal_state("m_states empty on handleEvents");
 	}

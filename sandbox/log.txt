@@ -25,13 +25,28 @@ DEBUG: resource: george.png does not already exist, attempting to load...
 DEBUG: resource: george.png loaded from file
 DEBUG: Entities: 3
 DEBUG: Entities: 3
+DEBUG: Entities: 3
+DEBUG: Entities: 3
+DEBUG: Entities: 3
 DEBUG: resource: bullet.png does not already exist, attempting to load...
 DEBUG: resource: bullet.png loaded from file
 DEBUG: resource: hitmarker.wav does not already exist, attempting to load...
 DEBUG: resource: hitmarker.wav loaded from file
-DEBUG: Entities: 16
 DEBUG: resource: base_particle.png does not already exist, attempting to load...
 DEBUG: resource: base_particle.png loaded from file
-DEBUG: Entities: 75
-DEBUG: Entities: 42
-DEBUG: Entities: 29
+DEBUG: Entities: 39
+DEBUG: Entities: 41
+DEBUG: Entities: 41
+DEBUG: Entities: 10
+DEBUG: Entities: 10
+DEBUG: Entities: 65
+DEBUG: Entities: 53
+DEBUG: Entities: 40
+DEBUG: Entities: 51
+DEBUG: Entities: 51
+DEBUG: Entities: 3
+DEBUG: Entities: 87
+DEBUG: Entities: 23
+DEBUG: Entities: 92
+DEBUG: Entities: 103
+DEBUG: Entities: 7

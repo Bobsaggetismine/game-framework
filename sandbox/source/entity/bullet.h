@@ -9,7 +9,7 @@ class bullet : public bq::entity {
 public:
 	void update() override;
 	void render(sf::RenderWindow&)override;
-	void handle_event(sf::Event&) override;
+	void handle_event(bq::event&) override;
 	virtual bool should_cull(const sf::View&) const override;
 	void damage(float) override;
 	bullet(bq::v2f,bq::v2f);
