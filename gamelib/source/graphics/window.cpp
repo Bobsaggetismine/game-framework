@@ -1,4 +1,5 @@
 #include "bqpch.h"
+#include <bq/graphics/sprite.h>
 #include "bq/graphics/window.h"
 #include "bq/core/handler.h"
 
@@ -88,8 +89,8 @@ bq::v2i bq::window::get_mouse_pos()
 	return { sf::Mouse::getPosition(m_window).x, sf::Mouse::getPosition(m_window).y };
 }
 
-void bq::window::draw(const sf::Sprite& sprite) {
-	m_window.draw(sprite);
+void bq::window::draw(const bq::sprite& sprite) {
+	m_window.draw(sprite.m_sprite);
 }
 bool bq::window::open() {
 	return m_window.isOpen();

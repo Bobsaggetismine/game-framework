@@ -1,13 +1,12 @@
 #pragma once
-
+#include <bq/graphics/sprite.h>
 
 namespace bq {
-	
 	struct v2f;
 	class window;
 	class item {
 	protected:
-		sf::Sprite m_sprite;
+		bq::sprite m_sprite;
 		unsigned m_uses = 5;
 	public:
 		virtual ~item() = 0;

@@ -1,11 +1,12 @@
 
 #include <bq.h>
 #include <math.h>
+#include <bq/graphics/sprite.h>
 #include "buff_enemy.h"
 
 
 buff_enemy::buff_enemy() {
-	m_sprite.setTexture(bq::resource_holder::get().textures.get("angel.png"));
+	m_sprite.set_texture(bq::resource_holder::get().textures.get("angel.png"));
 	m_pos = { 500,500 };
 	m_size = { 27,30 };
 	clock.restart();
@@ -19,7 +20,6 @@ void buff_enemy::damage(float dmg) {
 	}
 }
 bool buff_enemy::should_cull(const sf::View&) const {
-	
 	return health <= 0.f;
 }
 void buff_enemy::render(bq::window& window) {
@@ -80,7 +80,7 @@ void buff_enemy::update() {
 		moves_made = -1;
 	}
 	moves_made++;
-	m_sprite.setPosition(m_pos);
+	m_sprite.set_pos(m_pos.x,m_pos.y);
 }
 
 void buff_enemy::handle_event(bq::event& evt) {}

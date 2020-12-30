@@ -6,7 +6,7 @@ class player : public bq::entity {
 	bq::animation downAnimation;
 	bq::animation leftAnimation;
 	bq::animation rightAnimation;
-	sf::Sprite curSprite;
+	bq::sprite curSprite;
 	bq::gui::health_bar hb;
 	bq::inventory m_inventory;
 	float hp = 100;

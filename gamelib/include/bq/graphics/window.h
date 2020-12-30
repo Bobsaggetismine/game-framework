@@ -4,6 +4,8 @@
 
 namespace bq {
 
+	class sprite;
+
 	enum class colour {
 		BLACK
 	};
@@ -12,7 +14,7 @@ namespace bq {
 		sf::RenderWindow m_window;
 	public:
 		window(unsigned,unsigned,const std::string& title);
-		void draw(const sf::Sprite&);
+		void draw(const bq::sprite&);
 		bool open();
 		bq::event poll_event();
 		void clear(colour);

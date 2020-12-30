@@ -1,5 +1,5 @@
 #include "bqpch.h"
-#include "bq/core/AStar.hpp"
+#include "bq/core/astar.h"
 
 
 using namespace std::placeholders;

@@ -1,4 +1,5 @@
 #include "bqpch.h"
+#include <bq/graphics/sprite.h>
 #include <bq/graphics/window.h>
 #include "bq/core/item.h"
 bq::item::~item(){}
@@ -22,5 +23,5 @@ void bq::item::render(bq::window& window) {
 }
 
 void bq::item::update_pos(float x, float y) {
-	m_sprite.setPosition(x, y);
+	m_sprite.set_pos(x, y);
 }

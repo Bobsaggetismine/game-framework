@@ -6,7 +6,7 @@ door::door(std::string name, float x, float y, float w, float h) : animation(nam
 	m_pos.y = y;
 	m_size.x = w;
 	m_size.y = h;
-	animation.get().setPosition({ m_pos.x, m_pos.y });
+	animation.get().set_pos( m_pos.x, m_pos.y );
 	animation.update();
 }
 void door::render(bq::window& window) {

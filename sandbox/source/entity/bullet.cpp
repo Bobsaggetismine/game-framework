@@ -4,7 +4,8 @@
 
 
 
-bullet::bullet(bq::v2f p, bq::v2f vel):sprite(bq::resource_holder::get().textures.get("bullet.png")), speed(vel), sound(bq::resource_holder::get().sounds.get("hitmarker.wav")) {
+bullet::bullet(bq::v2f p, bq::v2f vel): speed(vel), sound(bq::resource_holder::get().sounds.get("hitmarker.wav")) {
+	sprite.set_texture(bq::resource_holder::get().textures.get("bullet.png"));
 	m_pos = p;
 	m_size = {3,3};
 	m_id = bq::handler::get().em()->register_id("BULLET");
@@ -26,8 +27,9 @@ void bullet::damage(float) {}
 
 
 void bullet::update() {
+	
 	move(speed);
-	sprite.setPosition({m_pos.x,m_pos.y});
+	sprite.set_pos(m_pos.x,m_pos.y);
 	
 	sf::FloatRect bound = { m_pos.x + 16,m_pos.y + 16,m_size.x, m_size.y };
 	if (bq::handler::get().world()->get_collision_effects(bound).m_collision) {

@@ -13,7 +13,7 @@ class meele_enemy : public bq::entity
 
 	bq::entity* m_entity;
 	bq::v2f movement = { 0,0 };
-	sf::Sprite m_sprite;
+	bq::sprite m_sprite;
 	sf::Sound sound;
 	sf::Clock clock;
 	bq::buff m_buff;

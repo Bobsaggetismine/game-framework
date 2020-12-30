@@ -1,4 +1,5 @@
 #include "bqpch.h"
+#include <bq/graphics/sprite.h>
 #include <bq/entity/entity.h>
 #include <bq/graphics/window.h>
 #include "bq/entity/particle.h"
@@ -7,7 +8,7 @@
 #include <bq/state/state.h>
 void bq::particle::update() {
 	move(m_movement);
-	m_sprite.setPosition(m_pos);
+	m_sprite.set_pos(m_pos.x, m_pos.y);
 	m_movement.x *= 0.894f;
 	m_movement.y *= 0.894f;
 }
@@ -21,7 +22,7 @@ void bq::particle::render(bq::window& window) {
 }
 
 bq::particle::particle(float x, float y, float life) {
-	m_sprite.setTexture(bq::resource_holder::get().textures.get("base_particle.png"));
+	m_sprite.set_texture(bq::resource_holder::get().textures.get("base_particle.png"));
 	m_size = {1,1};
 	m_pos = {x + bq::random::getRandom(-10.f,10.f),y + bq::random::getRandom(-10.f, 10.f) };
 	m_life = life;

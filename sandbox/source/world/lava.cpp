@@ -8,7 +8,7 @@ lava::lava(float x, float y, float w, float h) : animation("lava.png", 0, 32, 2,
 	m_size.x = w;
 	m_solid = true;
 	m_size.y = h;
-	animation.get().setPosition({ m_pos.x, m_pos.y });
+	animation.get().set_pos( m_pos.x, m_pos.y);
 	animation.update();
 	for (int i = 0; i < (int)bq::random::getRandom(0, 1000); ++i) {
 		animation.update();
@@ -19,6 +19,6 @@ void lava::render(bq::window& window) {
 }
 void lava::update() {
 	animation.update();
-	animation.get().setPosition({ m_pos.x, m_pos.y });
+	animation.get().set_pos( m_pos.x, m_pos.y );
 }
 void lava::interact() {}

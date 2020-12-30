@@ -2,7 +2,7 @@
 #include "meele_enemy.h"
 
 meele_enemy::meele_enemy(bq::entity* player) : m_entity(player), sound(bq::resource_holder::get().sounds.get("sword.wav")) {
-	m_sprite.setTexture(bq::resource_holder::get().textures.get("robot.png"));
+	m_sprite.set_texture(bq::resource_holder::get().textures.get("robot.png"));
 	m_pos = { 500,500 };
 	m_size = { 27,30 };
 	clock.restart();
@@ -32,7 +32,7 @@ void meele_enemy::render(bq::window& window) {
 
 //this is some f tier AI for the enemy, which should get slightly improved over time if i learn how to make game ai better.
 void meele_enemy::update() {
-
+	BQ_PROFILE(__FUNCTION__);
 	sf::FloatRect player_square(m_entity->pos(), m_entity->size());
 
 	if (!locked_on) {
@@ -132,8 +132,6 @@ void meele_enemy::update() {
 			}
 		}
 
-
-
 		float x_diff = (m_entity->pos().x + (m_entity->size().x / 2) + 16) - (m_pos.x + (m_size.x / 2) + 2);
 		float y_diff = (m_entity->pos().y + (m_entity->size().y / 2) + 15) - (m_pos.y + (m_size.y / 2) + 2);
 
@@ -157,7 +155,7 @@ void meele_enemy::update() {
 		locked_on = false;
 	}
 	moves_made++;
-	m_sprite.setPosition(m_pos);
+	m_sprite.set_pos(m_pos.x,m_pos.y);
 
 }
 

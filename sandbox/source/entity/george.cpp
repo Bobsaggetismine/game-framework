@@ -6,11 +6,12 @@
 
 constexpr size_t SHEET_SIZE = 64;
 
-george::george(float x, float y, player* player) : m_player(player), upAnimation("george.png", 0 * SHEET_SIZE, SHEET_SIZE, 9, 10), downAnimation("george.png", 2 * SHEET_SIZE, SHEET_SIZE, 9, 10), leftAnimation("george.png", 1 * SHEET_SIZE, SHEET_SIZE, 9, 10), rightAnimation("george.png", 3 * SHEET_SIZE, SHEET_SIZE, 9, 10), m_sprite(bq::resource_holder::get().textures.get("george.png")), m_dialog({0,0}, {400,50},"Complete this quest for me: kill 30 robots",sf::Color::Cyan, sf::Color::Cyan, 15) {
+george::george(float x, float y, player* player) : m_player(player), upAnimation("george.png", 0 * SHEET_SIZE, SHEET_SIZE, 9, 10), downAnimation("george.png", 2 * SHEET_SIZE, SHEET_SIZE, 9, 10), leftAnimation("george.png", 1 * SHEET_SIZE, SHEET_SIZE, 9, 10), rightAnimation("george.png", 3 * SHEET_SIZE, SHEET_SIZE, 9, 10), m_dialog({0,0}, {400,50},"Complete this quest for me: kill 30 robots",sf::Color::Cyan, sf::Color::Cyan, 15) {
+	m_sprite.set_texture(bq::resource_holder::get().textures.get("george.png"));
 	m_pos.x = x;
 	m_pos.y = y;
-	m_sprite.setTexture(bq::resource_holder::get().textures.get("george.png"));
-	m_sprite.setTextureRect({ 0,128,64,64 });
+	m_sprite.set_texture(bq::resource_holder::get().textures.get("george.png"));
+	m_sprite.set_texture_rect( 0,128,64,64 );
 	m_size.x = 32, m_size.y = 44;
 
 	m_id = bq::handler::get().em()->register_id("GEORGE");
@@ -24,10 +25,10 @@ void george::update() {
 	leftAnimation.update();
 	rightAnimation.update();
 
-	upAnimation.get().setPosition({ m_pos.x,m_pos.y });
-	downAnimation.get().setPosition({ m_pos.x,m_pos.y });
-	leftAnimation.get().setPosition({ m_pos.x,m_pos.y });
-	rightAnimation.get().setPosition({ m_pos.x,m_pos.y });
+	upAnimation.get().set_pos( m_pos.x,m_pos.y );
+	downAnimation.get().set_pos(m_pos.x,m_pos.y );
+	leftAnimation.get().set_pos(m_pos.x,m_pos.y );
+	rightAnimation.get().set_pos(m_pos.x,m_pos.y);
 
 	
 
@@ -90,7 +91,7 @@ void george::update() {
 		moves_made = 0;
 		movement = { 0,0 };
 	}
-	m_sprite.setPosition(m_pos);
+	m_sprite.set_pos(m_pos.x,m_pos.y);
 	if (interacted) {
 		m_dialog.update();
 		

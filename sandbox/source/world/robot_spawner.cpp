@@ -9,7 +9,7 @@ robot_spawner::robot_spawner(float x, float y, float w, float h) : animation("la
 	m_size.x = w;
 	m_solid = false;
 	m_size.y = h;
-	animation.get().setPosition({ m_pos.x, m_pos.y });
+	animation.get().set_pos( m_pos.x, m_pos.y);
 	animation.update();
 	for (int i = 0; i < (int)bq::random::getRandom(0, 1000); ++i) {
 		animation.update();
@@ -29,7 +29,7 @@ void robot_spawner::update() {
 
 
 	animation.update();
-	animation.get().setPosition({ m_pos.x, m_pos.y });
+	animation.get().set_pos( m_pos.x, m_pos.y );
 }
 void robot_spawner::interact() {}
 

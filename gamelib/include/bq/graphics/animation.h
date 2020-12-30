@@ -5,7 +5,7 @@ namespace bq {
 	
 	class animation {
 
-		sf::Sprite m_sprite;
+		bq::sprite m_sprite;
 		size_t startingy, spritesize, numsprites;
 		size_t index = 0;
 		size_t frames = 0;
@@ -13,6 +13,6 @@ namespace bq {
 	public:
 		animation(std::string, size_t, size_t, size_t, size_t);
 		void update();
-		sf::Sprite& get();
+		bq::sprite& get();
 	};
 }

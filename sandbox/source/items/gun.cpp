@@ -4,7 +4,7 @@
 
 gun::gun(bq::entity& target): m_target(target), sound(bq::resource_holder::get().sounds.get("gunshot.wav"))
 {
-	m_sprite.setTexture(bq::resource_holder::get().textures.get("handgun.png"));
+	m_sprite.set_texture(bq::resource_holder::get().textures.get("handgun.png"));
 	m_timer.restart();
 	sound.setVolume(0.5);
 	

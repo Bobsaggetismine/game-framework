@@ -1,7 +1,7 @@
 #pragma once
 
 class bullet : public bq::entity {
-	sf::Sprite sprite;
+	bq::sprite sprite;
 	bq::v2f speed;
 	bool m_dead = false;
 	sf::Sound sound;

@@ -19,7 +19,8 @@
 #include <sstream>
 #include <optional>
 #include <exception>
-#include <bq/core/AStar.hpp>
+#include <chrono>
+#include <bq/core/AStar.h>
 #include <bq/application/application.h>
 #include <bq/core/game.h>
 #include <bq/util/block_collision_effects.h>
@@ -44,6 +45,13 @@
 #include <bq/entity/particle.h>
 #include <bq/event/event.h>
 #include <bq/graphics/window.h>
-
+#include <bq/graphics/sprite.h>
+#include <bq/core/profiler.h>
 constexpr int GAME_HEIGHT = INTL_HEIGHT;
 constexpr int GAME_WIDTH = INTL_WIDTH;
+
+#ifdef DEBUG
+#define BQ_PROFILE(x) auto profiler = bq::profiler(x);
+#else
+#define BQ_PROFILE(x)
+#endif

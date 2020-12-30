@@ -8,11 +8,12 @@
 #include "player.h"
 
 constexpr size_t SHEET_SIZE = 64;
-player::player() : upAnimation("player.png", 0 * SHEET_SIZE, SHEET_SIZE, 9, 10), downAnimation("player.png", 2 * SHEET_SIZE, SHEET_SIZE, 9, 10), leftAnimation("player.png", 1 * SHEET_SIZE, SHEET_SIZE, 9, 10), rightAnimation("player.png", 3 * SHEET_SIZE, SHEET_SIZE, 9, 10), curSprite(bq::resource_holder::get().textures.get("player.png")) {
+player::player() : upAnimation("player.png", 0 * SHEET_SIZE, SHEET_SIZE, 9, 10), downAnimation("player.png", 2 * SHEET_SIZE, SHEET_SIZE, 9, 10), leftAnimation("player.png", 1 * SHEET_SIZE, SHEET_SIZE, 9, 10), rightAnimation("player.png", 3 * SHEET_SIZE, SHEET_SIZE, 9, 10) {
+	curSprite.set_texture(bq::resource_holder::get().textures.get("player.png"));
 	m_pos.x = 100, m_pos.y = 100;
 	m_size.x = 32, m_size.y = 44;
-	curSprite.setTextureRect(sf::IntRect(0, 64 * 2, 64, 64));
-	curSprite.setPosition({ m_pos.x,m_pos.y });
+	curSprite.set_texture_rect(0, 64 * 2, 64, 64);
+	curSprite.set_pos( m_pos.x,m_pos.y );
 	m_inventory.add_item(std::make_unique<machine_gun>(*this));
 	m_inventory.add_item(std::make_unique<gun>(*this));
 	m_id = bq::handler::get().em()->register_id("PLAYER");
@@ -35,10 +36,10 @@ void player::update() {
 	leftAnimation.update();
 	rightAnimation.update();
 
-	upAnimation.get().setPosition({ m_pos.x,m_pos.y });
-	downAnimation.get().setPosition({ m_pos.x,m_pos.y });
-	leftAnimation.get().setPosition({ m_pos.x,m_pos.y });
-	rightAnimation.get().setPosition({ m_pos.x,m_pos.y });
+	upAnimation.get().set_pos( m_pos.x,m_pos.y );
+	downAnimation.get().set_pos(m_pos.x,m_pos.y);
+	leftAnimation.get().set_pos(m_pos.x,m_pos.y);
+	rightAnimation.get().set_pos(m_pos.x,m_pos.y);
 
 	input();
 	if (m_quest != nullptr) {

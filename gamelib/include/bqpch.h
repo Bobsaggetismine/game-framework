@@ -18,7 +18,7 @@
 #include <sstream>
 #include <optional>
 #include <exception>
-
+#include <chrono>
 //bq include 
 //note if adding bq include: if you add a file that changes often here, you're actually harming compile performance here.
 #include <bq/core/logger.h>

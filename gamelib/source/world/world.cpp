@@ -2,7 +2,7 @@
 #include <bq/graphics/window.h>
 #include <bq/world/block.h>
 #include <bq/util/block_collision_effects.h>
-#include <bq/core/AStar.hpp>
+#include <bq/core/AStar.h>
 #include <bq/world/world.h>
 
 

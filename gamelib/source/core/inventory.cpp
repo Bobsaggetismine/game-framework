@@ -1,11 +1,12 @@
 #include "bqpch.h"
+#include <bq/graphics/sprite.h>
 #include "bq/core/item.h"
 #include <bq/graphics/window.h>
 #include "bq/core/inventory.h"
 #include "bq/resource/resource_holder.h"
 bq::inventory::inventory(){
-	m_sprite.setTexture(bq::resource_holder::get().textures.get("inventory.png"));
-	m_sprite.setPosition( 0,0);
+	m_sprite.set_texture(bq::resource_holder::get().textures.get("inventory.png"));
+	m_sprite.set_pos(0,0);
 }
 
 void bq::inventory::cycle_forward() {
@@ -46,9 +47,9 @@ void bq::inventory::render(bq::window& window) const {
 	}
 }
 void bq::inventory::update_position(float x, float y) {
-	m_sprite.setPosition(x, y);
-	float x_coord = m_sprite.getPosition().x + 2;
-	float y_coord = m_sprite.getPosition().y + 2;
+	m_sprite.set_pos(x, y);
+	float x_coord = m_sprite.get_pos().x + 2;
+	float y_coord = m_sprite.get_pos().y + 2;
 	for (auto& item : m_items) {
 		item->update_pos(x_coord, y_coord);
 		x_coord += 34;

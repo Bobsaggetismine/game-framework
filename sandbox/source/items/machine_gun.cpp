@@ -21,7 +21,7 @@ void machine_gun::action(std::optional<sf::Keyboard::Key> key, std::optional<bq:
 }
 machine_gun::machine_gun(bq::entity& target) : m_target(target), sound(bq::resource_holder::get().sounds.get("gunshot.wav"))
 {
-	m_sprite.setTexture(bq::resource_holder::get().textures.get("mg.png"));
+	m_sprite.set_texture(bq::resource_holder::get().textures.get("mg.png"));
 	sound.setVolume(0.5);
 	m_timer.restart();
 }

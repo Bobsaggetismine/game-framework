@@ -5,12 +5,12 @@
 namespace bq {
 	class window;
 	class item;
-
+	class sprite;
 	class inventory {
 
 		size_t m_index = -1;
 		std::vector<std::unique_ptr<bq::item>> m_items;
-		sf::Sprite m_sprite;
+		bq::sprite m_sprite;
 	public:
 		
 		inventory();

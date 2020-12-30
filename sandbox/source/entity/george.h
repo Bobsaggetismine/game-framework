@@ -17,7 +17,7 @@ class george : public bq::entity
 	bool interacted = false;
 public:
 	player* m_player;
-	sf::Sprite m_sprite;
+	bq::sprite m_sprite;
 	george(float x, float y, player* player);
 	
 

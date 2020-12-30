@@ -4,7 +4,7 @@
 class buff_enemy : public bq::entity
 {
 	bq::v2f movement = { 0,0 };
-	sf::Sprite m_sprite;
+	bq::sprite m_sprite;
 	float move_speed = 1.6f;
 	float health = 250;
 	const size_t moves_until_movement_change_C = 60;
