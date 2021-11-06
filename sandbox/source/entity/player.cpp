@@ -87,6 +87,11 @@ void player::input() {
 		interactPoint = { m_pos.x + 5 + m_size.x + 15, m_pos.y + 15 + m_size.y / 2 };
 	}
 	
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::LShift)) {
+		m_inventory.cycle_forward();
+	}
+
+
 	sf::FloatRect bounds = { m_pos.x + 16 + movement.x, m_pos.y + 15 + movement.y, m_size.x, m_size.y };
 	bq::block_collision_effects bce = bq::handler::get().world()->get_collision_effects(bounds);
 	if (!bce.m_collision) {

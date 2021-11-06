@@ -4,7 +4,8 @@
 #ifdef PLATFORM_WINDOWS
 #include <windows.h>
 #endif
-
+#include <fstream>
+#include <iostream>
 
 namespace bq {
 	
@@ -20,15 +21,17 @@ namespace bq {
 	public:
 
 		static void log_to_file(const std::string& file, bool clear_file) {
+#ifdef PLATFORM_WINDOWS
 			m_file = file;
 			m_file_logging = true;
 			if (clear_file) {
 				std::ofstream ofs;
+				
 				ofs.open(file, std::ofstream::out, std::ofstream::trunc);
 				ofs << "";
 				ofs.close();
 			}
-			
+#endif
 		}
 		static void debug(const std::string& message) {
 #ifdef DEBUG

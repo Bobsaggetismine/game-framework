@@ -1,5 +1,5 @@
 #pragma once
-
+#include <memory>
 
 namespace bq {
 	struct block_collision_effects;

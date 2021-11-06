@@ -48,8 +48,7 @@ project "gamelib"
 		
 	filter "configurations:Debug"
 		defines "DEBUG"
-		runtime "Debug"
-		symbols "on"
+		runtime "Release"
 
 
 	filter "configurations:Release"
@@ -94,19 +93,19 @@ project "sandbox"
 	filter "configurations:*"
 		libdirs { "gamelib/deps/SFML/lib" }	
 
+
 	filter "configurations:Debug"
 		defines "DEBUG"
 		runtime "Debug"
-        symbols "on"
+		symbols "on"
 		links
 		{	
-			"sfml-graphics-d",
-			"sfml-window-d",
-			"sfml-system-d",
-			"sfml-audio-d",
-			"sfml-network-d"
+			"sfml-graphics",
+			"sfml-window",
+			"sfml-system",
+			"sfml-audio",
+			"sfml-network"
 		}
-
 	filter "configurations:Release"
 		defines "NDEBUG"
 		runtime "Release"
@@ -117,10 +116,8 @@ project "sandbox"
 			"sfml-window",
 			"sfml-system",
 			"sfml-audio",
-            "sfml-network"
+			"sfml-network"
 		}
-        
-
 project "test"
 	location "test"
 	kind "ConsoleApp"
@@ -149,11 +146,23 @@ project "test"
 		"test/deps/boost/include",
 		"%{IncludeDir.SFML}"
 	}
-
+	
 	
 	filter "configurations:*"
 		libdirs { "gamelib/deps/SFML/lib" }	
 
+	filter "configurations:Debug"
+		defines "DEBUG"
+		runtime "Debug"
+		symbols "on"
+		links
+		{	
+			"sfml-graphics",
+			"sfml-window",
+			"sfml-system",
+			"sfml-audio",
+			"sfml-network"
+		}
 	filter "configurations:Release"
 		defines "NDEBUG"
 		runtime "Release"
@@ -164,80 +173,66 @@ project "test"
 			"sfml-window",
 			"sfml-system",
 			"sfml-audio",
-            "sfml-network"
+			"sfml-network"
 		}
 
-		
+
+project "pong"
+	location "pong"
+	kind "ConsoleApp"
+	language "C++"
+	cppdialect "C++17"
+	staticruntime "on"
+
+	targetdir ("bin/" .. outputdir .. "/%{prj.name}")
+	objdir ("obj/" .. outputdir .. "/%{prj.name}")
+
+	files
+	{
+		"%{prj.name}/source/**.h",
+		"%{prj.name}/source/**.cpp"
+	}
+	links
+	{
+		"gamelib"
+	}
+	includedirs
+	{
+		"gamelib/include",
+		"%{IncludeDir.SFML}",
+		"%{IncludeDir.JSON}"
+	}
+
+	filter "system:windows"
+		systemversion "latest"
+		defines{ "PLATFORM_WINDOWS" }
+
+	
+	filter "configurations:*"
+		libdirs { "gamelib/deps/SFML/lib" }	
+	
 	filter "configurations:Debug"
 		defines "DEBUG"
 		runtime "Debug"
 		symbols "on"
 		links
 		{	
-			"sfml-graphics-d",
-			"sfml-window-d",
-			"sfml-system-d",
-			"sfml-audio-d",
-			"sfml-network-d"
+			"sfml-graphics",
+			"sfml-window",
+			"sfml-system",
+			"sfml-audio",
+			"sfml-network"
 		}
-
-
-	project "pong"
-		location "pong"
-		kind "ConsoleApp"
-		language "C++"
-		cppdialect "C++17"
-		staticruntime "on"
-	
-		targetdir ("bin/" .. outputdir .. "/%{prj.name}")
-		objdir ("obj/" .. outputdir .. "/%{prj.name}")
-	
-		files
-		{
-			"%{prj.name}/source/**.h",
-			"%{prj.name}/source/**.cpp"
-		}
+	filter "configurations:Release"
+		defines "NDEBUG"
+		runtime "Release"
+		optimize "on"
 		links
-		{
-			"gamelib"
-		}
-		includedirs
-		{
-			"gamelib/include",
-			"%{IncludeDir.SFML}",
-			"%{IncludeDir.JSON}"
+		{	
+			"sfml-graphics",
+			"sfml-window",
+			"sfml-system",
+			"sfml-audio",
+			"sfml-network"
 		}
 	
-		filter "system:windows"
-			systemversion "latest"
-			defines{ "PLATFORM_WINDOWS" }
-	
-		
-		filter "configurations:*"
-			libdirs { "gamelib/deps/SFML/lib" }	
-	
-		filter "configurations:Debug"
-			defines "DEBUG"
-			runtime "Debug"
-			symbols "on"
-			links
-			{	
-				"sfml-graphics-d",
-				"sfml-window-d",
-				"sfml-system-d",
-				"sfml-audio-d",
-				"sfml-network-d"
-			}
-	
-		filter "configurations:Release"
-			defines "NDEBUG"
-			runtime "Release"
-			optimize "on"
-			links
-			{	
-				"sfml-graphics",
-				"sfml-window",
-				"sfml-system",
-				"sfml-audio",
-				"sfml-network"
-			}

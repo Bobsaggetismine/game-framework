@@ -10,3 +10,5 @@ namespace bq {
 		virtual void handleEvents(bq::event& evt, bq::window& window) = 0;
 	};
 }
+
+

@@ -20,7 +20,7 @@
 #include <optional>
 #include <exception>
 #include <chrono>
-#include <bq/core/AStar.h>
+#include <bq/core/astar.h>
 #include <bq/application/application.h>
 #include <bq/core/game.h>
 #include <bq/util/block_collision_effects.h>

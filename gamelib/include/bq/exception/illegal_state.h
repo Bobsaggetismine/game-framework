@@ -9,6 +9,6 @@ namespace bq {
 
 		illegal_state(const std::string& what_arg);
 
-		virtual const char* what() const override;
+		virtual const char* what() const noexcept override  ;
 	};
 };

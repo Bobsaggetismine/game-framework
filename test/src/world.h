@@ -1,7 +1,7 @@
 #pragma once
 
 #include <bq.h>
-
+#include <memory>
 
 class test_block : public bq::block {
 public:
