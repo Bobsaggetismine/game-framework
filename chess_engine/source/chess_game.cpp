@@ -24,7 +24,7 @@ public:
 	negamax_ai_ab ai_one,ai_two;
 
 	bool player_one = false;
-	bool player_two = false;
+	bool player_two = true;
 
 	bool one_played = false;
 	bool two_played = false;
@@ -99,9 +99,9 @@ public:
 
 	void handle_player_move(bq::v2f click_pos)
 	{
-		if (!player_one && !player_one_turn) return;
-		if (!player_two && player_one_turn) return;
-		valid_moves = m_state.get_valid_moves();
+		if (!player_one && player_one_turn) return;
+		if (!player_two && !player_one_turn) return;
+		valid_moves = m_state.get_valid_moves(false);
 		int col = int(click_pos.x / SQUARE_SIZE);
 		int row = int(click_pos.y / SQUARE_SIZE);
 
@@ -161,19 +161,16 @@ public:
 				
 				one_played = true;
 				ai_one_future = std::async(std::launch::async, [this] {
-					valid_moves = m_state.get_valid_moves();
-					auto m = ai_one.find_best_move(m_state, *valid_moves);
-					m_state.make_move(m);
-					m_board_copy = m_state.board;
-					move_log_copy = m_state.move_log;
-					player_one_turn = false;
-					if (m_state.checkmate) {
-						bq::logger::critical("Checkmate, white wins!");
-					}
+				valid_moves = m_state.get_valid_moves();
+				auto m = ai_one.find_best_move(m_state, *valid_moves);
+				m_state.make_move(m);
+				m_board_copy = m_state.board;
+				move_log_copy = m_state.move_log;
+				player_one_turn = false;
+				if (m_state.checkmate) {
+					bq::logger::critical("Checkmate, white wins!");
+				}
 				});
-			}
-			else {
-				//bq::logger::info("ai_one nodes searched: " + std::to_string(ai_one.nodes_searched));
 			}
 		}
 		if (!m_state.white_to_move && !player_two && !player_one_turn) {
@@ -192,11 +189,13 @@ public:
 					if (m_state.checkmate) {
 						bq::logger::critical("Checkmate, white wins!");
 					}
+					bq::logger::info(std::to_string(m_state.white_bishops.size()));
+					for (auto& bishop : m_state.white_bishops) {
+						bq::logger::info("white bishop row: " + std::to_string(bishop.x) + "white bishop col: " + std::to_string(bishop.y));
+					}
 				});
 			}
-			else {
-				//bq::logger::info("ai_one nodes searched: " + std::to_string(ai_two.nodes_searched));
-			}
+			
 		}
 	}
 	virtual void render() override
@@ -220,14 +219,16 @@ public:
 				move_log_copy = m_state.move_log;
 				player_one_turn = !player_one_turn;
 			}
-		}
-		else if (evt.type == bq::event_type::KEYPRESSED) {
-			if (evt.keycode == bq::keyboard::keycode::S) {
+			else if (evt.keycode == bq::keyboard::keycode::S) {
 				m_state.undo_move();
 				m_state.undo_move();
 				m_board_copy = m_state.board;
 				move_log_copy = m_state.move_log;
 				player_one_turn = !player_one_turn;
+			}
+			else if (evt.keycode == bq::keyboard::keycode::D) {
+				bq::logger::info("ai_one nodes searched: " + std::to_string(ai_one.nodes_searched));
+				bq::logger::info("ai_two nodes searched: " + std::to_string(ai_two.nodes_searched));
 			}
 		}
 	}

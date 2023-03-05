@@ -5,15 +5,15 @@
 
 
 #define ANALYTICS true
-
-std::map<piece, float> piece_scores = { {piece::king,5},{piece::queen , 10},{piece::rook , 5},{piece::bishop, 3},{piece::knight , 3},{piece::pawn , 1} };
+#define CHESS_DEBUG true
+std::map<piece, int> piece_scores = { {piece::king,5},{piece::queen , 10},{piece::rook , 5},{piece::bishop, 3},{piece::knight , 3},{piece::pawn , 1},{piece::none, 0} };
 
 
 
 struct negamax_ai_ab {
 
-	const float checkmate_score = 1000;
-	const float stalemate_score = 0;
+	const int checkmate_score = 1000;
+	const int stalemate_score = 0;
 
     const int max_depth = 5;
 
@@ -127,15 +127,17 @@ struct negamax_ai_ab {
 
     
 
-    void order_moves(chess_state& gs, std::vector<chess_move>& moves) {
-        std::sort(moves.begin(), moves.end(), [gs](chess_move& lhs, chess_move& rhs) mutable -> bool {
-            return lhs.piece_captured.first != color::none;
-        });
+    void order_moves(chess_state& gs, std::vector<chess_move>& nextMoves) {
+        std::sort(nextMoves.begin(), nextMoves.end(), [](chess_move& lhs, chess_move& rhs) -> bool {
+            piece_t lhs_take = lhs.piece_captured;
+            piece_t rhs_take = rhs.piece_captured;
+            return piece_scores[lhs_take.second] > piece_scores[rhs_take.second];
+           });
     }
 
     
 
-    int score_board(chess_state& gs, const std::vector<chess_move>& moves) {
+    int score_board(chess_state& gs) {
 
         if (gs.checkmate) {
             if (gs.white_to_move) {
@@ -155,9 +157,6 @@ struct negamax_ai_ab {
         }
 
         int score = 0;
-        score += (moves.size() * 0.001);
-
-        
 
         for (int i = 0; i < gs.board.size(); i++) {
             for (int j = 0; j < gs.board[i].size(); j++) {
@@ -186,45 +185,72 @@ struct negamax_ai_ab {
         nodes_searched = 0;
         return (*nextMove);
     }
-    
-    
-    int searchCaptures(chess_state& gs, std::vector<chess_move>& moves, int turnMultiplier) {
 
+    int score_board_after_all_attacks(chess_state& gs, int depth,int alpha, int beta, int turn_multiplier) {
+
+
+        auto moves = gs.get_valid_moves(true);
         
-        
 
-        if (moves.size() == 0) return score_board(gs,moves);
-
-        for (auto move : moves) {
-            gs.make_move(move);
-            auto valid_moves = gs.get_valid_moves();
-            int score = -searchCaptures(gs, *valid_moves, -turnMultiplier);
-            gs.undo_move();
-        }
-    }
-
-    
-
-
-    int get_best_move(chess_state& gs, std::vector<chess_move>& moves, int depth, int alpha, int beta, int turnMultiplier, bool depth_already_extended = false) {
-        if (depth == 0) {
-
-            if (depth_already_extended) return turnMultiplier * score_board(gs, moves);
-
-            auto v_moves = moves;
-
-
-            for (int i = v_moves.size() - 1; i >= 0; --i) {
-                if (gs.board[v_moves[i].end_row][v_moves[i].end_col] == gs.empty_piece || gs.board[v_moves[i].end_row][v_moves[i].end_col] == gs.white_pawn || gs.board[v_moves[i].end_row][v_moves[i].end_col] == gs.black_pawn) {
-                    v_moves.erase(v_moves.begin() + i);
+        if(moves->size() == 0 || depth == 5)
+            return score_board(gs);
+        #if CHESS_DEBUG
+            for (auto move : *moves) {
+                if (move.piece_captured == gs.empty_piece) {
+                    if (move.piece_moved.second == piece::pawn) {
+                        if (!move.is_enpassant) {
+                            bq::logger::critical("generated invalid pawn move!");
+                            bq::logger::critical(move.get_chess_notation_old());
+                        }
+                    }
+                    else if (move.piece_moved.second == piece::bishop) {
+                        bq::logger::critical("generated invalid bishop move!");
+                    }
+                    else if (move.piece_moved.second == piece::rook) {
+                        bq::logger::critical("generated invalid rook move!");
+                    }
+                    else if (move.piece_moved.second == piece::knight) {
+                        bq::logger::critical("generated invalid knight move!");
+                    }
+                    else if (move.piece_moved.second == piece::king) {
+                        bq::logger::critical("generated invalid king move!");
+                    }
+                    else if (move.piece_moved.second == piece::queen) {
+                        bq::logger::critical("generated invalid king move!");
+                    }
                 }
             }
-            if (v_moves.size() > 0 ) {
-                return -get_best_move(gs, v_moves, 1, -beta, -alpha, -turnMultiplier, true);
+        #endif
+
+        //bq::logger::info(std::to_string(moves->size()));
+
+        int bestScore =  -checkmate_score;
+
+        for (auto move : *moves) {
+            gs.make_move(move);
+            #if ANALYTICS
+                        nodes_searched++;
+            #endif
+            int score = -score_board_after_all_attacks(gs, depth+1,-beta,-alpha, -turn_multiplier);
+            gs.undo_move();
+            if (score > bestScore) {
+                bestScore = score;
             }
-            else {
-                return turnMultiplier * score_board(gs, moves);
+            if (bestScore > alpha) {
+                alpha = bestScore;
             }
+            if (alpha >= beta) {
+                break;
+            }
+        }
+        return bestScore;
+    }
+
+
+    int get_best_move(chess_state& gs, std::vector<chess_move>& moves, int depth, int alpha, int beta, int turnMultiplier, bool depth_extension = false) {
+        if (depth == 0) {
+            return turnMultiplier * score_board(gs);
+            return turnMultiplier * score_board_after_all_attacks(gs,0,alpha,beta,turnMultiplier);
         }
         int maxScore = -checkmate_score;
         for (auto& move : moves) {
@@ -232,15 +258,17 @@ struct negamax_ai_ab {
             #if ANALYTICS
                 nodes_searched++;
             #endif
-            auto nextMoves = gs.get_valid_moves();
+            auto nextMoves = gs.get_valid_moves(false);
             order_moves(gs, *nextMoves);
-            int score = -get_best_move(gs, *nextMoves, depth - 1, -beta, -alpha, -turnMultiplier, depth_already_extended);
+
+            int score = -get_best_move(gs, *nextMoves, depth - 1, -beta, -alpha, -turnMultiplier, depth_extension);
             if (score > maxScore) {
                 maxScore = score;
                 if (depth == max_depth) {
                     nextMove = &move;
                     #if ANALYTICS
-                        bq::logger::info(nextMove->get_chess_notation_old() + " : " + std::to_string(score) + " : " + std::to_string(nodes_searched));
+                   
+                    bq::logger::info(nextMove->get_chess_notation_old() + " : " + std::to_string(score) + " : " + std::to_string(nodes_searched));
                     #endif
                 }
             }

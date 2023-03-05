@@ -396,7 +396,6 @@ struct chess_state {
 			}
 		}
 
-
 		if (move.piece_captured == black_rook) {
 			for (auto& rook : black_rooks) {
 				if (rook.x == -1 && rook.y == -1) {
@@ -635,7 +634,7 @@ struct chess_state {
 
 	
 
-	std::unique_ptr<std::vector<chess_move>> get_valid_moves()
+	std::unique_ptr<std::vector<chess_move>> get_valid_moves(bool only_attacking=false)
 	{
 		auto temp_castle_rights = castle_rights(current_castling_rights.wks, current_castling_rights.bks,
 			current_castling_rights.wqs, current_castling_rights.bqs);
@@ -655,7 +654,7 @@ struct chess_state {
 
 		if (check_pin_information.in_check) {
 			if (check_pin_information.checks.size() == 1) {
-				moves = get_possible_moves();
+				moves = get_possible_moves(only_attacking);
 				bq::v4i check = check_pin_information.checks[0];
 				int check_row = check.x;
 				int check_col = check.y;
@@ -709,76 +708,82 @@ struct chess_state {
 				}
 			}
 			else {
-				add_king_moves(king_row, king_col, (*moves));
+				add_king_moves(king_row, king_col, (*moves),only_attacking);
 			}
 		}
 		else {
-			moves = get_possible_moves();
-			if (white_to_move) {
+			moves = get_possible_moves(only_attacking);
+			if (white_to_move && !only_attacking) {
 				add_castle_moves(white_king_pos.x, white_king_pos.y, (*moves));
 			}
 			else {
-				add_castle_moves(black_king_pos.x, black_king_pos.y, (*moves));
+				if (!only_attacking)
+					add_castle_moves(black_king_pos.x, black_king_pos.y, (*moves));
 			}
 		}
-		if ((*moves).empty()) {
-			if (check_pin_information.in_check){
-				checkmate = true;
+		if (!only_attacking) {
+			if ((*moves).empty()) {
+				if (check_pin_information.in_check) {
+					checkmate = true;
+				}
+				else {
+					stalemate = true;
+				}
 			}
 			else {
-				stalemate = true;
+				checkmate = false;
+				stalemate = false;
 			}
 		}
-		else {
-			checkmate = false;
-			stalemate = false;
-		}
-
 		current_castling_rights = temp_castle_rights;
 		return moves;
 
 	}
-	std::unique_ptr<std::vector<chess_move>> get_possible_moves() {
+	std::unique_ptr<std::vector<chess_move>> get_possible_moves(bool only_attacking=false) {
 		std::unique_ptr<std::vector<chess_move>> moves = std::make_unique<std::vector<chess_move>>();
 		for (int row = 0; row < board.size(); row++) {
 			for (int col = 0; col < board[row].size(); col++) {
 				color turn = board[row][col].first;
 				if ((turn == color::white && white_to_move) || (turn == color::black && !white_to_move)) {
 					piece piece = board[row][col].second;
-					if (piece == piece::pawn) add_pawn_moves(row, col, (*moves));
-					else if (piece == piece::king) add_king_moves(row, col, (*moves));
-					else if (piece == piece::knight) add_knight_moves(row, col, (*moves));
+					if (piece == piece::pawn)		 add_pawn_moves(row, col, (*moves), only_attacking);
+					else if (piece == piece::king)   add_king_moves(row, col, (*moves), only_attacking);
+					else if (piece == piece::rook)	 add_rook_moves(row, col, (*moves), only_attacking);
+					else if (piece == piece::queen)  add_queen_moves(row, col, (*moves), only_attacking);
+					else if (piece == piece::bishop) add_bishop_moves(row, col, (*moves), only_attacking);
+					else if (piece == piece::knight) add_knight_moves(row, col, (*moves), only_attacking);
+
 				}
 			}
 		}
-		
+		return moves;
 		if (white_to_move)
 		{
 			for (auto pos : white_rooks) {
 				if (pos.x == -1 || pos.y == -1) continue;
-				add_rook_moves(pos.x, pos.y, (*moves));
+				add_rook_moves(pos.x, pos.y, (*moves),only_attacking);
 			}
 			for (auto pos : white_bishops) {
 				if (pos.x == -1 || pos.y == -1) continue;
-				add_bishop_moves(pos.x, pos.y, (*moves));
+				add_bishop_moves(pos.x, pos.y, (*moves),only_attacking);
 			}
 			for (auto pos : white_queens) {
 				if (pos.x == -1 || pos.y == -1) continue;
-				add_queen_moves(pos.x, pos.y, (*moves));
+				add_queen_moves(pos.x, pos.y, (*moves),only_attacking);
 			}
 		}
 		else {
 			for (auto pos : black_rooks) {
 				if (pos.x == -1 || pos.y == -1) continue;
-				add_rook_moves(pos.x, pos.y, (*moves));
+				add_rook_moves(pos.x, pos.y, (*moves),only_attacking);
 			}
 			for (auto pos : black_bishops) {
 				if (pos.x == -1 || pos.y == -1) continue;
-				add_bishop_moves(pos.x, pos.y, (*moves));
+				add_bishop_moves(pos.x, pos.y, (*moves),only_attacking);
 			}
 			for (auto pos : black_queens) {
 				if (pos.x == -1 || pos.y == -1) continue;
-				add_queen_moves(pos.x, pos.y, (*moves));
+				add_queen_moves(pos.x, pos.y, (*moves),only_attacking);
 			}
 		}
 		
@@ -788,7 +793,7 @@ struct chess_state {
 		return moves;
 	}
 	
-	void add_knight_moves(int row, int col, std::vector<chess_move>& moves) {
+	void add_knight_moves(int row, int col, std::vector<chess_move>& moves, bool only_attacking=false) {
 		bool piece_pinned = false;
 		for (int i = check_pin_information.pins.size() - 1; i >= 0; i--) {
 			if (check_pin_information.pins[i].x == row && check_pin_information.pins[i].y == col) {
@@ -807,13 +812,20 @@ struct chess_state {
 				if (!piece_pinned) {
 					auto end_piece = board[end_row][end_col];
 					if (end_piece.first != ally_color) {
-						moves.push_back(chess_move(bq::v2i(row, col), bq::v2i(end_row, end_col), board));
+						if (!only_attacking) {
+							moves.push_back(chess_move(bq::v2i(row, col), bq::v2i(end_row, end_col), board));
+						}
+						else {
+							if(end_piece != empty_piece)
+								moves.push_back(chess_move(bq::v2i(row, col), bq::v2i(end_row, end_col), board));
+						}
+							
 					}
 				}
 			}
 		}
 	}
-	void add_pawn_moves(int row, int col, std::vector<chess_move>& moves)
+	void add_pawn_moves(int row, int col, std::vector<chess_move>& moves, bool only_attacking=false)
 	{
 		bool piece_pinned = false;
 		bq::v2i pin_direction(0, 0);
@@ -830,9 +842,11 @@ struct chess_state {
 		if (white_to_move) {
 			if (board[row - 1][col] == empty_piece) {
 				if (!piece_pinned || pin_direction == bq::v2i(-1, 0)) {
-					moves.push_back(chess_move(bq::v2i(row, col), bq::v2i(row - 1, col), board));
+					if(!only_attacking)
+						moves.push_back(chess_move(bq::v2i(row, col), bq::v2i(row - 1, col), board));
 					if (row == 6 && board[row - 2][col] == empty_piece) {
-						moves.push_back(chess_move(bq::v2i(row, col), bq::v2i(row - 2, col), board));
+						if(!only_attacking)
+							moves.push_back(chess_move(bq::v2i(row, col), bq::v2i(row - 2, col), board));
 					}
 				}
 			}
@@ -935,9 +949,11 @@ struct chess_state {
 		else {
 			if (board[row + 1][col] == empty_piece) {
 				if (!piece_pinned || pin_direction == bq::v2i(1, 0)) {
-					moves.push_back(chess_move(bq::v2i(row, col), bq::v2i(row + 1, col), board));
+					if (!only_attacking)
+						moves.push_back(chess_move(bq::v2i(row, col), bq::v2i(row + 1, col), board));
 					if (row == 1 && board[row + 2][col] == empty_piece) {
-						moves.push_back(chess_move(bq::v2i(row, col), bq::v2i(row + 2, col), board));
+						if (!only_attacking)
+							moves.push_back(chess_move(bq::v2i(row, col), bq::v2i(row + 2, col), board));
 					}
 				}
 			}
@@ -1041,7 +1057,7 @@ struct chess_state {
 			
 		}
 	}
-	void add_rook_moves(int row, int col, std::vector<chess_move>& moves)
+	void add_rook_moves(int row, int col, std::vector<chess_move>& moves, bool only_attacking=false)
 	{
 		bool piece_pinned = false;
 		bq::v2i pin_direction = {};
@@ -1072,7 +1088,8 @@ struct chess_state {
 						auto end_piece = board[end_row][end_col];
 						if (end_piece == empty_piece)
 						{
-							moves.push_back(chess_move(bq::v2i(row, col), bq::v2i(end_row, end_col), board));
+							if(!only_attacking)
+								moves.push_back(chess_move(bq::v2i(row, col), bq::v2i(end_row, end_col), board));
 						}
 						else if (end_piece.first == enemy_color)
 						{
@@ -1088,7 +1105,7 @@ struct chess_state {
 			}
 		}
 	}
-	void add_bishop_moves(int row, int col, std::vector<chess_move>& moves)
+	void add_bishop_moves(int row, int col, std::vector<chess_move>& moves,bool only_attacking=false)
 	{
 		bool piece_pinned = false;
 		bq::v2i pin_direction = {};
@@ -1118,7 +1135,8 @@ struct chess_state {
 						auto end_piece = board[end_row][end_col];
 						if (end_piece == empty_piece)
 						{
-							moves.push_back(chess_move(bq::v2i(row, col), bq::v2i(end_row, end_col), board));
+							if(!only_attacking)
+								moves.push_back(chess_move(bq::v2i(row, col), bq::v2i(end_row, end_col), board));
 						}
 						else if (end_piece.first == enemy_color)
 						{
@@ -1138,12 +1156,12 @@ struct chess_state {
 		}
 		
 	}
-	void add_queen_moves(int row, int col, std::vector<chess_move>& moves)
+	void add_queen_moves(int row, int col, std::vector<chess_move>& moves,bool only_attacking=false)
 	{
-		add_bishop_moves(row, col, moves);
-		add_rook_moves(row, col, moves);
+		add_bishop_moves(row, col, moves,only_attacking);
+		add_rook_moves(row, col, moves, only_attacking);
 	}
-	void add_king_moves(int row, int col, std::vector<chess_move>& moves)
+	void add_king_moves(int row, int col, std::vector<chess_move>& moves,bool only_attacking=false)
 	{
 		std::vector<bq::v2i> king_moves = { bq::v2i(-1, -1), bq::v2i(-1, 0), bq::v2i(-1, 1), bq::v2i(0, -1), bq::v2i(0, 1), bq::v2i(1, -1), bq::v2i(1, 0), bq::v2i(1, 1) };
 		color ally_color = color::black;
@@ -1170,7 +1188,14 @@ struct chess_state {
 					check_pin_info info = calc_checks_and_pins();
 					if (!info.in_check)
 					{
-						moves.push_back(chess_move(bq::v2i(row, col), bq::v2i(end_row, end_col), board));
+						if (only_attacking && end_piece.first!=color::none) {
+							moves.push_back(chess_move(bq::v2i(row, col), bq::v2i(end_row, end_col), board));
+						}
+						else {
+							if(!only_attacking)
+								moves.push_back(chess_move(bq::v2i(row, col), bq::v2i(end_row, end_col), board));
+						}
+						
 					}
 					if (ally_color == color::white)
 					{

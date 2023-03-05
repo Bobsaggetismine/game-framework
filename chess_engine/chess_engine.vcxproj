@@ -95,6 +95,13 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="source\castle_rights.hpp" />
+    <ClInclude Include="source\chess_ai.hpp" />
+    <ClInclude Include="source\chess_move.hpp" />
+    <ClInclude Include="source\chess_state.hpp" />
+    <ClInclude Include="source\enums.h" />
+  </ItemGroup>
+  <ItemGroup>
     <ClCompile Include="source\chess_game.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -103,11 +110,29 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="source\castle_rights.hpp" />
-    <ClInclude Include="source\chess_ai.hpp" />
-    <ClInclude Include="source\chess_move.hpp" />
-    <ClInclude Include="source\chess_state.hpp" />
-    <ClInclude Include="source\enums.h" />
+    <Text Include="log.txt" />
+    <Text Include="readme.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="res\bB.png" />
+    <Image Include="res\bK.png" />
+    <Image Include="res\bN.png" />
+    <Image Include="res\bP.png" />
+    <Image Include="res\bQ.png" />
+    <Image Include="res\bR.png" />
+    <Image Include="res\fail.png" />
+    <Image Include="res\wB.png" />
+    <Image Include="res\wK.png" />
+    <Image Include="res\wN.png" />
+    <Image Include="res\wP.png" />
+    <Image Include="res\wQ.png" />
+    <Image Include="res\wR.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Font Include="res\fail.ttf" />
+  </ItemGroup>
+  <ItemGroup>
+    <Media Include="res\fail.wav" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

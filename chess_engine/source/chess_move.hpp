@@ -23,6 +23,10 @@ struct chess_move {
 
 	int move_id = 0;
 
+	
+	//chess_move(chess_move&& other) :start_row(other.start_row), start_col(other.start_col), end_row(other.end_row), end_col(other.end_col), piece_moved(other.piece_moved), piece_captured(other.piece_captured), is_pawn_promotion(other.is_pawn_promotion), is_enpassant(other.is_enpassant), is_castle(other.is_castle), move_id(other.move_id) {}
+
+
 	chess_move(bq::v2i start, bq::v2i end, std::vector<std::vector<std::pair<color, piece>>>& board, bool is_enpassant_move = false, bool is_castle_move = false)
 		:start_row(start.x), start_col(start.y),end_row(end.x), end_col(end.y), piece_moved(board[start.x][start.y]), piece_captured(board[end.x][end.y]),
 		is_enpassant(is_enpassant_move), is_castle(is_castle_move)
