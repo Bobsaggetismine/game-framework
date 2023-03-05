@@ -6,7 +6,7 @@
 #include <bq/state/state.h>
 #include <bq/entity/entity.h>
 
-bq::window::window(unsigned w, unsigned h,const std::string& title):m_window({ w,h }, title, sf::Style::Fullscreen) {}
+bq::window::window(unsigned w, unsigned h,const std::string& title):m_window({ w,h }, title, sf::Style::Default) {}
 
 bq::v2f intl_get_mouse_pos(sf::Event& evt) {
 	bq::v2f offset = { 0,0 };

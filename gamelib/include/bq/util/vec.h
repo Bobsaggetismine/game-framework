@@ -48,6 +48,17 @@ namespace bq {
 			return sf::Vector2i(x,y);
 		}
 	};
+
+	struct v4i {
+		v4i(const int _x, const int _y, const int _z, const int _t) : x(_x), y(_y),z(_z),t(_t) {}
+		v4i() : x(0), y(0), z(0), t(0) {}
+		int x, y, z, t;
+
+		void operator +=(const v4i& other) { x += other.x; y += other.y; z += other.z; t += other.t; }
+		bool operator ==(const v4i& other) { return (x == other.x && y == other.y && z == other.z && t == other.t); }
+		
+	};
+
 	bq::v2i operator +(const v2i& first, const v2i& second);
 };
 

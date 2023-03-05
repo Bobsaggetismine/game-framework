@@ -26,10 +26,11 @@ void bq::game::run() {
 		if (m_accumulator > m_ups) {
 			m_accumulator -= m_ups;
 			update();
+			m_window.clear(bq::colour::BLACK);
+			render();
+			m_window.show();
 		}
-		m_window.clear(bq::colour::BLACK);
-		render();
-		m_window.show();
+		
 		m_accumulator += m_clock.restart();
 	}
 }
