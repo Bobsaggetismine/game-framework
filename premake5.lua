@@ -249,7 +249,11 @@ project "chess_engine"
 	files
 	{
 		"%{prj.name}/source/**.h",
-		"%{prj.name}/source/**.cpp"
+		"%{prj.name}/source/**.hpp",
+		"%{prj.name}/source/**.cpp",
+		"%{prj.name}/source/surge/**.h",
+		"%{prj.name}/source/surge/**.hpp",
+		"%{prj.name}/source/surge/**.cpp"
 	}
 	links
 	{
