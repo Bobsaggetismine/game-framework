@@ -1,6 +1,4 @@
-#include "surge/types.h"
-#include "surge/tables.h"
-#include "surge/position.h"
+#include "surge/surge.h"
 #include "chess_ai.hpp"
 #include "chess_utils.h"
 #include <bq.h>
@@ -16,18 +14,21 @@ public:
 
 	static constexpr float SQUARE_SIZE = GAME_HEIGHT / 8;
 	static constexpr bool PLAYER_ONE = false;
-	static constexpr bool PLAYER_TWO = false;
+	static constexpr bool PLAYER_TWO = true;
 
+	std::string m_pgn;
 	
 	Position m_position;
-	negamax_ai_ab m_ai;
+	chess_ai m_ai;
 
 	std::future<void> m_ai_future;
 
 	bq::v2i m_selected_square = { -1,-1 };
 	std::vector<bq::v2i> m_player_clicks;
 
-	chess_game(): bq::game(GAME_WIDTH, GAME_WIDTH, "Chess Game", 60.f) {}
+	bool checkmate = false;
+	
+	chess_game(): bq::game(GAME_WIDTH, GAME_WIDTH, "Chess Game", 60.f), m_ai(BLACK), m_position("r7/3kq1p1/p1pbrn1p/8/2pP4/2N4Q/PPP2PPP/R1B1R1K1 b - d3 0 0"){}
 
 	void draw_board()
 	{
@@ -43,25 +44,24 @@ public:
 				sf::RectangleShape rs;
 
 				auto turn = m_position.turn();
-				if (turn == WHITE) {
+				if (turn == WHITE && PLAYER_ONE) {
 					MoveList<WHITE> list(m_position);
 					for (auto move : list) {
+						if (m_selected_square == bq::v2i{-1,-1}) continue;
 						if (move.from() == create_square(row_to_file(m_selected_square.y), col_to_rank(m_selected_square.x)) && move.to() == create_square(row_to_file(y), col_to_rank(i))) {
 							color = sf::Color::Red;
 						}
 					}
 				}
-				else {
+				else if (turn == BLACK && PLAYER_TWO){
 					MoveList<BLACK> list(m_position);
 					for (auto move : list) {
+						if (m_selected_square == bq::v2i{ -1,-1 }) continue;
 						if (move.from() == create_square(row_to_file(m_selected_square.y), col_to_rank(m_selected_square.x)) && move.to() == create_square(row_to_file(y), col_to_rank(i))) {
 							color = sf::Color::Red;
 						}
 					}
 				}
-
-
-
 				rs.setSize(sf::Vector2f(SQUARE_SIZE, SQUARE_SIZE));
 				rs.setPosition(sf::Vector2f(y*SQUARE_SIZE, i*SQUARE_SIZE));
 				rs.setFillColor(color);
@@ -173,8 +173,21 @@ public:
 		MoveList<Us> list(m_position);
 		for (Move move : list) {
 			if (move.to() == create_square(row_to_file(m_player_clicks[1].y), col_to_rank(m_player_clicks[1].x)) && move.from() == create_square(row_to_file(m_player_clicks[0].y), col_to_rank(m_player_clicks[0].x))) {
-				if (move.flags() == MoveFlags::PROMOTIONS && move.flags() != MoveFlags::PC_QUEEN) continue;
+				if (move.flags() == MoveFlags::PR_KNIGHT) continue;
+				if (move.flags() == MoveFlags::PR_BISHOP) continue;
+				if (move.flags() == MoveFlags::PR_ROOK) continue;
+
+				
+
+				if (Us == BLACK) {
+					m_pgn += get_notation(m_position, move) + " ";
+				}
+				else {
+					m_pgn += std::to_string(std::max(1, m_position.ply() + 1 / 2)) + ". " + get_notation(m_position, move) + " ";
+				}
 				m_position.play<Us>(move);
+				checkmate = detect_checkmate(m_position);
+				break;
 			}
 		}
 	}
@@ -187,8 +200,15 @@ public:
 		{
 			future = std::async(std::launch::async, [this]
 			{
-				auto m = m_ai.find_best_move(m_position);
+				auto m = m_ai.get_best_move(m_position);
+				if (Us == BLACK) {
+					m_pgn +=  get_notation(m_position, m) + " ";
+				}
+				else {
+					m_pgn += std::to_string(std::max(1,m_position.ply()+1 / 2)) + ". " + get_notation(m_position, m) + " ";
+				}
 				m_position.play<Us>(m);
+				checkmate = detect_checkmate(m_position);
 			});
 		}
 	}
@@ -196,6 +216,8 @@ public:
 	virtual void update() override
 	{
 		
+		if (checkmate) return;
+
 		if (!PLAYER_ONE && m_position.turn() == WHITE) {
 			handle_ai_move<WHITE>(m_ai_future);
 		}
@@ -231,8 +253,11 @@ public:
 			handle_player_clicks(evt.mouse_clicked_pos);
 		}
 		else if (evt.type == bq::event_type::KEYPRESSED) {
-			if (evt.keycode == bq::keyboard::keycode::D) {
-				bq::logger::info("ai_two nodes searched: " + std::to_string(m_ai.nodes_searched));
+			if (evt.keycode == bq::keyboard::keycode::F) {
+				bq::logger::info("fen: " + m_position.fen() + " 0 0");
+			}
+			if (evt.keycode == bq::keyboard::keycode::P) {
+				bq::logger::info("pgn: " + m_pgn);
 			}
 		}
 
@@ -241,8 +266,8 @@ public:
 	{
 		initialise_all_databases();
 		zobrist::initialise_zobrist_keys();
-		Position::set("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq -", m_position);
-
+		//Position::set(, m_position);
+		
 		//run future initially with no processing being done, so we can cleanup the ai move function
 		m_ai_future = std::async(std::launch::async, [this] {});
 

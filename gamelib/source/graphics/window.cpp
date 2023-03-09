@@ -34,6 +34,12 @@ bq::keyboard::keycode intl_convert_keycode(sf::Keyboard::Key key) {
 	case sf::Keyboard::Up:
 		return bq::keyboard::keycode::UP;
 		break;
+	case sf::Keyboard::P:
+		return bq::keyboard::keycode::P;
+		break;
+	case sf::Keyboard::F:
+		return bq::keyboard::keycode::F;
+		break;
 	case sf::Keyboard::Left:
 		return bq::keyboard::keycode::LEFT;
 		break;
@@ -45,9 +51,6 @@ bq::keyboard::keycode intl_convert_keycode(sf::Keyboard::Key key) {
 		break;
 	case sf::Keyboard::Enter:
 		return bq::keyboard::keycode::ENTER;
-		break;
-	case sf::Keyboard::P:
-		return bq::keyboard::keycode::P;
 		break;
 	case sf::Keyboard::Tab:
 		return bq::keyboard::keycode::TAB;

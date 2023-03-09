@@ -1,8 +1,6 @@
 #pragma once
 
-#include "surge/types.h"
-#include "surge/tables.h"
-#include "surge/position.h"
+#include "surge/surge.h"
 #include <bq.h>
 
 #define ANALYTICS true
@@ -46,4 +44,91 @@ enum GameProgress {
 };
 GameProgress get_progress(int mv1, int mv2) {
 	return (mv1 <= 1300 && mv2 <= 1300) ? ENDGAME : MIDGAME;
+}
+
+
+std::string get_notation(Position& p, Move& move) {
+	if (move.is_promotion()) {
+		return  move.str().substr(2,3) + "Q";
+	}
+	
+	if (move.is_castling())
+		if (move.to() == h1 || move.to() == h8)
+			return "0-0";
+		else
+			return "0-0-0";
+	if (move.flags() == MoveFlags::EN_PASSANT) {
+		return move.str()[0] + "x" + move.str().substr(2,3) + " e.p.";
+	}
+	if (move.is_capture())
+		if (p.at(move.from()) == Piece::BLACK_PAWN || p.at(move.from()) == Piece::WHITE_PAWN) {
+			return  move.str()[0] + "x" + move.str().substr(2, 3);
+		}
+		else {
+			auto piece = p.at(move.from());
+			std::string piece_letter = "";
+			switch (piece) {
+				case WHITE_BISHOP: piece_letter = "B"; break;
+				case BLACK_BISHOP: piece_letter = "B"; break;
+				case WHITE_ROOK: piece_letter = "R"; break;
+				case BLACK_ROOK: piece_letter = "R"; break;
+				case WHITE_KNIGHT: piece_letter = "N"; break;
+				case BLACK_KNIGHT: piece_letter = "N"; break;
+				case WHITE_QUEEN: piece_letter = "Q"; break;
+				case BLACK_QUEEN: piece_letter = "Q"; break;
+				case WHITE_KING: piece_letter = "K"; break;
+				case BLACK_KING: piece_letter = "K"; break;
+			}
+			return piece_letter + "x" + move.str().substr(2, 3);
+		}
+	else {
+		if (p.at(move.from()) == Piece::BLACK_PAWN || p.at(move.from()) == Piece::WHITE_PAWN) {
+			return move.str().substr(2,3);
+		}
+		
+		else {
+			auto piece = p.at(move.from());
+			std::string piece_letter = "";
+			switch (piece) {
+				case WHITE_BISHOP: piece_letter = "B"; break;
+				case BLACK_BISHOP: piece_letter = "B"; break;
+				case WHITE_ROOK: piece_letter = "R"; break;
+				case BLACK_ROOK: piece_letter = "R"; break;
+				case WHITE_KNIGHT: piece_letter = "N"; break;
+				case BLACK_KNIGHT: piece_letter = "N"; break;
+				case WHITE_QUEEN: piece_letter = "Q"; break;
+				case BLACK_QUEEN: piece_letter = "Q"; break;
+				case WHITE_KING: piece_letter = "K"; break;
+				case BLACK_KING: piece_letter = "K"; break;
+			}
+			return piece_letter + move.str().substr(2, 3);
+		}
+		
+	}
+}
+
+bool detect_checkmate(Position& p) {
+
+	if (p.turn() == WHITE) {
+		MoveList<WHITE> moves(p);
+		if (moves.size() == 0) {
+			if (p.in_check<WHITE>())
+				bq::logger::info("checkmate, black wins!");
+			else
+				bq::logger::info("stalemate!");
+			return true;
+		}
+		return false;
+	}
+	else {
+		MoveList<BLACK> moves(p);
+		if (moves.size() == 0) {
+			if (p.in_check<BLACK>())
+				bq::logger::info("checkmate, white wins!");
+			else
+				bq::logger::info("stalemate!");
+			return true;
+		}
+		return false;
+	}
 }

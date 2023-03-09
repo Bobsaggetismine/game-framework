@@ -10,7 +10,7 @@ namespace bq {
 
 	namespace keyboard {
 		enum class keycode {
-			W,A,S,D,UP,DOWN,LEFT,RIGHT,ENTER,P,SPACE,NONE,TAB
+			W,A,S,D,P,F,UP,DOWN,LEFT,RIGHT,ENTER,SPACE,NONE,TAB
 		};
 	}
 	namespace mouse {
