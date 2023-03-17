@@ -28,4 +28,4 @@
 #include <bq/util/noncopyable.h>
 #include <bq/util/json.h>
 #define INTL_HEIGHT 512
-#define INTL_WIDTH 512
+#define INTL_WIDTH 700

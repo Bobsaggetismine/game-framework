@@ -1,55 +1,56 @@
 #pragma once
 #include <bq.h>
 #include <xutility>
+#include <thread>
 
+enum class TT_FLAG {
+	EXACT,
+	UPPERBOUND,
+	LOWERBOUND
+};
+
+struct tt_entry {
+	int depth;
+	int score;
+	TT_FLAG flag;
+	bool valid;
+};
 
 class transposition_table {
 
 	//std::vector<std::pair<uint64_t, bq::v2i>> m_table;
-	std::unordered_map<uint64_t, bq::v2i> m_table;
+	std::unordered_map<uint64_t,tt_entry> m_table;
+	Move m_selected_move;
+
+	tt_entry tte;
 
 public:
+	std::unordered_map<std::string, int> move_scores;
 
 	int LOOKUP_FAILED = -2000000000;
 
+	uint64_t max_size = 10000000000;
 
 	transposition_table() {
-
+		tte.valid = false;
+	}
+	Move selected_move() {
+		return m_selected_move;
+	}
+	void set_top_move(Move m) {
+		m_selected_move = m;
 	}
 
-
-	void save() {
-		bq::logger::info("saving tt");
-		FILE* f = fopen("t_table", "wb");
-		for (auto& pair : m_table) {
-			fwrite(&(pair.first), 8, 1, f);
-			fwrite(&(pair.second.x), 4, 1, f);
-			fwrite(&(pair.second.y), 4, 1, f);
-		}
-		fclose(f);
-	}
-
-	void load() {
-		FILE* f = fopen("t_table", "rb");
-		uint64_t key;
-		int x, y;
-		while (fread(&key, 8, 1, f)) {
-			fread(&x, 4, 1, f);
-			fread(&y, 4, 1, f);
-			m_table[key] = {x,y};
-		}
-		fclose(f);
-	}
-	int lookup(uint64_t hash, int depth) {
+	tt_entry lookup(uint64_t hash, int depth) {
 		if (m_table.find(hash) != m_table.end()) {
-			if (m_table[hash].x < depth) {
-				return LOOKUP_FAILED;
-			}
-			return m_table[hash].y;
+			return m_table[hash];
 		}
-		return LOOKUP_FAILED;
+		return tte;
 	}
-	void insert(uint64_t hash, int depth, int score) {
-		m_table[hash] = {depth, score};
+	void insert(uint64_t hash, tt_entry entry) {
+		m_table[hash] = entry;
+	}
+	void clear() {
+		m_table.clear();
 	}
 };

@@ -30,7 +30,7 @@ void bq::gui::Button::render(bq::window& window)
 		m_button.setFillColor(sf::Color::Magenta);
 	}
 	else {
-		m_button.setFillColor(sf::Color::Red);
+		m_button.setFillColor(m_fill);
 	}
 
 	window.draw(m_button);
@@ -45,8 +45,8 @@ void bq::gui::Button::setFunc(std::function<void(void)>func)
 	m_function = func;
 }
 
-bq::gui::Button::Button(bq::v2f pos, bq::v2f size,std::string label, sf::Color outlineColor, sf::Color fillColor, unsigned textSize) {
-	m_button.setOutlineThickness(1);
+bq::gui::Button::Button(bq::v2f pos, bq::v2f size,std::string label, sf::Color outlineColor, sf::Color fillColor, unsigned textSize):m_fill(fillColor) {
+	m_button.setOutlineThickness(0);
 	m_button.setOutlineColor(outlineColor);
 	m_button.setFillColor(fillColor);
 	m_button.setSize(size);

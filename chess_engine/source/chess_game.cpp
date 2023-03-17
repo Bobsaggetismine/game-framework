@@ -9,27 +9,97 @@
 #include <random>
 
 
+#define R2R(x,y) row_to_rank(x,y)
+#define C2F(x,y) col_to_file(x,y)
+
+
+
+
 class chess_game : public bq::game {
 public:
 
 	static constexpr float SQUARE_SIZE = GAME_HEIGHT / 8;
-	static constexpr bool PLAYER_ONE = false;
-	static constexpr bool PLAYER_TWO = true;
+	bool PLAYER_ONE = true;
+	bool PLAYER_TWO = false;
 
-	std::string m_pgn;
-	
-	Position m_position;
-	chess_ai m_ai;
-
-	std::future<void> m_ai_future;
-
-	bq::v2i m_selected_square = { -1,-1 };
-	std::vector<bq::v2i> m_player_clicks;
-
+	bool flipped = false;
 	bool checkmate = false;
 	
-	chess_game(): bq::game(GAME_WIDTH, GAME_WIDTH, "Chess Game", 60.f), m_ai(BLACK), m_position("r7/3kq1p1/p1pbrn1p/8/2pP4/2N4Q/PPP2PPP/R1B1R1K1 b - d3 0 0"){}
+	std::future<void> m_ai_future;
+	std::string m_pgn;
+	std::vector<bq::v2i> m_player_clicks;
 
+	Position m_position;
+	Move m_last_move;
+
+	chess_ai m_ai;
+
+	bq::v2i m_selected_square = { -1,-1 };
+
+	sf::Sound m_move_sound;
+	bq::gui::Button m_restart_button,m_flip_button;
+
+	bq::gui::Button m_p1_button;
+	bq::gui::Button m_p2_button;
+	bq::gui::Button m_copy_fen_button;
+	bq::gui::Button m_copy_pgn_button;
+	bq::gui::Button m_paste_fen_button;
+
+	//rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1
+	chess_game() : bq::game(GAME_WIDTH, GAME_HEIGHT, "Chess Game", 60.f), m_ai(11), m_position("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"), m_move_sound(bq::resource_holder::get().sounds.get("move.wav")), m_restart_button({SQUARE_SIZE*8 + 10,10}, {168,50},"Restart",sf::Color::Color(8553090), sf::Color::Color(8553090), 18),
+		m_flip_button({ SQUARE_SIZE * 8 + 10,70 }, { 168,50 }, "Flip", sf::Color::Color(8553090), sf::Color::Color(8553090), 18),
+		m_p1_button({ SQUARE_SIZE * 8 + 10,130 }, { 168,50 }, "Restart - p1", sf::Color::Color(8553090), sf::Color::Color(8553090), 18),
+		m_p2_button({ SQUARE_SIZE * 8 + 10,190 }, { 168,50 }, "Restart - p2", sf::Color::Color(8553090), sf::Color::Color(8553090), 18),
+		m_copy_fen_button({ SQUARE_SIZE * 8 + 10,250 }, { 168,50 }, "Copy Fen", sf::Color::Color(8553090), sf::Color::Color(8553090), 18),
+		m_paste_fen_button({ SQUARE_SIZE * 8 + 10,310 }, { 168,50 }, "Paste Fen", sf::Color::Color(8553090), sf::Color::Color(8553090), 18),
+		m_copy_pgn_button({ SQUARE_SIZE * 8 + 10,370 }, { 168,50 }, "Copy PGN", sf::Color::Color(8553090), sf::Color::Color(8553090), 18)
+	{}
+
+
+	void restart() {
+		m_ai.signal_stop();
+		m_ai_future.wait();
+		checkmate = false;
+		m_last_move = Move();
+		m_selected_square = { -1,-1 };
+		m_pgn = "";
+		m_position = Position("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
+	}
+	void flip() {
+		flipped = !flipped;
+	}
+	void restart_p1() {
+		PLAYER_ONE = true;
+		PLAYER_TWO = false;
+		restart();
+	}
+	void restart_p2() {
+		PLAYER_ONE = false;
+		PLAYER_TWO = true;
+		restart();
+	}
+
+	void copy_fen() {
+		sf::Clipboard::setString(m_position.fen());
+	}
+	void copy_pgn() {
+		sf::Clipboard::setString(m_pgn);
+	}
+	void paste_fen() {
+		restart();
+		m_position = Position(sf::Clipboard::getString());
+	}
+
+
+	void draw_ui() {
+		m_restart_button.render(m_window);
+		m_flip_button.render(m_window);
+		m_p1_button.render(m_window);
+		m_p2_button.render(m_window);
+		m_copy_fen_button.render(m_window);
+		m_copy_pgn_button.render(m_window);
+		m_paste_fen_button.render(m_window);
+	}
 	void draw_board()
 	{
 		std::vector<sf::Color> colors = { sf::Color::White, sf::Color::Color::Cyan};
@@ -44,11 +114,17 @@ public:
 				sf::RectangleShape rs;
 
 				auto turn = m_position.turn();
+
+				if (create_square(C2F(y,flipped), R2R(i,flipped)) == m_last_move.to() || create_square(C2F(y,flipped), R2R(i,flipped)) == m_last_move.from()) {
+					color = sf::Color::Green;
+				}
+
+
 				if (turn == WHITE && PLAYER_ONE) {
 					MoveList<WHITE> list(m_position);
 					for (auto move : list) {
 						if (m_selected_square == bq::v2i{-1,-1}) continue;
-						if (move.from() == create_square(row_to_file(m_selected_square.y), col_to_rank(m_selected_square.x)) && move.to() == create_square(row_to_file(y), col_to_rank(i))) {
+						if (move.from() == create_square(C2F(m_selected_square.y,flipped), R2R(m_selected_square.x,flipped)) && move.to() == create_square(C2F(y,flipped), R2R(i,flipped))) {
 							color = sf::Color::Red;
 						}
 					}
@@ -57,7 +133,7 @@ public:
 					MoveList<BLACK> list(m_position);
 					for (auto move : list) {
 						if (m_selected_square == bq::v2i{ -1,-1 }) continue;
-						if (move.from() == create_square(row_to_file(m_selected_square.y), col_to_rank(m_selected_square.x)) && move.to() == create_square(row_to_file(y), col_to_rank(i))) {
+						if (move.from() == create_square(C2F(m_selected_square.y,flipped), R2R(m_selected_square.x,flipped)) && move.to() == create_square(C2F(y,flipped), R2R(i,flipped))) {
 							color = sf::Color::Red;
 						}
 					}
@@ -75,8 +151,8 @@ public:
 			for (float y = 0; y < 8; ++y) {
 				
 
-				File f = row_to_file(int(y));
-				Rank r = col_to_rank(int(i));
+				File f = C2F(int(y),flipped);
+				Rank r = R2R(int(i),flipped);
 				
 				
 				Piece piece = m_position.at(create_square(f,r));
@@ -158,6 +234,8 @@ public:
 		int col = int(click_pos.x / SQUARE_SIZE);
 		int row = int(click_pos.y / SQUARE_SIZE);
 
+		if (col >= 8) return;
+
 		if (m_selected_square == bq::v2i(row, col)) {
 			m_selected_square = { -1,-1 };
 			m_player_clicks.clear();
@@ -172,7 +250,7 @@ public:
 	{
 		MoveList<Us> list(m_position);
 		for (Move move : list) {
-			if (move.to() == create_square(row_to_file(m_player_clicks[1].y), col_to_rank(m_player_clicks[1].x)) && move.from() == create_square(row_to_file(m_player_clicks[0].y), col_to_rank(m_player_clicks[0].x))) {
+			if (move.to() == create_square(C2F(m_player_clicks[1].y,flipped), R2R(m_player_clicks[1].x,flipped)) && move.from() == create_square(C2F(m_player_clicks[0].y,flipped), R2R(m_player_clicks[0].x,flipped))) {
 				if (move.flags() == MoveFlags::PR_KNIGHT) continue;
 				if (move.flags() == MoveFlags::PR_BISHOP) continue;
 				if (move.flags() == MoveFlags::PR_ROOK) continue;
@@ -186,6 +264,8 @@ public:
 					m_pgn += std::to_string(std::max(1, m_position.ply() + 1 / 2)) + ". " + get_notation(m_position, move) + " ";
 				}
 				m_position.play<Us>(move);
+				m_move_sound.play();
+				m_last_move = move;
 				checkmate = detect_checkmate(m_position);
 				break;
 			}
@@ -208,6 +288,8 @@ public:
 					m_pgn += std::to_string(std::max(1,m_position.ply()+1 / 2)) + ". " + get_notation(m_position, m) + " ";
 				}
 				m_position.play<Us>(m);
+				m_move_sound.play();
+				m_last_move = m;
 				checkmate = detect_checkmate(m_position);
 			});
 		}
@@ -242,6 +324,7 @@ public:
 	{
 		draw_board();
 		draw_pieces();		
+		draw_ui();
 	}
 	virtual void handleEvent(bq::event& evt) override
 	{
@@ -260,16 +343,46 @@ public:
 				bq::logger::info("pgn: " + m_pgn);
 			}
 		}
-
+		m_restart_button.handle_event(evt);
+		m_flip_button.handle_event(evt);
+		m_p1_button.handle_event(evt);
+		m_p2_button.handle_event(evt);
+		m_copy_fen_button.handle_event(evt);
+		m_paste_fen_button.handle_event(evt);
+		m_copy_pgn_button.handle_event(evt);
 	}
+	
+	
+	
 	virtual int execute() override
 	{
 		initialise_all_databases();
 		zobrist::initialise_zobrist_keys();
-		//Position::set(, m_position);
 		
 		//run future initially with no processing being done, so we can cleanup the ai move function
 		m_ai_future = std::async(std::launch::async, [this] {});
+
+		std::function<void(void)> changeState = std::bind(&chess_game::restart, this);
+		m_restart_button.setFunc(changeState);
+
+		std::function<void(void)> flip_board = std::bind(&chess_game::flip, this);
+		m_flip_button.setFunc(flip_board);
+
+		std::function<void(void)> start_p1 = std::bind(&chess_game::restart_p1, this);
+		m_p1_button.setFunc(start_p1);
+
+		std::function<void(void)> start_p2 = std::bind(&chess_game::restart_p2, this);
+		m_p2_button.setFunc(start_p2);
+
+		std::function<void(void)> copyfen = std::bind(&chess_game::copy_fen, this);
+		m_copy_fen_button.setFunc(copyfen);
+
+		std::function<void(void)> pastefen = std::bind(&chess_game::paste_fen, this);
+		m_paste_fen_button.setFunc(pastefen);
+
+		std::function<void(void)> copypgn = std::bind(&chess_game::copy_pgn, this);
+		m_copy_pgn_button.setFunc(copypgn);
+
 
 		run();
 		return EXIT_SUCCESS;

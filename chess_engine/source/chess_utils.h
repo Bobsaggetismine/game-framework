@@ -4,26 +4,63 @@
 #include <bq.h>
 
 #define ANALYTICS true
-#define CHESS_DEBUG false
 
 
 std::map<PieceType, int> piece_scores = { {PieceType::KING,5000},{PieceType::QUEEN , 900},{PieceType::ROOK , 500},{PieceType::BISHOP, 300},{PieceType::KNIGHT , 300},{PieceType::PAWN , 100} };
 
-File row_to_file(int row) {
+std::map<Piece, int> piece_values_c = { {Piece::BLACK_KING,5000},  {Piece::WHITE_KING,5000},
+									  {Piece::BLACK_QUEEN,900}, {Piece::WHITE_QUEEN,900}, 
+									  {Piece::BLACK_ROOK,500},  {Piece::WHITE_ROOK,500},
+									  {Piece::BLACK_BISHOP,300},{Piece::WHITE_BISHOP,300},
+									  {Piece::BLACK_PAWN,100},  {Piece::WHITE_PAWN ,100},
+									  {Piece::BLACK_KNIGHT,300},{Piece::WHITE_KNIGHT,300},
+									{Piece::NO_PIECE, 0} };
+
+
+File col_to_file(int row, bool reversed) {
+	if (reversed) {
+		File f = AFILE;
+		switch (row) {
+		case 7: f = File::AFILE; break;
+		case 6: f = File::BFILE; break;
+		case 5: f = File::CFILE; break;
+		case 4: f = File::DFILE; break;
+		case 3: f = File::EFILE; break;
+		case 2: f = File::FFILE; break;
+		case 1: f = File::GFILE; break;
+		case 0: f = File::HFILE; break;
+		}
+		return f;
+	}
 	File f = AFILE;
 	switch (row) {
-	case 0: f = File::AFILE; break;
-	case 1: f = File::BFILE; break;
-	case 2: f = File::CFILE; break;
-	case 3: f = File::DFILE; break;
-	case 4: f = File::EFILE; break;
-	case 5: f = File::FFILE; break;
-	case 6: f = File::GFILE; break;
-	case 7: f = File::HFILE; break;
+		case 0: f = File::AFILE; break;
+		case 1: f = File::BFILE; break;
+		case 2: f = File::CFILE; break;
+		case 3: f = File::DFILE; break;
+		case 4: f = File::EFILE; break;
+		case 5: f = File::FFILE; break;
+		case 6: f = File::GFILE; break;
+		case 7: f = File::HFILE; break;
 	}
 	return f;
 }
-Rank col_to_rank(int col) {
+
+Rank row_to_rank(int col, bool reversed) {
+	if (reversed) {
+		Rank r = RANK8;
+		switch (col) {
+		case 7: r = Rank::RANK8; break;
+		case 6: r = Rank::RANK7; break;
+		case 5: r = Rank::RANK6; break;
+		case 4: r = Rank::RANK5; break;
+		case 3: r = Rank::RANK4; break;
+		case 2: r = Rank::RANK3; break;
+		case 1: r = Rank::RANK2; break;
+		case 0: r = Rank::RANK1; break;
+		}
+		return r;
+	}
 	Rank r = RANK8;
 	switch (col) {
 	case 0: r = Rank::RANK8; break;
@@ -58,11 +95,11 @@ std::string get_notation(Position& p, Move& move) {
 		else
 			return "0-0-0";
 	if (move.flags() == MoveFlags::EN_PASSANT) {
-		return move.str()[0] + "x" + move.str().substr(2,3) + " e.p.";
+		return move.str().substr(0,1) + "x" + move.str().substr(2, 3) + " e.p.";
 	}
 	if (move.is_capture())
 		if (p.at(move.from()) == Piece::BLACK_PAWN || p.at(move.from()) == Piece::WHITE_PAWN) {
-			return  move.str()[0] + "x" + move.str().substr(2, 3);
+			return  move.str().substr(0, 1) + "x" + move.str().substr(2, 3);
 		}
 		else {
 			auto piece = p.at(move.from());

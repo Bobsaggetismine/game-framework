@@ -10,6 +10,7 @@ namespace bq {
 
 			Rectangle   m_button;
 			sf::Text m_text;
+			sf::Color m_fill;
 			std::function<void(void)> m_function = [](){};
 		public:
 			Button(bq::v2f, bq::v2f,std::string, sf::Color, sf::Color, unsigned size_t);
