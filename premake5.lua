@@ -11,9 +11,8 @@ workspace "bq_game_lib"
 outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
 
 IncludeDir = {}
-IncludeDir["SFML_LINUX"] = "/usr/include/SFML/"
-IncludeDir["BOOST_LINUX"] ="/usr/include/boost"
-IncludeDir["JSON"] = "gamelib/deps/JSON/"
+IncludeDir["SFML"] = "/usr/include/SFML/"
+IncludeDir["BOOST"] ="/usr/include/boost"
 
 project "gamelib"
 	location "gamelib"
@@ -37,7 +36,6 @@ project "gamelib"
 	{
 		"%{prj.name}/include",
 		"%{IncludeDir.SFML}",
-		"%{IncludeDir.JSON}"
 	}
 	filter "system:windows"
 		systemversion "latest"
@@ -87,7 +85,6 @@ project "sandbox"
 	{
 		"gamelib/include",
 		"%{IncludeDir.SFML}",
-		"%{IncludeDir.JSON}"
 	}
 
 
@@ -191,7 +188,6 @@ project "chess_engine"
 	{
 		"gamelib/include",
 		"%{IncludeDir.SFML}",
-		"%{IncludeDir.JSON}"
 	}
 	filter "system:windows"
 		systemversion "latest"
