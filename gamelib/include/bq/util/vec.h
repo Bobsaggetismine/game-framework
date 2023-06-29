@@ -14,7 +14,7 @@ namespace bq {
 		operator sf::Vector2f () const {
 			return sf::Vector2f(x, y);
 		}
-		bool operator==(const v2f& other) {
+		bool operator==(const v2f& other) const {
 			bool xclose = fabs((double)other.x - x) < 0.001f;
 			bool yclose = fabs((double)other.y - y) < 0.001f;
 			return (xclose && yclose); 
@@ -40,7 +40,7 @@ namespace bq {
 		int x, y;
 
 		void operator +=(const v2i& other) { x += other.x; y += other.y; }
-		bool operator ==(const v2i& other) { return (x == other.x && y == other.y); }
+		bool operator ==(const v2i& other) const { return (x == other.x && y == other.y); }
 		
 		//seemless operability with sf::Vector
 		v2i(const sf::Vector2i& sfv):x(sfv.x), y(sfv.y) {}
@@ -55,7 +55,7 @@ namespace bq {
 		int x, y, z, t;
 
 		void operator +=(const v4i& other) { x += other.x; y += other.y; z += other.z; t += other.t; }
-		bool operator ==(const v4i& other) { return (x == other.x && y == other.y && z == other.z && t == other.t); }
+		bool operator ==(const v4i& other) const { return (x == other.x && y == other.y && z == other.z && t == other.t); }
 		
 	};
 
