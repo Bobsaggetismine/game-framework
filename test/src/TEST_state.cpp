@@ -1,9 +1,11 @@
-#include <boost/test/auto_unit_test.hpp>
+#include <boost/test/unit_test.hpp>
 
 #include <bq.h>
 #include <bq/exception/illegal_state.h>
 #include <bq/state/state.h>
 #include <bq/state/state_manager.h>
+
+
 class test_state : public bq::state {
 public:
 	void update() override{
@@ -21,7 +23,6 @@ public:
 	{
 	}
 };
-
 BOOST_AUTO_TEST_CASE(test_state_manager_constructor) {
 	bq::state_manager sm(std::make_unique<test_state>());
 	BOOST_CHECK(sm.get_num_states() == 1);

@@ -1,9 +1,9 @@
 #pragma once
 #include <bq.h>
-#include <xutility>
+
 #include <thread>
 
-enum class TT_FLAG {
+enum class tt_flag {
 	EXACT,
 	UPPERBOUND,
 	LOWERBOUND
@@ -12,7 +12,7 @@ enum class TT_FLAG {
 struct tt_entry {
 	int depth;
 	int score;
-	TT_FLAG flag;
+	tt_flag flag;
 	bool valid;
 };
 
@@ -23,6 +23,10 @@ class transposition_table {
 	Move m_selected_move;
 
 	tt_entry tte;
+
+	uint32_t clear_size = 24000000000 / sizeof(tt_entry);
+
+	std::mutex m_insertion_mutex;
 
 public:
 	std::unordered_map<std::string, int> move_scores;
@@ -48,9 +52,11 @@ public:
 		return tte;
 	}
 	void insert(uint64_t hash, tt_entry entry) {
+		std::lock_guard<std::mutex> lock(m_insertion_mutex);
 		m_table[hash] = entry;
 	}
 	void clear() {
-		m_table.clear();
+		if(m_table.size() > clear_size)
+			m_table.clear();
 	}
 };

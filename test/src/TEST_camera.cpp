@@ -1,6 +1,8 @@
-#include <boost/test/auto_unit_test.hpp>
+
+#include <boost/test/unit_test.hpp>
 
 #include <bq.h>
+
 
 
 class test_entity : public bq::entity {
@@ -19,7 +21,6 @@ public:
 	bool should_cull(const sf::View&) const override {return false;}
 	virtual ~test_entity() override {}
 };
-
 BOOST_AUTO_TEST_CASE(test_camera_construction) {
 
 	bq::entity* e = new test_entity();

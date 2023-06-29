@@ -1,10 +1,8 @@
-#define BOOST_TEST_MODULE TEST_GAMELIB
-
+#define BOOST_TEST_MODULE MainTests
+#define BOOST_TEST_DYN_LINK
+#define BOOST_TEST_MAIN
 #include <bq.h>
-#include <boost/test/included/unit_test.hpp>
-
-
-
+#include <boost/test/unit_test.hpp>
 BOOST_AUTO_TEST_CASE(getRandom) {
 	constexpr float MIN_RANDOM = 50.0f;
 	constexpr float MAX_RANDOM = 80.0f;

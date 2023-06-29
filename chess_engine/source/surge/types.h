@@ -267,12 +267,12 @@ extern const Bitboard k2;
 extern const Bitboard k4;
 extern const Bitboard kf;
 
-// gk extern inline int pop_count(Bitboard x);
 extern int pop_count(Bitboard x);
 // gk extern inline int sparse_pop_count(Bitboard x);
 extern int sparse_pop_count(Bitboard x);
 // gk extern inline Square pop_lsb(Bitboard* b);
 extern Square pop_lsb(Bitboard* b);
+
 
 extern const int DEBRUIJN64[64];
 extern const Bitboard MAGIC;

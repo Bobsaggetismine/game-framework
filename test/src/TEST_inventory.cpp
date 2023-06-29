@@ -1,6 +1,8 @@
-#include <boost/test/auto_unit_test.hpp>
+
+#include <boost/test/unit_test.hpp>
 
 #include <bq.h>
+
 
 class test_item : public bq::item {
 	// Inherited via item
@@ -9,7 +11,6 @@ class test_item : public bq::item {
 	}
 
 };
-
 BOOST_AUTO_TEST_CASE(test_empty_inventory) {
 	bq::inventory inv;
 	BOOST_REQUIRE(inv.empty());

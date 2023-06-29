@@ -1,23 +1,26 @@
 #pragma once
 
-#include "surge/surge.h"
+#include "includes.h"
 #include <bq.h>
 
 #define ANALYTICS true
 
 
-std::map<PieceType, int> piece_scores = { {PieceType::KING,5000},{PieceType::QUEEN , 900},{PieceType::ROOK , 500},{PieceType::BISHOP, 300},{PieceType::KNIGHT , 300},{PieceType::PAWN , 100} };
-
-std::map<Piece, int> piece_values_c = { {Piece::BLACK_KING,5000},  {Piece::WHITE_KING,5000},
-									  {Piece::BLACK_QUEEN,900}, {Piece::WHITE_QUEEN,900}, 
-									  {Piece::BLACK_ROOK,500},  {Piece::WHITE_ROOK,500},
-									  {Piece::BLACK_BISHOP,300},{Piece::WHITE_BISHOP,300},
-									  {Piece::BLACK_PAWN,100},  {Piece::WHITE_PAWN ,100},
-									  {Piece::BLACK_KNIGHT,300},{Piece::WHITE_KNIGHT,300},
-									{Piece::NO_PIECE, 0} };
+static std::map<PieceType, int> piece_scores = { {PieceType::KING,5000},{PieceType::QUEEN , 900},{PieceType::ROOK , 500},{PieceType::BISHOP, 300},{PieceType::KNIGHT , 300},{PieceType::PAWN , 100} };
 
 
-File col_to_file(int row, bool reversed) {
+
+static constexpr int piece_values[NPIECE_TYPES] = {
+	100,    // PAWN
+	300,    // KNIGHT
+	305,    // BISHOP
+	500,    // ROOK
+	900,    // QUEEN
+	2000000 // KING
+};
+
+
+static File col_to_file(int row, bool reversed) {
 	if (reversed) {
 		File f = AFILE;
 		switch (row) {
@@ -46,7 +49,7 @@ File col_to_file(int row, bool reversed) {
 	return f;
 }
 
-Rank row_to_rank(int col, bool reversed) {
+static Rank row_to_rank(int col, bool reversed) {
 	if (reversed) {
 		Rank r = RANK8;
 		switch (col) {
@@ -79,12 +82,12 @@ enum GameProgress {
 	MIDGAME,
 	ENDGAME
 };
-GameProgress get_progress(int mv1, int mv2) {
+static GameProgress get_progress(int mv1, int mv2) {
 	return (mv1 <= 1300 && mv2 <= 1300) ? ENDGAME : MIDGAME;
 }
 
 
-std::string get_notation(Position& p, Move& move) {
+static std::string get_notation(Position& p, Move& move) {
 	if (move.is_promotion()) {
 		return  move.str().substr(2,3) + "Q";
 	}
@@ -144,7 +147,7 @@ std::string get_notation(Position& p, Move& move) {
 	}
 }
 
-bool detect_checkmate(Position& p) {
+static bool detect_checkmate(Position& p) {
 
 	if (p.turn() == WHITE) {
 		MoveList<WHITE> moves(p);

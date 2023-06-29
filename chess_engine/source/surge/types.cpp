@@ -80,12 +80,13 @@ const Bitboard k2 = 0x3333333333333333;
 const Bitboard k4 = 0x0f0f0f0f0f0f0f0f;
 const Bitboard kf = 0x0101010101010101;
 
-inline int pop_count(Bitboard x) {
-    x = x - ((x >> 1) & k1);
-    x = (x & k2) + ((x >> 2) & k2);
-    x = (x + (x >> 4)) & k4;
-    x = (x * kf) >> 56;
-    return int(x);
+int pop_count(Bitboard x) {
+    return __builtin_popcountll(x);
+    // x = x - ((x >> 1) & k1);
+    // x = (x & k2) + ((x >> 2) & k2);
+    // x = (x + (x >> 4)) & k4;
+    // x = (x * kf) >> 56;
+    // return int(x);
 }
 
 // ~~Returns number of set bits in the bitboard. Faster than pop_count(x) when the bitboard has few set bits~~

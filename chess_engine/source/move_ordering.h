@@ -1,18 +1,7 @@
 #pragma once
-#include "surge/surge.h"
-#include "chess_utils.h"
+#include "includes.h"
 
 
-constexpr int piece_values[NPIECE_TYPES] = {
-    100,    // PAWN
-    300,    // KNIGHT
-    305,    // BISHOP
-    500,    // ROOK
-    900,    // QUEEN
-    2000000 // KING
-};
-
-int sort_scores[NSQUARES][NSQUARES] = { {0} };
 
 template <Color Us>
 void order_moves(Position& p, MoveList<Us>& moves, transposition_table& tt, bool use_tt) {
@@ -44,18 +33,3 @@ void order_moves(Position& p, MoveList<Us>& moves, transposition_table& tt, bool
     }
     
 }
-
-
-/*
-* template <Color Us>
-void swap_if_contains(MoveList<Us>& movelist) {
-	for (Move* i = movelist.list; i != movelist.last; ++i) {
-		if ((*i) == m_move) {
-			Move temp = movelist.list[0];
-			movelist.list[0] = m_move;
-			(*i) = temp;
-			break;
-		}
-	}
-}
-*/

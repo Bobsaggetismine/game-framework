@@ -11,7 +11,8 @@ workspace "bq_game_lib"
 outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
 
 IncludeDir = {}
-IncludeDir["SFML"] = "gamelib/deps/SFML/include"
+IncludeDir["SFML_LINUX"] = "/usr/include/SFML/"
+IncludeDir["BOOST_LINUX"] ="/usr/include/boost"
 IncludeDir["JSON"] = "gamelib/deps/JSON/"
 
 project "gamelib"
@@ -21,10 +22,10 @@ project "gamelib"
 	cppdialect "C++20"
 	staticruntime "on"
 
-	targetdir ("bin/" .. outputdir .. "/%{prj.name}")
-	objdir ("obj/" .. outputdir .. "/%{prj.name}")
+	targetdir ("build/bin/" .. outputdir .. "/%{prj.name}")
+	objdir ("build/obj/" .. outputdir .. "/%{prj.name}")
 
-	pchheader "bqpch.h"
+	pchheader "gamelib/include/bqpch.h"
 	pchsource "gamelib/source/bqpch.cpp"
 
 	files
@@ -32,23 +33,23 @@ project "gamelib"
 		"%{prj.name}/include/**.h",
 		"%{prj.name}/source/**.cpp",
     }
-    includedirs
+	includedirs
 	{
-        "%{prj.name}/include",
+		"%{prj.name}/include",
 		"%{IncludeDir.SFML}",
 		"%{IncludeDir.JSON}"
 	}
-
 	filter "system:windows"
 		systemversion "latest"
 		defines{ "PLATFORM_WINDOWS" }
-
-
-	
+	filter "system:linux"
+		systemversion "latest"
+		defines{ "PLATFORM_LINUX" }
 		
 	filter "configurations:Debug"
 		defines "DEBUG"
 		runtime "Debug"
+		symbols "on"
 
 
 	filter "configurations:Release"
@@ -66,8 +67,8 @@ project "sandbox"
 	cppdialect "C++20"
 	staticruntime "on"
 
-	targetdir ("bin/" .. outputdir .. "/%{prj.name}")
-	objdir ("obj/" .. outputdir .. "/%{prj.name}")
+	targetdir ("build/bin/" .. outputdir .. "/%{prj.name}")
+	objdir ("build/obj/" .. outputdir .. "/%{prj.name}")
 
 	files
 	{
@@ -76,165 +77,87 @@ project "sandbox"
 	}
     links
 	{
-        "gamelib"
+        "gamelib",
+        "sfml-system",
+        "sfml-window",
+        "sfml-graphics",
+        "sfml-audio",
 	}
     includedirs
 	{
-        "gamelib/include",
+		"gamelib/include",
 		"%{IncludeDir.SFML}",
 		"%{IncludeDir.JSON}"
 	}
 
+
 	filter "system:windows"
 		systemversion "latest"
 		defines{ "PLATFORM_WINDOWS" }
-
-	
-	filter "configurations:*"
-		libdirs { "gamelib/deps/SFML/lib" }	
-
-
+	filter "system:linux"
+		systemversion "latest"
+		defines{ "PLATFORM_LINUX" }
+		
 	filter "configurations:Debug"
 		defines "DEBUG"
 		runtime "Debug"
 		symbols "on"
-		links
-		{	
-			"sfml-graphics",
-			"sfml-window",
-			"sfml-system",
-			"sfml-audio",
-			"sfml-network"
-		}
+
 	filter "configurations:Release"
 		defines "NDEBUG"
 		runtime "Release"
 		optimize "on"
-		links
-		{	
-			"sfml-graphics",
-			"sfml-window",
-			"sfml-system",
-			"sfml-audio",
-			"sfml-network"
-		}
+
 project "test"
 	location "test"
-	kind "ConsoleApp"
-	language "C++"
-	cppdialect "C++17"
-	staticruntime "on"
-
-	targetdir ("bin/" .. outputdir .. "/%{prj.name}")
-	objdir ("obj/" .. outputdir .. "/%{prj.name}")
-	filter "system:windows"
-		systemversion "latest"
-		defines{ "PLATFORM_WINDOWS" }
-	filter "configurations:*"
-		libdirs { "test/deps/boost/lib" }	
-	links
-	{
-		"gamelib"
-	}
-	files
-	{
-		"%{prj.name}/src/**.cpp"
-	}
-	includedirs
-	{
-		"gamelib/include",
-		"test/deps/boost/include",
-		"%{IncludeDir.SFML}"
-	}
-	
-	
-	filter "configurations:*"
-		libdirs { "gamelib/deps/SFML/lib" }	
-
-	filter "configurations:Debug"
-		defines "DEBUG"
-		runtime "Debug"
-		symbols "on"
-		links
-		{	
-			"sfml-graphics",
-			"sfml-window",
-			"sfml-system",
-			"sfml-audio",
-			"sfml-network"
-		}
-	filter "configurations:Release"
-		defines "NDEBUG"
-		runtime "Release"
-		optimize "on"
-		links
-		{	
-			"sfml-graphics",
-			"sfml-window",
-			"sfml-system",
-			"sfml-audio",
-			"sfml-network"
-		}
-
-
-project "pong"
-	location "pong"
 	kind "ConsoleApp"
 	language "C++"
 	cppdialect "C++20"
 	staticruntime "on"
 
-	targetdir ("bin/" .. outputdir .. "/%{prj.name}")
-	objdir ("obj/" .. outputdir .. "/%{prj.name}")
+	targetdir ("build/bin/" .. outputdir .. "/%{prj.name}")
+	objdir ("build/obj/" .. outputdir .. "/%{prj.name}")
 
-	files
-	{
-		"%{prj.name}/source/**.h",
-		"%{prj.name}/source/**.cpp"
-	}
 	links
 	{
-		"gamelib"
+		"boost_unit_test_framework",
+		"gamelib",
+		"sfml-graphics",
+		"sfml-window",
+		"sfml-system",
+		"sfml-audio",
+		"sfml-network",
 	}
-	includedirs
+	
+	files
+	{
+		"%{prj.name}/src/**.cpp",
+    }
+
+    includedirs
 	{
 		"gamelib/include",
-		"%{IncludeDir.SFML}",
-		"%{IncludeDir.JSON}"
+		"%{IncludeDir.BOOST}",
 	}
 
 	filter "system:windows"
 		systemversion "latest"
 		defines{ "PLATFORM_WINDOWS" }
 
-	
-	filter "configurations:*"
-		libdirs { "gamelib/deps/SFML/lib" }	
-	
+	filter "system:linux"
+		systemversion "latest"
+		defines{ "PLATFORM_LINUX" }
+
 	filter "configurations:Debug"
 		defines "DEBUG"
 		runtime "Debug"
 		symbols "on"
-		links
-		{	
-			"sfml-graphics",
-			"sfml-window",
-			"sfml-system",
-			"sfml-audio",
-			"sfml-network"
-		}
+
 	filter "configurations:Release"
 		defines "NDEBUG"
 		runtime "Release"
 		optimize "on"
-		links
-		{	
-			"sfml-graphics",
-			"sfml-window",
-			"sfml-system",
-			"sfml-audio",
-			"sfml-network"
-		}
+
 
 project "chess_engine"
 	location "chess_engine"
@@ -243,8 +166,8 @@ project "chess_engine"
 	cppdialect "C++20"
 	staticruntime "on"
 
-	targetdir ("bin/" .. outputdir .. "/%{prj.name}")
-	objdir ("obj/" .. outputdir .. "/%{prj.name}")
+	targetdir ("build/bin/" .. outputdir .. "/%{prj.name}")
+	objdir ("build/obj/" .. outputdir .. "/%{prj.name}")
 
 	files
 	{
@@ -257,7 +180,12 @@ project "chess_engine"
 	}
 	links
 	{
-		"gamelib"
+		"gamelib",
+		"sfml-graphics",
+		"sfml-window",
+		"sfml-system",
+		"sfml-audio",
+		"sfml-network"
 	}
 	includedirs
 	{
@@ -265,37 +193,19 @@ project "chess_engine"
 		"%{IncludeDir.SFML}",
 		"%{IncludeDir.JSON}"
 	}
-
 	filter "system:windows"
 		systemversion "latest"
 		defines{ "PLATFORM_WINDOWS" }
-
-	
-	filter "configurations:*"
-		libdirs { "gamelib/deps/SFML/lib" }	
+	filter "system:linux"
+		systemversion "latest"
+		defines{ "PLATFORM_LINUX" }
 	
 	filter "configurations:Debug"
 		defines "DEBUG"
 		runtime "Debug"
 		symbols "on"
-		links
-		{	
-			"sfml-graphics-d",
-			"sfml-window-d",
-			"sfml-system-d",
-			"sfml-audio-d",
-			"sfml-network-d"
-		}
+
 	filter "configurations:Release"
 		defines "NDEBUG"
 		runtime "Release"
 		optimize "on"
-		links
-		{	
-			"sfml-graphics",
-			"sfml-window",
-			"sfml-system",
-			"sfml-audio",
-			"sfml-network"
-		}
-	

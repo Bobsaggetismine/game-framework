@@ -1,8 +1,8 @@
-#include <boost/test/auto_unit_test.hpp>
+
+#include <boost/test/unit_test.hpp>
 
 #include <bq.h>
 #include "world.h"
-
 BOOST_AUTO_TEST_CASE(test_null_return_case) {
 	//these exceptions are only thrown in debug mode to eliminate if statements from release code making it more performant, expected that code will be tested in debug and not release but just in case guard this
 #ifdef DEBUG
@@ -26,4 +26,3 @@ BOOST_AUTO_TEST_CASE(test_non_null_return_case) {
 	BOOST_REQUIRE_NO_THROW(bq::handler::get().world());
 	BOOST_REQUIRE_NO_THROW(bq::handler::get().sm());
 }
-

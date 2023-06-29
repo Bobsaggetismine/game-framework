@@ -19,6 +19,7 @@
 #include <sstream>
 #include <optional>
 #include <exception>
+#include <algorithm>
 #include <chrono>
 #include <bq/core/astar.h>
 #include <bq/application/application.h>
