@@ -16,6 +16,8 @@ project "tests"
 		"sfml-system",
 		"sfml-audio",
 		"sfml-network",
+		"openssl-1.1/ssl",
+		"openssl-1.1/crypto"
 	}
 	
 	files
@@ -26,6 +28,7 @@ project "tests"
     includedirs
 	{
 		"../gamelib/include",
+		"../gamelib/vendor/include",
 		"%{IncludeDir.BOOST}",
 	}
 

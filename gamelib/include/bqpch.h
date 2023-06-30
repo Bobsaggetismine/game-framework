@@ -1,5 +1,7 @@
 #pragma once
 
+#define CPPHTTPLIB_OPENSSL_SUPPORT
+#include <cpp-httplib/httplib.h>
 
 //sfml includes
 #include <SFML/Graphics.hpp>

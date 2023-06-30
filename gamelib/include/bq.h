@@ -48,6 +48,8 @@
 #include <bq/graphics/window.h>
 #include <bq/graphics/sprite.h>
 #include <bq/core/profiler.h>
+#include <bq/networking/network_result.h>
+#include <bq/networking/http_client.h>
 constexpr int GAME_HEIGHT = INTL_HEIGHT;
 constexpr int GAME_WIDTH = INTL_WIDTH;
 

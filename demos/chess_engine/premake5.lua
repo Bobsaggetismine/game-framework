@@ -29,6 +29,7 @@ project "chess_engine"
 	includedirs
 	{
 		"../../gamelib/include",
+		"../../gamelib/vendor/include",
 		"%{IncludeDir.SFML}",
 	}
 	filter "system:windows"

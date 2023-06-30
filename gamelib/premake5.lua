@@ -19,6 +19,7 @@ project "gamelib"
 	{
 		"include",
 		"%{IncludeDir.SFML}",
+		"vendor/include",
 	}
 	filter "system:windows"
 		systemversion "latest"

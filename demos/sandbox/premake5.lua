@@ -23,6 +23,7 @@ project "sandbox"
     includedirs
 	{
 		"../../gamelib/include",
+		"../../gamelib/vendor/include",
 		"%{IncludeDir.SFML}",
 	}
 
