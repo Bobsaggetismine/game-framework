@@ -1,12 +1,8 @@
 #pragma once
 
-class application;
-
-#include <bq/graphics/window.h>
 
 namespace bq {
 
-	class event;
 	class  game : public application {
 		sf::Clock m_clock;
 		sf::Time m_accumulator = sf::Time::Zero;

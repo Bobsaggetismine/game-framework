@@ -1,7 +1,8 @@
 #pragma once
 #include <iomanip>
 #include <locale>
-
+#include <functional>
+#include <thread>
 
 static std::string format_decimal(float value)
 {
@@ -24,4 +25,12 @@ static std::vector<std::string> split(std::string s, std::string delimiter) {
 
     res.push_back(s.substr(pos_start));
     return res;
+}
+
+static void call_after(std::function<void(void)> func, unsigned int interval)
+{
+    std::thread([func, interval]() {
+            std::this_thread::sleep_for(std::chrono::milliseconds(interval));
+            func();
+    }).detach();
 }

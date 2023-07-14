@@ -2,8 +2,6 @@
 #include <bq/graphics/sprite.h>
 
 namespace bq {
-	struct v2f;
-	class window;
 	class item {
 	protected:
 		bq::sprite m_sprite;

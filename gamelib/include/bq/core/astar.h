@@ -1,10 +1,5 @@
 #pragma once
-#include <vector>
-#include <functional>
-#include <memory>
 
-#include <set>
-#include <bq/util/vec.h>
 namespace bq
 {
     namespace astar {

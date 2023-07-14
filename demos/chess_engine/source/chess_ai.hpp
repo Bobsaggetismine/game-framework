@@ -4,58 +4,67 @@
 #include "book.h"
 
 
-struct chess_ai {
 
-	const int m_depth,m_sel_depth;
+struct pvs_ai {
+
+	const int m_depth;
+	int m_turntime;
 	
-	search m_search;
+	pvs_search m_search;
+	bool waiting = true;
 
-
-	chess_ai(int depth, int sel_depth): m_depth(depth), m_sel_depth(sel_depth), m_search(depth, sel_depth) {}
+	pvs_ai(int depth, int sel_depth, int turntime): m_turntime(turntime), m_depth(depth), m_search(sel_depth) {}
 
 	void signal_stop() noexcept {
 		m_search.signal_stop();
+		waiting=false;
 	}
 
-	void notify_book(Move move) {
-		book::add_move(move);
-	}
-	void reset() {
-		book::reset();
-	}
 	Move get_best_move(Position& p) {
 
 		if (p.turn() == WHITE) {
 			Move bookMove = book::get_book_move<WHITE>(p);
 			if (bookMove.str() != "a1a1") {
+#if ANALYTICS
 				bq::logger::info("------------------------------------------");
 				bq::logger::info("Book selection - " + bookMove.str_d());
 				bq::logger::info("------------------------------------------");
-				book::add_move(bookMove);
+#endif
 				return bookMove;
 			}
 		}
 		else {
 			Move bookMove = book::get_book_move<BLACK>(p);
 			if (bookMove.str() != "a1a1") {
-				book::add_move(bookMove);
+#if ANALYTICS
 				bq::logger::info("------------------------------------------");
 				bq::logger::info("Book selection - " + bookMove.str_d());
 				bq::logger::info("------------------------------------------");
+#endif
 				return bookMove;
-
 			}
 		}
 
 		if (p.turn() == WHITE) {
-
+			waiting = true;
+			call_after( std::bind(&pvs_ai::signal_stop,this), m_turntime);
 			Move move = m_search.initiate_iterative_search<WHITE>(p, m_depth);
-			book::add_move(move);
+
+			while(waiting) {
+				std::cout << "waiting" << std::endl;
+			}
+
 			return move;
 		}
 		else {
+			waiting = true;
+			call_after( std::bind(&pvs_ai::signal_stop,this), m_turntime);
 			Move move = m_search.initiate_iterative_search<BLACK>(p, m_depth);
-			book::add_move(move);
+
+			while(waiting){
+				std::cout << "waiting" << std::endl;
+			}
+
 			return move;
 		}
 	}

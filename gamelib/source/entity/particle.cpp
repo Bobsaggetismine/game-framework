@@ -4,6 +4,7 @@
 #include <bq/graphics/window.h>
 #include "bq/entity/particle.h"
 #include "bq/resource/resource_holder.h"
+#include <bq/world/world.h>
 #include <bq/core/handler.h>
 #include <bq/state/state.h>
 void bq::particle::update() {

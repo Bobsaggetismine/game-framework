@@ -1,7 +1,7 @@
 #include "bqpch.h"
+#include <bq/graphics/window.h>
 #include <bq/graphics/sprite.h>
 #include "bq/core/item.h"
-#include <bq/graphics/window.h>
 #include "bq/core/inventory.h"
 #include "bq/resource/resource_holder.h"
 bq::inventory::inventory(){

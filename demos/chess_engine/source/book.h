@@ -57,6 +57,9 @@ public:
 	
 	static void reset() noexcept {
 		m_move_history.clear();
+		std::random_device rd;
+		std::mt19937 g(rd());
+		std::shuffle(m_games.begin(), m_games.end(),g);
 	}
 	template <Color Us>
 	static Move get_book_move(Position& p) {

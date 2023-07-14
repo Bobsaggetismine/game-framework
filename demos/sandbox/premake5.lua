@@ -19,6 +19,8 @@ project "sandbox"
         "sfml-window",
         "sfml-graphics",
         "sfml-audio",
+		"openssl-1.1/ssl",
+		"openssl-1.1/crypto"
 	}
     includedirs
 	{

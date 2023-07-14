@@ -1,3 +1,5 @@
+#pragma once
+
 namespace bq
 {
     constexpr int BQ_NETWORK_FAILURE = -99999;

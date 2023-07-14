@@ -16,6 +16,11 @@ void bq::gui::Button::handle_event(bq::event& e) {
 	}
 }
 
+void bq::gui::Button::set_text(const std::string& text)
+{
+	m_text.setString(text);
+}
+
 void bq::gui::Button::render(bq::window& window)
 {
 	bq::v2f offset = { 0,0 };

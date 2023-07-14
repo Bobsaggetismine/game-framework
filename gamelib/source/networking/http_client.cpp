@@ -1,7 +1,5 @@
 #include "bqpch.h"
 
-#include <bq/networking/network_result.h>
-#include <bq/networking/http_client.h>
 
 bq::http_client::http_client(const std::string& host) : m_host(host) {}
 

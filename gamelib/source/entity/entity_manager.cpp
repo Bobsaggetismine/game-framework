@@ -4,7 +4,10 @@
 #include <bq/core/camera.h>
 #include <bq/quest/quest_event.h>
 #include <bq/quest/quest.h>
+#include <bq/world/world.h>
 #include <bq/entity/entity_manager.h>
+#include <bq/state/state.h>
+#include <bq/state/state_manager.h>
 #include <bq/core/handler.h>
 #include <bq/state/state.h>
 #include <bq/event/event.h>

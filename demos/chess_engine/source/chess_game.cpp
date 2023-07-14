@@ -9,6 +9,13 @@
 #include <random>
 
 
+struct win_stats{
+	int white_wins=0;
+	int black_wins=0;
+	int draws=0;
+	int stalemates=0;
+};
+
 class chess_game : public bq::game {
 public:
 
@@ -18,6 +25,13 @@ public:
 
 	bool flipped = false;
 	bool checkmate = false;
+	bool draw = false;
+
+	bool m_freeplay_mode = true;
+
+	win_stats m_win_stats;
+
+	std::vector<std::string> m_fens;
 	
 	std::future<void> m_ai_future;
 	std::string m_pgn;
@@ -26,56 +40,77 @@ public:
 	Position m_position;
 	Move m_last_move;
 	Move m_second_last_move;
-	chess_ai m_ai;
-
+	pvs_ai m_ai_white;
+	pvs_ai m_ai_black;
 	bq::v2i m_selected_square = { -1,-1 };
 
 	sf::Sound m_move_sound;
-	bq::gui::Button m_restart_button,m_flip_button;
-
+	bq::gui::Button m_restart_button;
+	bq::gui::Button m_flip_button;
 	bq::gui::Button m_p1_button;
 	bq::gui::Button m_p2_button;
 	bq::gui::Button m_copy_fen_button;
 	bq::gui::Button m_copy_pgn_button;
 	bq::gui::Button m_paste_fen_button;
 	bq::gui::Button m_undo_button;
+
+	bq::gui::Button m_wwins_button;
+	bq::gui::Button m_wlosses_button;
+	bq::gui::Button m_draws_button;
+
 	//rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1
-	chess_game() : bq::game(GAME_WIDTH, GAME_HEIGHT, "Chess Game", 60.f), m_ai(10, 30), m_position("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"), m_move_sound(bq::resource_holder::get().sounds.get("move.wav")), m_restart_button({SQUARE_SIZE*8 + 10,10}, {168,50},"Restart",sf::Color(8553090), sf::Color(8553090), 18),
+	chess_game() : 
+		bq::game(GAME_WIDTH, GAME_HEIGHT, "Chess Game", 60.f), 
+		m_ai_white(19, 30, 1000), 
+		m_ai_black(19, 30, 1000), 
+		m_position("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"), 
+		m_move_sound(bq::resource_holder::get().sounds.get("move.wav")), 
+	    m_restart_button({SQUARE_SIZE*8 + 10,10}, {168,50},"Restart",sf::Color(8553090), sf::Color(8553090), 18),
 		m_flip_button({ SQUARE_SIZE * 8 + 10,70 }, { 168,50 }, "Flip", sf::Color(8553090), sf::Color(8553090), 18),
 		m_p1_button({ SQUARE_SIZE * 8 + 10,130 }, { 168,50 }, "Restart - p1", sf::Color(8553090), sf::Color(8553090), 18),
 		m_p2_button({ SQUARE_SIZE * 8 + 10,190 }, { 168,50 }, "Restart - p2", sf::Color(8553090), sf::Color(8553090), 18),
 		m_copy_fen_button({ SQUARE_SIZE * 8 + 10,250 }, { 168,50 }, "Copy Fen", sf::Color(8553090), sf::Color(8553090), 18),
 		m_paste_fen_button({ SQUARE_SIZE * 8 + 10,310 }, { 168,50 }, "Paste Fen", sf::Color(8553090), sf::Color(8553090), 18),
 		m_copy_pgn_button({ SQUARE_SIZE * 8 + 10,370 }, { 168,50 }, "Copy PGN", sf::Color(8553090), sf::Color(8553090), 18),
-		m_undo_button({ SQUARE_SIZE * 8 + 10,430 }, { 168,50 }, "Undo", sf::Color(8553090), sf::Color(8553090), 18)
-	{}
+		m_undo_button({ SQUARE_SIZE * 8 + 10,430 }, { 168,50 }, "Undo", sf::Color(8553090), sf::Color(8553090), 18),
+		m_wwins_button({ SQUARE_SIZE * 8 + 200, 10}, { 180,50 }, "White Wins: ", sf::Color(8553090), sf::Color(8553090), 18),
+		m_wlosses_button({ SQUARE_SIZE * 8 + 200,70 }, { 180,50 }, "White Losses: ", sf::Color(8553090), sf::Color(8553090), 18),
+		m_draws_button({ SQUARE_SIZE * 8 + 200,130 }, { 180,50 }, "Draws: ", sf::Color(8553090), sf::Color(8553090), 18)
+	{} 
 
-
-	void restart() {
-		m_ai.signal_stop();
+	//game functions
+	void restart()
+	{
 		m_ai_future.wait();
-		m_ai.reset();
+		book::reset();
 		checkmate = false;
+		m_fens.clear();
+		draw = false;
 		m_last_move = Move();
 		m_selected_square = { -1,-1 };
 		m_pgn = "";
 		m_position = Position("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
 	}
-	void flip() noexcept{
+	void flip() noexcept
+	{
 		flipped = !flipped;
 	}
-	void restart_p1() {
+	void restart_p1()
+	{
 		PLAYER_ONE = true;
 		PLAYER_TWO = false;
 		restart();
 	}
-	void restart_p2() {
+	void restart_p2()
+	{
 		PLAYER_ONE = false;
 		PLAYER_TWO = true;
 		restart();
 	}
-	void undo() {
-		m_ai.signal_stop();
+	void undo()
+	{
+		m_ai_white.signal_stop();
+		m_ai_black.signal_stop();
 		m_ai_future.wait();
 		if (m_position.turn() == BLACK) {
 			m_position.undo<WHITE>(m_last_move);
@@ -86,20 +121,74 @@ public:
 			m_position.undo<WHITE>(m_second_last_move);
 		}
 	}
-
-	void copy_fen() {
+	void copy_fen() 
+	{
 		sf::Clipboard::setString(m_position.fen());
 	}
-	void copy_pgn() {
+	void copy_pgn() 
+	{
 		sf::Clipboard::setString(m_pgn);
 	}
-	void paste_fen() {
+	void paste_fen() 
+	{
 		restart();
 		m_position = Position(sf::Clipboard::getString());
 	}
+	void check_game_status()
+	{
+		int checkmate_flag = detect_checkmate(m_position);
+		if(checkmate_flag != 0){
+			checkmate = true;
+		}
+		switch(checkmate_flag){
+			case 1:  m_win_stats.white_wins++; bq::logger::info("Checkmate, white wins!"); break;
+			case 2:  m_win_stats.stalemates++; bq::logger::info("Stalemate"); break;
+			case -1: m_win_stats.black_wins++; bq::logger::info("Checkmate, black wins!");break;
+			case -2: m_win_stats.stalemates++; bq::logger::info("Stalemate"); break;
+		}
+		draw = detect_draw(m_fens);
+		if(draw) {
+			bq::logger::info("Draw");
+			m_win_stats.draws++;
+		}
+	}
+	virtual void update() override
+	{
 
+		//if the game is in checkmate and we're in freeplay, allow the game to render and the ui to be interactable (events), but dont allow anymore moves to be played.
+		if ((checkmate || draw) && m_freeplay_mode ) { 
+			return; 
+		}
+		//otherwise if its not freeplay, it must be simulation and restart the game for the bot to keep playing
+		else if(checkmate || draw) {
+			restart(); 
+		}
+		
 
-	void draw_ui() {
+		if (!PLAYER_ONE && m_position.turn() == WHITE) 
+		{
+			handle_ai_move<WHITE>(m_ai_future);
+		}
+		if (!PLAYER_TWO && m_position.turn() == BLACK)
+		{
+			handle_ai_move<BLACK>(m_ai_future);
+		}
+		if (m_player_clicks.size() == 2) {
+			if (m_position.turn() == WHITE) {
+				handle_player_move<WHITE>();
+			}
+			else {
+				handle_player_move<BLACK>();
+			}
+			m_selected_square = { -1,-1 };
+			m_player_clicks.clear();
+		}
+		
+	}
+	
+	//rendering functions
+	void draw_ui() 
+	{
 		m_restart_button.render(m_window);
 		m_flip_button.render(m_window);
 		m_p1_button.render(m_window);
@@ -108,6 +197,14 @@ public:
 		m_copy_pgn_button.render(m_window);
 		m_paste_fen_button.render(m_window);
 		m_undo_button.render(m_window);
+
+		m_wwins_button.set_text("White wins: " + std::to_string(m_win_stats.white_wins));
+		m_wwins_button.render(m_window);
+		m_wlosses_button.set_text("White losses: " + std::to_string(m_win_stats.black_wins));
+		m_wlosses_button.render(m_window);
+		m_draws_button.set_text("Draws: " + std::to_string(m_win_stats.draws));
+		m_draws_button.render(m_window);
+
 	}
 	void draw_board()
 	{
@@ -233,7 +330,72 @@ public:
 				m_window.draw(sprite);
 			}
 	}
+	virtual void render() override
+	{
+		draw_board();
+		draw_pieces();		
+		draw_ui();
+	}
+	//move functions
+	template <Color Us>
+	void handle_player_move()
+	{
+		MoveList<Us> list(m_position);
+		for (Move move : list) {
+			if (move.to() == create_square(col_to_file(m_player_clicks[1].y,flipped), row_to_rank(m_player_clicks[1].x,flipped)) && move.from() == create_square(col_to_file(m_player_clicks[0].y,flipped), row_to_rank(m_player_clicks[0].x,flipped))) {
+				if (move.flags() == MoveFlags::PR_KNIGHT) continue;
+				if (move.flags() == MoveFlags::PR_BISHOP) continue;
+				if (move.flags() == MoveFlags::PR_ROOK) continue;
+				play_move<Us>(move);
+				break;
+			}
+		}
+	}
+	template<Color Us>
+	void play_move(Move& move)
+	{
+		m_position.play<Us>(move);
+		m_fens.push_back(m_position.fen());
+		m_move_sound.play();
+		book::add_move(move);
+		m_second_last_move = m_last_move;
+		m_last_move = move;
+		if (Us == BLACK) {
+			m_pgn +=  get_notation(m_position, move) + " ";
+		}
+		else {
+			m_pgn += std::to_string(std::max(1,m_position.ply()+1 / 2)) + ". " + get_notation(m_position, move) + " ";
+		}
+		check_game_status();
+	}
+	template <Color Us>
+	void handle_ai_move(std::future<void>& future)
+	{
+		using namespace std::chrono_literals;
+		auto status = future.wait_for(0ms);
 
+		if (status == std::future_status::ready)
+		{
+			future = std::async(std::launch::async, [this]
+			{
+				Position p(m_position.fen());
+				if(Us == BLACK)
+				{
+					auto m = m_ai_black.get_best_move(p);
+					play_move<Us>(m);
+				}
+				else
+				{
+					auto m = m_ai_white.get_best_move(p);
+					play_move<Us>(m);
+				}
+					
+			});
+		}
+	}
+
+	
+	//event functions
 	void handle_player_clicks(bq::v2f click_pos)
 	{
 		
@@ -253,91 +415,6 @@ public:
 			m_selected_square = { row, col };
 			m_player_clicks.push_back(m_selected_square);
 		}
-	}
-	template <Color Us>
-	void handle_player_move()
-	{
-		MoveList<Us> list(m_position);
-		for (Move move : list) {
-			if (move.to() == create_square(col_to_file(m_player_clicks[1].y,flipped), row_to_rank(m_player_clicks[1].x,flipped)) && move.from() == create_square(col_to_file(m_player_clicks[0].y,flipped), row_to_rank(m_player_clicks[0].x,flipped))) {
-				if (move.flags() == MoveFlags::PR_KNIGHT) continue;
-				if (move.flags() == MoveFlags::PR_BISHOP) continue;
-				if (move.flags() == MoveFlags::PR_ROOK) continue;
-
-				
-
-				if (Us == BLACK) {
-					m_pgn += get_notation(m_position, move) + " ";
-				}
-				else {
-					m_pgn += std::to_string(std::max(1, m_position.ply() + 1 / 2)) + ". " + get_notation(m_position, move) + " ";
-				}
-				m_position.play<Us>(move);
-				m_ai.notify_book(move);
-				m_move_sound.play();
-				m_second_last_move = m_last_move;
-				m_last_move = move;
-				checkmate = detect_checkmate(m_position);
-				break;
-			}
-		}
-	}
-	template <Color Us>
-	void handle_ai_move(std::future<void>& future) {
-		using namespace std::chrono_literals;
-		auto status = future.wait_for(0ms);
-
-		if (status == std::future_status::ready)
-		{
-			future = std::async(std::launch::async, [this]
-			{
-				Position p(m_position.fen());
-				auto m = m_ai.get_best_move(p);
-				if (Us == BLACK) {
-					m_pgn +=  get_notation(p, m) + " ";
-				}
-				else {
-					m_pgn += std::to_string(std::max(1,m_position.ply()+1 / 2)) + ". " + get_notation(m_position, m) + " ";
-				}
-				m_position.play<Us>(m);
-				m_move_sound.play();
-				m_second_last_move = m_last_move;
-				m_last_move = m;
-				checkmate = detect_checkmate(m_position);
-			});
-		}
-	}
-
-	virtual void update() override
-	{
-		
-		if (checkmate) return;
-
-		if (!PLAYER_ONE && m_position.turn() == WHITE) {
-			handle_ai_move<WHITE>(m_ai_future);
-		}
-
-		if (!PLAYER_TWO && m_position.turn() == BLACK) {
-			handle_ai_move<BLACK>(m_ai_future);
-		}
-
-
-		if (m_player_clicks.size() == 2) {
-			if (m_position.turn() == WHITE) {
-				handle_player_move<WHITE>();
-			}
-			else {
-				handle_player_move<BLACK>();
-			}
-			m_selected_square = { -1,-1 };
-			m_player_clicks.clear();
-		}
-	}
-	virtual void render() override
-	{
-		draw_board();
-		draw_pieces();		
-		draw_ui();
 	}
 	virtual void handleEvent(bq::event& evt) override
 	{
@@ -366,16 +443,8 @@ public:
 		m_undo_button.handle_event(evt);
 	}
 	
-	
-	
-	virtual int execute() override
+	void init_gui()
 	{
-		initialise_all_databases();
-		zobrist::initialise_zobrist_keys();
-		book::init_book();
-		//run future initially with no processing being done, so we can cleanup the ai move function
-		m_ai_future = std::async(std::launch::async, [this] {});
-
 		std::function<void(void)> changeState = std::bind(&chess_game::restart, this);
 		m_restart_button.setFunc(changeState);
 
@@ -399,8 +468,16 @@ public:
 
 		std::function<void(void)> undof = std::bind(&chess_game::undo, this);
 		m_undo_button.setFunc(undof);
-
-
+	}
+	
+	virtual int execute() override
+	{
+		initialise_all_databases();
+		zobrist::initialise_zobrist_keys();
+		book::init_book();
+		init_gui();
+		//run future initially with no processing being done, so we can cleanup the ai move function
+		m_ai_future = std::async(std::launch::async, [this] {});
 		run();
 		return EXIT_SUCCESS;
 	}

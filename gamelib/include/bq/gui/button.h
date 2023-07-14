@@ -20,6 +20,7 @@ namespace bq {
 			void render(bq::window& renderer) override;
 			void update();
 			void setPos(bq::v2f);
+			void set_text(const std::string& text);
 
 		};
 	}

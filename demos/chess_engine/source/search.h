@@ -6,11 +6,14 @@
 #include "transposition_table.h"
 #include "move_ordering.h"
 #include <future>
-class search {
-private:
+
+#define ANALYTICS_VERBOSE true
+#define ANALYTICS_MINIMAL true
+
+class pvs_search {
+	private:
 	
 	transposition_table m_tt;
-	
 	
 	Move m_selected_move;
 	long long m_nodes_searched = 0;
@@ -19,27 +22,32 @@ private:
 	bool m_stopping = false;
 
 
-	int m_max_depth;
+	int m_current_depth;
 	int m_max_sel_depth;
 
 public:
 
-	search(int max_depth, int max_sel_depth): m_max_depth(max_depth), m_max_sel_depth(max_sel_depth){}
+	pvs_search(int max_sel_depth): m_max_sel_depth(max_sel_depth){}
 
-	void signal_stop() noexcept {
+	void signal_stop() {
 		m_stopping = true;
 	}
 
 	template <Color us>
 	Move initiate_iterative_search(Position& p, int depth) {
 		m_tt.clear();
+		Move sel_move;
 		for (int i = 1; i <= depth; ++i) {
 			initiate_search<us>(p, i);
-			if (m_stopping) return m_selected_move;
-			if (m_mate_found) return m_selected_move;
+
+			if(!m_stopping) sel_move = m_selected_move;
+			if (m_stopping) break;
+			if (m_mate_found) break;
 		}
-		
-		return m_selected_move;
+		#if ANALYTICS_MINIMAL
+			bq::logger::info("Depth Searched: " + std::to_string(m_current_depth) + " Move Selection : " + m_selected_move.str_d());
+		#endif
+		return sel_move;
 	}
 
 
@@ -51,13 +59,13 @@ private:
 		m_stopping = false;
 		m_mate_found = false;
 		m_quinscience_depth_reached = 0;
-		m_max_depth = depth;
-#if ANALYTICS
+		m_current_depth = depth;
+#if ANALYTICS_VERBOSE
 		bq::logger::info("------------------------------------------");
 		auto start = std::chrono::high_resolution_clock::now();
 #endif
 		int score = pvs<us>(p, depth, -checkmate_score, checkmate_score,false);
-#if ANALYTICS
+#if ANALYTICS_VERBOSE
 		auto stop = std::chrono::high_resolution_clock::now();
 		auto duration = duration_cast<std::chrono::microseconds>(stop - start);
 		float millions_of_nodes = roundf((float(m_nodes_searched) / 1000000.0f) * 100) / 100;
@@ -119,7 +127,7 @@ private:
 
 		auto tt_lookup = m_tt.lookup(p.get_hash(), depth);
 
-		if (tt_lookup.valid && tt_lookup.score != checkmate_score && tt_lookup.score != -checkmate_score && depth != m_max_depth) {
+		if (tt_lookup.valid && tt_lookup.score != checkmate_score && tt_lookup.score != -checkmate_score && depth != m_current_depth) {
 			if (tt_lookup.depth >= depth) {
 				if (tt_lookup.flag == tt_flag::EXACT) {
 					return tt_lookup.score;
@@ -139,7 +147,7 @@ private:
 		bool is_pv = alpha != beta - 1;
 
 
-		if (depth <= 4 && m_max_depth >= 7) {
+		if (depth <= 4 && m_current_depth >= 7) {
 			int s_eval = score_board<Us>(p);
 			//razering
 			if (s_eval + 190 * depth < beta) {
@@ -157,7 +165,7 @@ private:
 
 
 		MoveList<Us> moves(p);
-		order_moves<Us>(p, moves, m_tt, depth==m_max_depth);
+		order_moves<Us>(p, moves, m_tt, depth==m_current_depth);
 		if (moves.size() == 0) {
 			if (p.in_check<Us>()) {
 				return -checkmate_score;
@@ -197,9 +205,12 @@ private:
 				}
 			}
 			p.undo<Us>(move);
+
+			if(m_stopping) return 0;
+
 			if (score > alpha) {
 				alpha = score;
-				if (depth == m_max_depth) {
+				if (depth == m_current_depth) {
 					m_selected_move = move;
 					m_tt.move_scores[move.str_d()] = score;
 					if (score == checkmate_score) {
@@ -208,7 +219,7 @@ private:
 				}
 			}
 			else {
-				if (depth == m_max_depth) {
+				if (depth == m_current_depth) {
 					m_tt.move_scores[move.str_d()] = score;
 				}
 			}
@@ -231,5 +242,4 @@ private:
 		m_tt.insert(p.get_hash(), entry);
 		return alpha;
 	}
-
 };

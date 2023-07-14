@@ -3,7 +3,7 @@
 #include "includes.h"
 #include <bq.h>
 
-#define ANALYTICS true
+
 
 
 static std::map<PieceType, int> piece_scores = { {PieceType::KING,5000},{PieceType::QUEEN , 900},{PieceType::ROOK , 500},{PieceType::BISHOP, 300},{PieceType::KNIGHT , 300},{PieceType::PAWN , 100} };
@@ -147,28 +147,50 @@ static std::string get_notation(Position& p, Move& move) {
 	}
 }
 
-static bool detect_checkmate(Position& p) {
+static int detect_checkmate(Position& p) {
 
 	if (p.turn() == WHITE) {
 		MoveList<WHITE> moves(p);
 		if (moves.size() == 0) {
 			if (p.in_check<WHITE>())
-				bq::logger::info("checkmate, black wins!");
+			{
+				return -1;
+			}
 			else
-				bq::logger::info("stalemate!");
-			return true;
+			{
+				return -2;
+			}
 		}
-		return false;
+		return 0;
 	}
 	else {
 		MoveList<BLACK> moves(p);
 		if (moves.size() == 0) {
 			if (p.in_check<BLACK>())
-				bq::logger::info("checkmate, white wins!");
+			{
+				return 1;
+			}
 			else
-				bq::logger::info("stalemate!");
-			return true;
+			{
+				return 2;
+			}
 		}
-		return false;
+		return 0;
 	}
+}
+
+static bool detect_draw(const std::vector<std::string>& fens)
+{
+	if(fens.size() == 0) return false;
+
+	std::string recent_position = fens[fens.size() -1];
+
+	int found_times = 0;
+
+	for(int i = 0; i < fens.size()-1; ++i)
+	{
+		if(fens[i] == recent_position) found_times++;
+	}
+
+	return found_times>2;
 }

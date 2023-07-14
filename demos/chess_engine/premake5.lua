@@ -1,5 +1,4 @@
 project "chess_engine"
-	location "demos/chess_engine"
 	kind "ConsoleApp"
 	language "C++"
 	cppdialect "C++20"
@@ -24,7 +23,9 @@ project "chess_engine"
 		"sfml-window",
 		"sfml-system",
 		"sfml-audio",
-		"sfml-network"
+		"sfml-network",
+		"openssl-1.1/ssl",
+		"openssl-1.1/crypto"
 	}
 	includedirs
 	{
