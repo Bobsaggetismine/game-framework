@@ -1,71 +1,29 @@
 #pragma once
+#include <bq.h>
 #include "surge/surge.h"
-#include "search.h"
-#include "book.h"
+#include "search.hpp"
+#include "book.hpp"
 
+class pvs_ai {
 
-
-struct pvs_ai {
-
-	const int m_depth;
-	int m_turntime;
+	static int constexpr DEFAULT_TURN_TIME = 5000;
+	static int constexpr DEFAULT_DEPTH = 30;
 	
-	pvs_search m_search;
+	int m_depth;
+	int m_turntime;
 	bool waiting = true;
 
-	pvs_ai(int depth, int sel_depth, int turntime): m_turntime(turntime), m_depth(depth), m_search(sel_depth) {}
+	book m_book;
+	pvs_search m_search;
 
-	void signal_stop() noexcept {
-		m_search.signal_stop();
-		waiting=false;
-	}
+public:
 
-	Move get_best_move(Position& p) {
+	pvs_ai();
 
-		if (p.turn() == WHITE) {
-			Move bookMove = book::get_book_move<WHITE>(p);
-			if (bookMove.str() != "a1a1") {
-#if ANALYTICS
-				bq::logger::info("------------------------------------------");
-				bq::logger::info("Book selection - " + bookMove.str_d());
-				bq::logger::info("------------------------------------------");
-#endif
-				return bookMove;
-			}
-		}
-		else {
-			Move bookMove = book::get_book_move<BLACK>(p);
-			if (bookMove.str() != "a1a1") {
-#if ANALYTICS
-				bq::logger::info("------------------------------------------");
-				bq::logger::info("Book selection - " + bookMove.str_d());
-				bq::logger::info("------------------------------------------");
-#endif
-				return bookMove;
-			}
-		}
-
-		if (p.turn() == WHITE) {
-			waiting = true;
-			call_after( std::bind(&pvs_ai::signal_stop,this), m_turntime);
-			Move move = m_search.initiate_iterative_search<WHITE>(p, m_depth);
-
-			while(waiting) {
-				std::cout << "waiting" << std::endl;
-			}
-
-			return move;
-		}
-		else {
-			waiting = true;
-			call_after( std::bind(&pvs_ai::signal_stop,this), m_turntime);
-			Move move = m_search.initiate_iterative_search<BLACK>(p, m_depth);
-
-			while(waiting){
-				std::cout << "waiting" << std::endl;
-			}
-
-			return move;
-		}
-	}
+	void signal_stop();
+	void notify_book(Move& move);
+	void reset();
+	void set_turntime(int ms);
+	Move get_best_move(Position& p);
+	
 };

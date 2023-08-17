@@ -40,8 +40,6 @@ struct json_array{
     };
     
 
-
-    //this json parser does not currently support arrays.
     class json{
         std::map<std::string, std::string> m_data;
         
